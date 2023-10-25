@@ -1,0 +1,14 @@
+﻿@using HrHarmony.Models.ViewModels.Leave;
+@model DeleteViewModel
+
+@{
+    ViewData["Title"] = "Usuń urlop";
+}
+
+<h2>Usunąć urlop z @Model.StartDate?</h2>
+
+<form asp-controller="Leave" asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    @await Html.PartialAsync("_DeleteFormButtons")
+</form>

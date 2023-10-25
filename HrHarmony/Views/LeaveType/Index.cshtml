@@ -1,0 +1,38 @@
+﻿@using HrHarmony.Models.ViewModels.LeaveType;
+@model IEnumerable<IndexViewModel>
+
+@{
+    ViewData["Title"] = "Rodzaje urlopów";
+}
+
+<div class="container mt-5">
+ 
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mb-4">Lista rodzajów urlopów</h1>
+        <a class="btn btn-primary" asp-controller="LeaveType" asp-action="Create">Dodaj Nowy Rekord</a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Nazwa rodzaju</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.TypeName</td>
+                    <td>
+                        <a class="btn btn-success btn-sm" asp-controller="LeaveType" asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+                        <a class="btn btn-info btn-sm" asp-controller="LeaveType" asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="LeaveType" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

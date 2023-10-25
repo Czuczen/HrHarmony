@@ -1,0 +1,21 @@
+﻿@using HrHarmony.Models.ViewModels.MaritalStatus;
+@model UpdateViewModel
+
+@{
+    ViewData["Title"] = "Edycja stanu cywilnego";
+}
+
+<h2>Edytuj pracownika</h2>
+
+@using (Html.BeginForm("Edit", "MaritalStatus", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StatusName)
+        @Html.TextBoxFor(model => model.StatusName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

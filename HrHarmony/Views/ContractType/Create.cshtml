@@ -1,0 +1,22 @@
+﻿@using HrHarmony.Models.ViewModels.ContractType;
+
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Utwórz typ umowy";
+}
+
+<h2>Utwórz typ umowy</h2>
+
+@using (Html.BeginForm("Create", "ContractType", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TypeName)
+        @Html.TextBoxFor(model => model.TypeName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TypeName, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

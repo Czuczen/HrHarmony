@@ -1,0 +1,14 @@
+﻿@using HrHarmony.Models.ViewModels.Salary;
+@model DeleteViewModel
+
+@{
+    ViewData["Title"] = "Usuń wynagrodzenie";
+}
+
+<h2>Usunąć wynagrodzenie z @Model.PaymentDate?</h2>
+
+<form asp-controller="Salary" asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    @await Html.PartialAsync("_DeleteFormButtons")
+</form>

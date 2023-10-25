@@ -1,0 +1,34 @@
+﻿@using HrHarmony.Models.ViewModels.MaritalStatus;
+@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Szczegóły stanu cywilnego";
+}
+
+<h2 class="text-center">Szczegóły stanu cywilnego</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Nazwa stanu cywilnego</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>@Model.StatusName</td>
+
+            <td>
+                <a class="btn btn-info btn-sm" asp-controller="MaritalStatus" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                <a class="btn btn-danger btn-sm" asp-controller="MaritalStatus" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.IsMainView)
+{
+    <a href="@Url.Action("Index")" class="btn btn-secondary text-left">Wróć</a>
+}

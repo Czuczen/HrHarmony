@@ -1,0 +1,34 @@
+﻿@using HrHarmony.Models.ViewModels.Absence;
+
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Utwórz absencje";
+}
+
+<h2>Utwórz absencje</h2>
+
+@using (Html.BeginForm("Create", "Absence", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AbsenceDate)
+        @Html.TextBoxFor(model => model.AbsenceDate, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.AbsenceDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AbsenceTypeId)
+        @Html.DropDownListFor(model => model.AbsenceTypeId, Model.AbsenceTypes, "Wybierz absencję", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.AbsenceTypeId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmployeeId)
+        @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, "Wybierz pracownika", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

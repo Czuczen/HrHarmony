@@ -1,0 +1,57 @@
+﻿@using HrHarmony.Models.ViewModels.Employee;
+@model UpdateViewModel
+
+@{
+    ViewData["Title"] = "Edycja pracownika";
+}
+
+<h2>Edytuj pracownika</h2>
+
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FullName)
+        @Html.TextBoxFor(model => model.FullName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PhoneNumber)
+        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @type = "number", @step = "0" })
+        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateOfBirth)
+        @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MaritalStatusId)
+        @Html.DropDownListFor(model => model.MaritalStatusId, Model.MaritalStatuses, "Wybierz stan cywilny", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.MaritalStatusId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AddressId)
+        @Html.DropDownListFor(model => model.AddressId, Model.Addresses, "Wybierz adres", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.AddressId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EducationLevelId)
+        @Html.DropDownListFor(model => model.EducationLevelId, Model.EducationLevels, "Wybierz  poziom edukacji", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.EducationLevelId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ExperienceId)
+        @Html.DropDownListFor(model => model.ExperienceId, Model.Experiences, "Wybierz  doświadczenie", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ExperienceId, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

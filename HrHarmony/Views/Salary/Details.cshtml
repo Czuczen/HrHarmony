@@ -1,0 +1,48 @@
+﻿@using HrHarmony.Models.ViewModels.Salary;
+@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Szczegóły wynagrodzenia";
+}
+
+<h2 class="text-center">Szczegóły wynagrodzenia</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Data płatności</th>
+            <th>Pracownik</th>
+            <th>Wynagrodzenie podstawowe</th>
+            <th>Dodatkowe wynagrodzenie</th>
+            <th>Bonusy</th>
+            <th>Dodatki</th>
+            <th>Składki ZUS</th>
+            <th>Podatek dochodowy</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>@Model.PaymentDate.ToShortDateString()</td>
+            <td>@Model.Employee?.FullName</td>
+            <td>@Model.BasicSalary</td>
+            <td>@Model.AdditionalSalary</td>
+            <td>@Model.Bonuses</td>
+            <td>@Model.Allowances</td>
+            <td>@Model.ZUSContributions</td>
+            <td>@Model.IncomeTax</td>
+            
+            <td>
+                <a class="btn btn-info btn-sm" asp-controller="Salary" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                <a class="btn btn-danger btn-sm" asp-controller="Salary" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.IsMainView)
+{
+    <a href="@Url.Action("Index")" class="btn btn-secondary text-left">Wróć</a>
+}

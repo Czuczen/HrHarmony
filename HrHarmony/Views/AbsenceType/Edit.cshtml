@@ -1,0 +1,21 @@
+﻿@using HrHarmony.Models.ViewModels.AbsenceType;
+@model UpdateViewModel
+
+@{
+    ViewData["Title"] = "Edycja rodzaju absencji";
+}
+
+<h2>Edytuj rodzaj absencji</h2>
+
+@using (Html.BeginForm("Edit", "AbsenceType", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TypeName)
+        @Html.TextBoxFor(model => model.TypeName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TypeName, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

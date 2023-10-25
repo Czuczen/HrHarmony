@@ -1,0 +1,58 @@
+﻿@using HrHarmony.Models.ViewModels.EmploymentContract;
+@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Szczegóły umowy pracownika";
+}
+
+<h2 class="text-center">Szczegóły umowy pracownika</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Numer umowy</th>
+            <th>Data rozpoczęcia</th>
+            <th>Data końca</th>
+            <th>Typ umowy</th>
+            <th>Pracownik</th>
+            <th>Stawka godzinowa</th>
+            <th>Stawka miesięczna</th>
+            <th>Wynagrodzenie podstawowe</th>
+            <th>Dodatkowe wynagrodzenie</th>
+            <th>Bonusy</th>
+            <th>Dodatki</th>
+            <th>Składki ZUS</th>
+            <th>Podatek dochodowy</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>@Model.ContractNumber</td>
+            <td>@Model.StartDate</td>
+            <td>@Model.EndDate</td>
+            <td>@Model.ContractType?.TypeName</td>
+            <td>@Model.Employee?.FullName</td>
+            <td>@Model.HourlyRate</td>
+            <td>@Model.MonthlyRate</td>
+            <td>@Model.BasicSalary</td>
+            <td>@Model.AdditionalSalary</td>
+            <td>@Model.Bonuses</td>
+            <td>@Model.Allowances</td>
+            <td>@Model.ZUSContributions</td>
+            <td>@Model.IncomeTax</td>
+
+            <td>
+                <a class="btn btn-info btn-sm" asp-controller="EmploymentContract" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                <a class="btn btn-danger btn-sm" asp-controller="EmploymentContract" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.IsMainView)
+{
+    <a href="@Url.Action("Index")" class="btn btn-secondary text-left">Wróć</a>
+}

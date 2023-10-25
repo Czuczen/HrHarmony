@@ -1,0 +1,40 @@
+﻿@using HrHarmony.Models.ViewModels.Leave;
+
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Utwórz urlop";
+}
+
+<h2>Utwórz urlop</h2>
+
+@using (Html.BeginForm("Create", "Leave", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate)
+        @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EndDate)
+        @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LeaveTypeId)
+        @Html.DropDownListFor(model => model.LeaveTypeId, Model.LeaveTypes, "Wybierz rodzaj urlopu", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmployeeId)
+        @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, "Wybierz pracownika", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

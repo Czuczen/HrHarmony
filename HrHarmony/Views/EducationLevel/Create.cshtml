@@ -1,0 +1,22 @@
+﻿@using HrHarmony.Models.ViewModels.EducationLevel;
+
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Utwórz poziom wykształcenia";
+}
+
+<h2>Utwórz poziom wykształcenia</h2>
+
+@using (Html.BeginForm("Create", "EducationLevel", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LevelName)
+        @Html.TextBoxFor(model => model.LevelName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.LevelName, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

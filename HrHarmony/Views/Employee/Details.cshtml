@@ -1,0 +1,87 @@
+﻿@using HrHarmony.Models.ViewModels.Employee;
+@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Szczegóły pracownika";
+}
+
+<h2 class="text-center">Szczegóły pracownika</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Imię i Nazwisko</th>
+            <th>Email</th>
+            <th>Numer Telefonu</th>
+            <th>Data Urodzenia</th>
+            <th>Stan Cywilny</th>
+            <th>Adres</th>
+            <th>Poziom Edukacji</th>
+            <th>Doświadczenie</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>@Model.FullName</td>
+            <td>@Model.Email</td>
+            <td>@Model.PhoneNumber</td>
+            <td>@Model.DateOfBirth.ToShortDateString()</td>
+            <td>@Model.MaritalStatus?.StatusName</td>
+            <td>@(Model.Address?.Street + " " + Model.Address?.PostalCode + " " + Model.Address?.City)</td>
+            <td>@Model.EducationLevel?.LevelName</td>
+            <td>@Model.Experience?.ExperienceDescription</td>
+
+            <td>
+                <a class="btn btn-info btn-sm" asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                <a class="btn btn-danger btn-sm" asp-controller="Employee" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.IsMainView)
+{
+    <a href="@Url.Action("Index")" class="btn btn-secondary text-left">Wróć</a>
+}
+
+<div class="text-center">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Umowy</button>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Urlopy</button>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Absencje</button>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="collapse" id="multiCollapseExample1">
+            <div class="card card-body">
+                @foreach (var contract in Model.Contracts)
+                {
+                    @await Html.PartialAsync("~/Views/EmploymentContract/Details.cshtml", contract)
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="collapse" id="multiCollapseExample2">
+            <div class="card card-body">
+                @foreach (var leave in Model.Leaves)
+                {
+                    @await Html.PartialAsync("~/Views/Leave/Details.cshtml", leave)
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="collapse" id="multiCollapseExample3">
+            <div class="card card-body">
+                @foreach (var absence in Model.Absences)
+                {
+                    @await Html.PartialAsync("~/Views/Absence/Details.cshtml", absence)
+                }
+            </div>
+        </div>
+    </div>
+</div>

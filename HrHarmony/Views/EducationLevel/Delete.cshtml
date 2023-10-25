@@ -1,0 +1,14 @@
+﻿@using HrHarmony.Models.ViewModels.EducationLevel;
+@model DeleteViewModel
+
+@{
+    ViewData["Title"] = "Usuń poziom wykształcenia";
+}
+
+<h2>Usunąć poziom wykształcenia - @Model.LevelName?</h2>
+
+<form asp-controller="EducationLevel" asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    @await Html.PartialAsync("_DeleteFormButtons")
+</form>

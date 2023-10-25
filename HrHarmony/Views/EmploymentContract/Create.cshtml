@@ -1,0 +1,64 @@
+﻿@using HrHarmony.Models.ViewModels.EmploymentContract;
+
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Utwórz umowę pracownika";
+}
+
+<h2>Utwórz umowę pracownika</h2>
+
+@using (Html.BeginForm("Create", "EmploymentContract", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContractNumber)
+        @Html.TextBoxFor(model => model.ContractNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ContractNumber, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate)
+        @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EndDate)
+        @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContractTypeId)
+        @Html.DropDownListFor(model => model.ContractTypeId, Model.ContractTypes, "Wybierz stan cywilny", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ContractTypeId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmployeeId)
+        @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, "Wybierz pracownika", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.HourlyRate)
+        @Html.TextBoxFor(model => model.HourlyRate, new { @class = "form-control", @min = "0", @step = "0.01" })
+        @Html.ValidationMessageFor(model => model.HourlyRate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MonthlyRate)
+        @Html.TextBoxFor(model => model.MonthlyRate, new { @class = "form-control", @min = "0", @step = "0.01" })
+        @Html.ValidationMessageFor(model => model.MonthlyRate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BasicSalary)
+        @Html.TextBoxFor(model => model.BasicSalary, new { @class = "form-control", @min = "0", @step = "0.01" })
+        @Html.ValidationMessageFor(model => model.BasicSalary, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

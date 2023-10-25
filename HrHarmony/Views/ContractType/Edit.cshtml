@@ -1,0 +1,21 @@
+﻿@using HrHarmony.Models.ViewModels.ContractType;
+@model UpdateViewModel
+
+@{
+    ViewData["Title"] = "Edycja typu umowy";
+}
+
+<h2>Edytuj typ umowy</h2>
+
+@using (Html.BeginForm("Edit", "ContractType", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TypeName)
+        @Html.TextBoxFor(model => model.TypeName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TypeName, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

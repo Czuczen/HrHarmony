@@ -1,0 +1,14 @@
+﻿@using HrHarmony.Models.ViewModels.AbsenceType;
+@model DeleteViewModel
+
+@{
+    ViewData["Title"] = "Usuń rodzaj absencji";
+}
+
+<h2>Usunąć rodzaj absencji - @Model.TypeName?</h2>
+
+<form asp-controller="AbsenceType" asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    @Html.Partial("_DeleteFormButtons")
+</form>

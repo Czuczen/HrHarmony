@@ -1,0 +1,40 @@
+﻿@using HrHarmony.Models.ViewModels.Leave;
+@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Szczegóły urlopu";
+}
+
+<h2 class="text-center">Szczegóły urlopu</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Data rozpoczęcia</th>
+            <th>Data zakończenia</th>
+            <th>Rodzaj urlopu</th>
+            <th>Pracownik</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>@Model.StartDate</td>
+            <td>@Model.EndDate</td>
+            <td>@Model.LeaveType?.TypeName</td>
+            <td>@Model.Employee?.FullName</td>
+
+            <td>
+                <a class="btn btn-info btn-sm" asp-controller="Leave" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                <a class="btn btn-danger btn-sm" asp-controller="Leave" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.IsMainView)
+{
+    <a href="@Url.Action("Index")" class="btn btn-secondary text-left">Wróć</a>
+}

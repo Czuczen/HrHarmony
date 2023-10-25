@@ -1,0 +1,21 @@
+﻿@using HrHarmony.Models.ViewModels.Experience;
+@model UpdateViewModel
+
+@{
+    ViewData["Title"] = "Edycja doświadczenia zawodowego";
+}
+
+<h2>Edytuj doświadczenie zawodowe</h2>
+
+@using (Html.BeginForm("Edit", "Experience", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ExperienceDescription)
+        @Html.TextBoxFor(model => model.ExperienceDescription, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ExperienceDescription, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

@@ -1,0 +1,14 @@
+﻿@using HrHarmony.Models.ViewModels.EmploymentContract;
+@model DeleteViewModel
+
+@{
+    ViewData["Title"] = "Usuń umowę pracownika";
+}
+
+<h2>Usunąć umowę pracownika o numerze @Model.ContractNumber?</h2>
+
+<form asp-controller="EmploymentContract" asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    @await Html.PartialAsync("_DeleteFormButtons")
+</form>

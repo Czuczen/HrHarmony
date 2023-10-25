@@ -1,0 +1,21 @@
+﻿@using HrHarmony.Models.ViewModels.LeaveType;
+@model UpdateViewModel
+
+@{
+    ViewData["Title"] = "Edycja rodzaju urlopu";
+}
+
+<h2>Edytuj rodzaj urlopu</h2>
+
+@using (Html.BeginForm("Edit", "LeaveType", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TypeName)
+        @Html.TextBoxFor(model => model.TypeName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TypeName, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}

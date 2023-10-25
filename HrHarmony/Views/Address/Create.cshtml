@@ -1,0 +1,34 @@
+﻿@using HrHarmony.Models.ViewModels.Address;
+
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Utwórz adres";
+}
+
+<h2>Utwórz adres</h2>
+
+@using (Html.BeginForm("Create", "Address", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Street)
+        @Html.TextBoxFor(model => model.Street, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.City)
+        @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PostalCode)
+        @Html.TextBoxFor(model => model.PostalCode, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+    </div>
+
+    @await Html.PartialAsync("_FormButtons")
+}
