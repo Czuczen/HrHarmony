@@ -16,9 +16,9 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
 
     public Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id);
 
-    public Task Create(TCreateDto entity);
+    public Task<TEntityDto> Create(TCreateDto entity);
 
-    public Task Update(TUpdateDto entity);
+    public Task<TEntityDto> Update(TUpdateDto entity);
 
     public Task Delete(TPrimaryKey id);
 

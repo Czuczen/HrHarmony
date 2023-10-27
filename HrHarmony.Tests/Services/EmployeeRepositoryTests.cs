@@ -1,13 +1,13 @@
-﻿using CryptoProspector.Tests.Configuration;
-using HrHarmony.Models.Dto.Create.Main;
+﻿using HrHarmony.Models.Dto.Create.Main;
 using HrHarmony.Models.Dto.Details.Main;
 using HrHarmony.Models.Dto.Update.Main;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Repositories;
+using HrHarmony.Tests.Configuration;
 
 namespace HrHarmony.Tests.Services;
 
-public class EmployeeRepositoryTests : CryptoProspectorTestsBase<IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto>>
+public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto>>
 {
     public EmployeeRepositoryTests(TestFixture fixture) : base(fixture)
     {
@@ -31,7 +31,8 @@ public class EmployeeRepositoryTests : CryptoProspectorTestsBase<IRepository<Emp
         };
 
         // Act
-        await Service.Create(employee); // brak id
+        //var createdEmployee = await Service.Create(employee); // będzie trzeba coś pokombinować z mapowaniem
+        //var downloadedEmployee = await Service.GetById(createdEmployee.Id);
         var result = new EmployeeCreateDto(); // zamiast tego nowy pobrany
 
 

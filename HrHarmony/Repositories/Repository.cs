@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HrHarmony.Configuration.Database;
+using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -44,13 +45,15 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
-    public async Task Create(TCreateDto entity)
+    public async Task<TEntityDto> Create(TCreateDto entity)
     {
-        await _ctx.Set<TEntity>().AddAsync(_mapper.Map<TEntity>(entity));
+        var createdEntity = await _ctx.Set<TEntity>().AddAsync(_mapper.Map<TEntity>(entity));
         await _ctx.SaveChangesAsync();
+
+        return _mapper.Map<TEntityDto>(createdEntity);
     }
 
-    public async Task Update(TUpdateDto entity)
+    public async Task<TEntityDto> Update(TUpdateDto entity)
     {
         var updateType = typeof(TUpdateDto);
         var entityType = typeof(TEntity);
@@ -61,20 +64,15 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         {
             var newVal = property.GetValue(entity);
             var entProp = entityProperties.FirstOrDefault(item => item.Name == property.Name);
+
             if (newVal != null && entProp != null)
                 entProp.SetValue(existingEntity, newVal);
         }
 
-        //var ent = await _ctx.Set<TEntity>().FindAsync(entity.Id);
-
-        //var entry = _ctx.Entry(ent);
-        //entry.State = EntityState.Detached;
-
-        //var mappedEntity = _mapper.Map<TEntity>(entity);
-        //var updatedEntity = _mapper.Map(mappedEntity, ent);
-
-        _ctx.Set<TEntity>().Update(existingEntity);
+        var updatedEntity = _ctx.Set<TEntity>().Update(existingEntity);
         await _ctx.SaveChangesAsync();
+
+        return _mapper.Map<TEntityDto>(updatedEntity);
     }
 
     public async Task Delete(TPrimaryKey id)
@@ -86,9 +84,7 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
             await _ctx.SaveChangesAsync();
         }
         else
-        {
-            throw new InvalidOperationException("Encja nie istnieje!");
-        }
+        throw new EntityNotFoundException("Encja nie istnieje!");
     }
 
     public async Task Delete(TEntityDto entity)

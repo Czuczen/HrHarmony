@@ -1,7 +1,7 @@
 ﻿using HrHarmony.Configuration.Dependencies;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CryptoProspector.Tests.Configuration;
+namespace HrHarmony.Tests.Configuration;
 
 public class TestFixture
 {
