@@ -1,16 +1,13 @@
-﻿using HrHarmony.Models.Dto.Create.Main;
-using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Models.Dto.Update.Main;
-using HrHarmony.Models.Entities.Main;
-using HrHarmony.Repositories;
+﻿using HrHarmony.Models.Entities.Main;
+using HrHarmony.Repositories.EntityRepository;
 
 namespace HrHarmony.Services;
 
 public class EmployeeService : IEmployeeService
 {
-    private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;
+    private readonly IRepository<Employee, int> _employeeRepository;
 
-    public EmployeeService(IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> employeeRepository)
+    public EmployeeService(IRepository<Employee, int> employeeRepository)
     {
         _employeeRepository = employeeRepository;
     }

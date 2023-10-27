@@ -84,7 +84,7 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
             await _ctx.SaveChangesAsync();
         }
         else
-        throw new EntityNotFoundException("Encja nie istnieje!");
+            throw new EntityNotFoundException("Entity not found!");
     }
 
     public async Task Delete(TEntityDto entity)
