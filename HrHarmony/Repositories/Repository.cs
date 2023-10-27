@@ -47,10 +47,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 
     public async Task<TEntityDto> Create(TCreateDto entity)
     {
-        var createdEntity = await _ctx.Set<TEntity>().AddAsync(_mapper.Map<TEntity>(entity));
+        var entityEntry = await _ctx.Set<TEntity>().AddAsync(_mapper.Map<TEntity>(entity));
         await _ctx.SaveChangesAsync();
 
-        return _mapper.Map<TEntityDto>(createdEntity);
+        return _mapper.Map<TEntityDto>(entityEntry.Entity);
     }
 
     public async Task<TEntityDto> Update(TUpdateDto entity)
@@ -69,10 +69,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
                 entProp.SetValue(existingEntity, newVal);
         }
 
-        var updatedEntity = _ctx.Set<TEntity>().Update(existingEntity);
+        var entityEntry = _ctx.Set<TEntity>().Update(existingEntity);
         await _ctx.SaveChangesAsync();
 
-        return _mapper.Map<TEntityDto>(updatedEntity);
+        return _mapper.Map<TEntityDto>(entityEntry.Entity);
     }
 
     public async Task Delete(TPrimaryKey id)
