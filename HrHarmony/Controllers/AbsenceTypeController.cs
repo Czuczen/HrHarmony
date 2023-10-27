@@ -11,7 +11,7 @@ namespace HrHarmony.Controllers;
 
 public class AbsenceTypeController : Controller
 {
-    private readonly ILogger<AbsenceTypeController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<AbsenceTypeController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<AbsenceType, int, AbsenceTypeDto, AbsenceTypeUpdateDto, AbsenceTypeCreateDto> _absenceTypeRepository;
 

@@ -1,5 +1,6 @@
 using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Dependencies;
+using HrHarmony.Configuration.Logging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Rejestracja zale¿noœci wed³ug konwencji
 builder.Services.RegisterDependenciesByConvention();
+
+// Dodaj logowanie do pliku
+builder.AddFileLogger();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

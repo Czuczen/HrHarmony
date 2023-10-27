@@ -11,7 +11,7 @@ namespace HrHarmony.Controllers;
 
 public class ExperienceController : Controller
 {
-    private readonly ILogger<ExperienceController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<ExperienceController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<Experience, int, ExperienceDto, ExperienceUpdateDto, ExperienceCreateDto> _experienceRepository;
 

@@ -11,7 +11,7 @@ namespace HrHarmony.Controllers;
 
 public class LeaveTypeController : Controller
 {
-    private readonly ILogger<LeaveTypeController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<LeaveTypeController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<LeaveType, int, LeaveTypeDto, LeaveTypeUpdateDto, LeaveTypeCreateDto> _leaveTypeRepository;
 

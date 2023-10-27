@@ -104,7 +104,7 @@ public static class DependencyInjection
         }
     }
 
-    public static void PrintRegisteredServicesByConvention(this IServiceCollection services)
+    private static void PrintRegisteredServicesByConvention(this IServiceCollection services)
     {
         Debug.Print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Debug.Print("Zarejestrowane usługi w kontenerze DI:");

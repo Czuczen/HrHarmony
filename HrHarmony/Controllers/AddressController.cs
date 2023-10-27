@@ -11,7 +11,7 @@ namespace HrHarmony.Controllers;
 
 public class AddressController : Controller
 {
-    private readonly ILogger<AddressController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<AddressController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<Address, int, AddressDto, AddressUpdateDto, AddressCreateDto> _addressRepository;
 

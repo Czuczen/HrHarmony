@@ -12,7 +12,7 @@ namespace HrHarmony.Controllers;
 
 public class SalaryController : Controller
 {
-    private readonly ILogger<SalaryController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<SalaryController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<Salary, int, SalaryDto, SalaryUpdateDto, SalaryCreateDto> _salaryRepository;
     private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;

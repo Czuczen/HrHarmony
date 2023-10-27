@@ -4,22 +4,22 @@ namespace HrHarmony.Configuration.Dependencies;
 
 public static class CustomDependencies
 {
-    public static IEnumerable<Type> TransientClasses = new List<Type>
+    public static readonly IEnumerable<Type> TransientClasses = new List<Type>
     {
         typeof(HttpClient)
     };
 
-    public static IEnumerable<Type> PerWebRequestClasses = new List<Type>
+    public static readonly IEnumerable<Type> PerWebRequestClasses = new List<Type>
     {
         //typeof(),
     };
 
-    public static IEnumerable<Type> SingletonClasses = new List<Type>
+    public static readonly IEnumerable<Type> SingletonClasses = new List<Type>
     {
         //typeof(),
     };
 
-    public static Dictionary<Type, Type> ScopedGenericClasses = new Dictionary<Type, Type>
+    public static readonly Dictionary<Type, Type> ScopedGenericClasses = new()
     {
         [typeof(IRepository<,,,,>)] = typeof(Repository<,,,,>)
     };

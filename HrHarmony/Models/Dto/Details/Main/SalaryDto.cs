@@ -1,6 +1,4 @@
-﻿using HrHarmony.Models.Entities.Main;
-
-namespace HrHarmony.Models.Dto.Details.Main;
+﻿namespace HrHarmony.Models.Dto.Details.Main;
 
 public class SalaryDto : EntityDto<int>
 {

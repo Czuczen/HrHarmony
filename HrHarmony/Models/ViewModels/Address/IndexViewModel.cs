@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HrHarmony.Models.ViewModels.Address;
+﻿namespace HrHarmony.Models.ViewModels.Address;
 
 public class IndexViewModel
 {

@@ -11,7 +11,7 @@ namespace HrHarmony.Controllers;
 
 public class EducationLevelController : Controller
 {
-    private readonly ILogger<EducationLevelController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<EducationLevelController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<EducationLevel, int, EducationLevelDto, EducationLevelUpdateDto, EducationLevelCreateDto> _educationLevelRepository;
 

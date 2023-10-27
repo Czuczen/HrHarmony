@@ -1,6 +1,4 @@
-﻿using HrHarmony.Models.Entities.Main;
-
-namespace HrHarmony.Models.Dto.Create.Main;
+﻿namespace HrHarmony.Models.Dto.Create.Main;
 
 public class SalaryCreateDto
 {

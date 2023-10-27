@@ -11,7 +11,7 @@ namespace HrHarmony.Controllers;
 
 public class MaritalStatusController : Controller
 {
-    private readonly ILogger<MaritalStatusController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<MaritalStatusController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<MaritalStatus, int, MaritalStatusDto, MaritalStatusUpdateDto, MaritalStatusCreateDto> _maritalStatusRepository;
 

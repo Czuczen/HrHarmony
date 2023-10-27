@@ -16,7 +16,7 @@ namespace HrHarmony.Controllers;
 
 public class EmploymentContractController : Controller
 {
-    private readonly ILogger<EmploymentContractController> _logger; // dodać obsługę wyjątków
+    private readonly ILogger<EmploymentContractController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepository<EmploymentContract, int, EmploymentContractDto, EmploymentContractUpdateDto, EmploymentContractCreateDto> _employmentContractRepository;
     private readonly IRepository<ContractType, int, ContractTypeDto, ContractTypeUpdateDto, ContractTypeCreateDto> _contractTypeRepository;

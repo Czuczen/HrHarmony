@@ -3,7 +3,6 @@ using HrHarmony.Configuration.Database;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace HrHarmony.Repositories;
 
