@@ -1,13 +1,10 @@
-﻿using HrHarmony.Models.Dto.Create.Main;
-using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Models.Dto.Update.Main;
-using HrHarmony.Models.Entities.Main;
-using HrHarmony.Repositories;
+﻿using HrHarmony.Models.Entities.Main;
+using HrHarmony.Repositories.EntityRepository;
 using HrHarmony.Tests.Configuration;
 
 namespace HrHarmony.Tests.Services;
 
-public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto>>
+public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, int>>
 {
     public EmployeeRepositoryTests(TestFixture fixture) : base(fixture)
     {
@@ -15,10 +12,10 @@ public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, 
     }
 
     [Fact]
-    public async Task Create_Employee_Test()
+    public async Task Create_EmployeeTemporary_Test()
     {
         // Arrange
-        var employee = new EmployeeCreateDto
+        var employee = new Employee
         {
             FullName = "Johny",
             Email = "Wick",
@@ -31,9 +28,9 @@ public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, 
         };
 
         // Act
-        //var createdEmployee = await Service.Create(employee); // będzie trzeba coś pokombinować z mapowaniem
+        //var createdEmployee = await Service.Create(employee);
         //var downloadedEmployee = await Service.GetById(createdEmployee.Id);
-        var result = new EmployeeCreateDto(); // zamiast tego nowy pobrany
+        var result = new Employee(); // zamiast tego nowy pobrany
 
 
         // Assert

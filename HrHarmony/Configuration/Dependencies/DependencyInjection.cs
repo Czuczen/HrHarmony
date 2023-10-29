@@ -1,9 +1,7 @@
 ﻿using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
-using HrHarmony.Configuration.Logging;
 using HrHarmony.Configuration.Mapper;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace HrHarmony.Configuration.Dependencies;
@@ -28,19 +26,19 @@ public static class DependencyInjection
 
     public static void RegisterTestsDependencies(this IServiceCollection services)
     {
+        services.AddLogging(); // w testach logger nie loguje
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             var configuration = new ConfigurationBuilder()
-                               .SetBasePath(Directory.GetCurrentDirectory())
-                               .AddJsonFile("appsettings.json")
-                               .Build();
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json") // Plik główny
+                .AddJsonFile($"appsettings.Development.json", optional: true) // Plik środowiskowy
+                .Build();
 
             var testConnectionString = configuration.GetConnectionString("TestConnection");
             options.UseSqlServer(testConnectionString);
         });
-
-        services.RegisterDependenciesByConvention();
 
         foreach (var item in CustomDependencies.TransientClasses)
             services.AddTransient(item);
@@ -51,8 +49,7 @@ public static class DependencyInjection
         foreach (var item in CustomDependencies.SingletonClasses)
             services.AddSingleton(item);
 
-        /// TODO: wrócić do tego jeszcze. Trzeba znaleźć sposób na działanie logera w iniekcji zależności dla testów.
-        //ConfigureLogging(services); 
+        services.RegisterDependenciesByConvention();
     }
 
     private static void Register(IServiceCollection services, Assembly assembly, Type dependencyType)
