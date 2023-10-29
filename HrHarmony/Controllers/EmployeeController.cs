@@ -9,6 +9,7 @@ using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Models.ViewModels.Employee;
 using HrHarmony.Repositories;
+using HrHarmony.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -55,10 +56,25 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var employees = await _employeeRepository.GetAll();
-        var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
+        try
+        {
+            OtherUtils.CreateError();
 
-        return View(mappedEmployees);
+            var employees = await _employeeRepository.GetAll();
+            var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
+
+            return View(mappedEmployees);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogTrace(ex, "LogTrace");
+            _logger.LogDebug(ex, "LogDebug");
+            _logger.LogInformation(ex, "LogInformation");
+            _logger.LogWarning(ex, "LogWarning");
+            _logger.LogError(ex, "LogError");
+            _logger.LogCritical(ex, "LogCritical");
+            throw;
+        }
     }
 
     public async Task<IActionResult> Details(int id)

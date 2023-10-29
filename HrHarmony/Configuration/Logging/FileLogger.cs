@@ -33,7 +33,8 @@ public class FileLogger : ILogger
 
             // Zapisz nowy wpis do pliku
             using var writer = File.AppendText(logFilePath);
-            var logMessage = formatter(state, exception);
+            var nowDateTime = DateTime.Now;
+            var logMessage = logLevel.ToString().ToUpper() + " " + nowDateTime + "," + nowDateTime.Millisecond + " || " + formatter(state, exception);
             logMessage += Environment.NewLine + exception;
             writer.WriteLine(logMessage);
         }

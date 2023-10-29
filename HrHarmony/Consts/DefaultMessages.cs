@@ -1,6 +1,6 @@
 ﻿namespace HrHarmony.Consts;
 
-public static class Messages
+public static class DefaultMessages
 {
     public const string DefaultUserErrorMessage = "Coś poszło nie tak. Przepraszamy :(";
 
