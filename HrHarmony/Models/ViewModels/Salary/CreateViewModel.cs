@@ -7,7 +7,7 @@ public class CreateViewModel
 {
     [Required(ErrorMessage = "Pole jest wymagane!")]
     [Display(Name = "Data płatności")]
-    [DataType(DataType.Date)]
+    [DataType(DataType.DateTime)]
     public DateTime PaymentDate { get; set; }
 
     [Display(Name = "Pracownik")]

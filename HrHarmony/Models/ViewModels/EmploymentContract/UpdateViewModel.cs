@@ -7,12 +7,12 @@ public class UpdateViewModel
 {
     [Required(ErrorMessage = "Pole jest wymagane!")]
     [Display(Name = "Data rozpoczęcia")]
-    [DataType(DataType.Date)]
+    [DataType(DataType.DateTime)]
     public DateTime StartDate { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane!")]
     [Display(Name = "Data zakończenia")]
-    [DataType(DataType.Date)]
+    [DataType(DataType.DateTime)]
     public DateTime? EndDate { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane!")]

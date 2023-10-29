@@ -8,7 +8,7 @@ public class CreateViewModel
 {
     // od dnia dzisiejszego??
     [Display(Name = "Data absencji")]
-    [DataType(DataType.Date)]
+    [DataType(DataType.DateTime)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     [Required]
     [MinimumCurrentDate]
