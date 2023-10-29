@@ -14,7 +14,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.AbsenceDate)
-        @Html.TextBoxFor(model => model.AbsenceDate, new { @class = "form-control", @type = "date" })
+        @Html.TextBoxFor(model => model.AbsenceDate, new { @class = "form-control", @type = "datetime-local" })
         @Html.ValidationMessageFor(model => model.AbsenceDate, "", new { @class = "text-danger" })
     </div>
 

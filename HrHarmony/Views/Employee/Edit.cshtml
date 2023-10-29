@@ -25,7 +25,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.DateOfBirth)
-        @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control", @type = "date" })
+        @Html.TextBoxFor(model => model.DateOfBirth, Model.DateOfBirth.ToString("yyyy-MM-ddTHH:mm:ss"), new { @class = "form-control", @type = "datetime-local" })
         @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
     </div>
 

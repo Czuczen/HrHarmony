@@ -13,7 +13,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.EndDate)
-        @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @type = "date" })
+        @Html.TextBoxFor(model => model.EndDate, Model.EndDate.ToString("yyyy-MM-ddTHH:mm:ss"), new { @class = "form-control", @type = "datetime-local"})
         @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
     </div>
 

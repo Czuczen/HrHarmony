@@ -14,7 +14,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.PaymentDate)
-        @Html.TextBoxFor(model => model.PaymentDate, new { @class = "form-control", @type = "date" })
+        @Html.TextBoxFor(model => model.PaymentDate, new { @class = "form-control", @type = "datetime-local" })
         @Html.ValidationMessageFor(model => model.PaymentDate, "", new { @class = "text-danger" })
     </div>
 
