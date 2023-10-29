@@ -1,5 +1,6 @@
 ﻿using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
+using HrHarmony.Configuration.Logging;
 using HrHarmony.Configuration.Mapper;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -22,7 +23,7 @@ public static class DependencyInjection
 
         services.AddSingleton(MapperConfigurationFactory.Configure().CreateMapper());
 
-        services.PrintRegisteredServicesByConvention();
+        LogRegisteredServicesByConvention(services);
     }
 
     public static void RegisterTestsDependencies(this IServiceCollection services)
@@ -73,9 +74,7 @@ public static class DependencyInjection
     {
         var interfaces = type.GetInterfaces().ToList();
         foreach (var baseInterface in type.GetInterfaces())
-        {
             interfaces.AddRange(GetInterfacesInHierarchy(baseInterface));
-        }
 
         return interfaces;
     }
@@ -104,11 +103,9 @@ public static class DependencyInjection
         }
     }
 
-    private static void PrintRegisteredServicesByConvention(this IServiceCollection services)
+    private static void LogRegisteredServicesByConvention(IServiceCollection services)
     {
-        Debug.Print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        Debug.Print("Zarejestrowane usługi w kontenerze DI:");
-        Debug.Print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        var logger = services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
 
         foreach (var service in services)
         {
@@ -117,11 +114,7 @@ public static class DependencyInjection
                                                     || ImplementsDependency(service.ServiceType, typeof(ISingletonDependency));
 
             if (associatedWithInjectionConvention)
-                Debug.Print($"{service.Lifetime} => {service.ServiceType} => {service.ImplementationType}");
+                logger.LogDebug($"Zarejestrowano usługę w kontenerze DI: {service.Lifetime} => {service.ServiceType} => {service.ImplementationType}");
         }
-
-        Debug.Print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        Debug.Print("!!!!!!!!!!!!!! KONIEC !!!!!!!!!!!!!!!!!");
-        Debug.Print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 }

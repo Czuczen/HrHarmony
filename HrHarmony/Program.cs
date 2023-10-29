@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Dodaj logowanie do pliku
+builder.AddFileLogger();
+
 // Dodaj kontekst bazy danych
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -14,9 +17,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Rejestracja zale¿noœci wed³ug konwencji
 builder.Services.RegisterDependenciesByConvention();
-
-// Dodaj logowanie do pliku
-builder.AddFileLogger();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
