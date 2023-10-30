@@ -3,11 +3,11 @@ using HrHarmony.Repositories.EntityRepository;
 
 namespace HrHarmony.Configuration.Dependencies;
 
-public static class CustomDependencies
+public static class TestsCustomDependencies
 {
     public static readonly IEnumerable<Type> TransientClasses = new List<Type>
     {
-        typeof(HttpClient)
+        //typeof(HttpClient)
     };
 
     public static readonly IEnumerable<Type> PerWebRequestClasses = new List<Type>
@@ -23,6 +23,7 @@ public static class CustomDependencies
     public static readonly Dictionary<Type, Type> ScopedGenericClasses = new()
     {
         [typeof(IRepository<,,,,>)] = typeof(Repository<,,,,>),
-        [typeof(IRepository<,>)] = typeof(Repository<,>)
+        [typeof(IRepository<,>)] = typeof(Repository<,>),
+        [typeof(ITestedDependency<,>)] = typeof(Repository<,>)
     };
 }

@@ -1,11 +1,16 @@
-﻿using HrHarmony.Models.Entities;
+﻿using HrHarmony.Attributes;
+using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
+using HrHarmony.Models.Entities;
 
 namespace HrHarmony.Repositories.EntityRepository;
 
+[RegisterOpenGenericInterfaceInDI(typeof(IRepository<,>))]
 public interface IRepository<TEntity, TPrimaryKey>
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
 {
+    public Guid InstanceGuid { get; }
+
     public Task<IEnumerable<TEntity>> GetAll();
 
     public Task<TEntity> GetById(TPrimaryKey id);

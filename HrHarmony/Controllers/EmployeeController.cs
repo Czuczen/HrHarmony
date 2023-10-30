@@ -9,6 +9,7 @@ using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Models.ViewModels.Employee;
 using HrHarmony.Repositories;
+using HrHarmony.Repositories.EntityRepository;
 using HrHarmony.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,6 +20,13 @@ public class EmployeeController : Controller
 {
     private readonly ILogger<EmployeeController> _logger;
     private readonly IMapper _mapper;
+    private readonly IRepository<Leave, int> _leaveRepo;
+    private readonly IRepository<Leave, int> _leaveRepo2;
+    private readonly IRepository<Absence, int> _absenceRepo;
+    private readonly ITestedDependency<Absence, int> _absenceTestRepo;
+    private readonly IRepository<Address, int> _addressRepo;
+    private readonly IRepository<Address, int> _addressRepo2;
+    private readonly ITestedDependency<Address, int> _addressTestRepo;
     private readonly IRepository<Absence, int, AbsenceDto, AbsenceUpdateDto, AbsenceCreateDto> _absenceRepository;
     private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;
     private readonly IRepository<MaritalStatus, int, MaritalStatusDto, MaritalStatusUpdateDto, MaritalStatusCreateDto> _maritalStatusRepository;
@@ -39,11 +47,32 @@ public class EmployeeController : Controller
         IRepository<EmploymentContract, int, EmploymentContractDto, EmploymentContractUpdateDto, EmploymentContractCreateDto> employmentContractRepository,
         IRepository<Leave, int, LeaveDto, LeaveUpdateDto, LeaveCreateDto> leaveRepository,
         ILogger<EmployeeController> logger,
-        IMapper mapper
+        IMapper mapper,
+
+
+
+
+        IRepository<Leave, int> leaveRepo,
+        IRepository<Leave, int> leaveRepo2,
+
+        IRepository<Absence, int> absenceRepo,
+        ITestedDependency<Absence, int> absenceTestRepo,
+
+        IRepository<Address, int> addressRepo,
+        IRepository<Address, int> addressRepo2,
+        ITestedDependency<Address, int> addressTestRepo
     )
     {
         _logger = logger;
         _mapper = mapper;
+        _leaveRepo = leaveRepo;
+        _leaveRepo2 = leaveRepo2;
+        _absenceRepo = absenceRepo;
+        _absenceTestRepo = absenceTestRepo;
+        _addressRepo = addressRepo;
+        _addressRepo2 = addressRepo2;
+        _addressTestRepo = addressTestRepo;
+        
         _absenceRepository = absenceRepository;
         _employeeRepository = employeeRepository;
         _maritalStatusRepository = maritalStatusRepository;
@@ -56,25 +85,30 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        try
-        {
-            OtherUtils.CreateError();
+        _logger.LogDebug("--");
 
-            var employees = await _employeeRepository.GetAll();
-            var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
+        _logger.LogDebug("leaveRepo guid            - " + _leaveRepo.InstanceGuid);
+        _logger.LogDebug("leaveRepo2 guid           - " + _leaveRepo2.InstanceGuid);
 
-            return View(mappedEmployees);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogTrace(ex, "LogTrace");
-            _logger.LogDebug(ex, "LogDebug");
-            _logger.LogInformation(ex, "LogInformation");
-            _logger.LogWarning(ex, "LogWarning");
-            _logger.LogError(ex, "LogError");
-            _logger.LogCritical(ex, "LogCritical");
-            throw;
-        }
+        _logger.LogDebug("--");
+
+        _logger.LogDebug("absenceRepo guid          - " + _absenceRepo.InstanceGuid);
+        _logger.LogDebug("absenceTestRepo guid      - " + _absenceTestRepo.InstanceGuid);
+
+        _logger.LogDebug("--");
+
+        _logger.LogDebug("addressRepo guid          - " + _addressRepo.InstanceGuid);
+        _logger.LogDebug("addressRepo2 guid         - " + _addressRepo2.InstanceGuid);
+        _logger.LogDebug("addressTestRepo guid      - " + _addressTestRepo.InstanceGuid);
+
+        _logger.LogDebug("--");
+
+
+        
+        var employees = await _employeeRepository.GetAll();
+        var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
+
+        return View(mappedEmployees);
     }
 
     public async Task<IActionResult> Details(int id)

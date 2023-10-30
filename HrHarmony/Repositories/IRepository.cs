@@ -1,8 +1,11 @@
-﻿using HrHarmony.Models.Dto;
+﻿using HrHarmony.Attributes;
+using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
+using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
 
 namespace HrHarmony.Repositories;
 
+[RegisterOpenGenericInterfaceInDI(typeof(IRepository<,,,,>))]
 public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto>
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
