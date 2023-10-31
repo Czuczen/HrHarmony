@@ -6,7 +6,7 @@ using HrHarmony.Models.Entities;
 namespace HrHarmony.Repositories;
 
 [RegisterOpenGenericInterfaceInDI(typeof(IRepository<,,,,>))]
-public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto>
+public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto> : IPerWebRequestDependency
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
     where TEntityDto : class, IEntityDto<TPrimaryKey>, new()

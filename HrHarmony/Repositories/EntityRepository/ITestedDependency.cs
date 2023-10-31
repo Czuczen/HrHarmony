@@ -4,7 +4,7 @@ using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
 namespace HrHarmony.Repositories.EntityRepository
 {
     [RegisterOpenGenericInterfaceInDI(typeof(ITestedDependency<,>))]
-    public interface ITestedDependency<TEntity, TPrimaryKey>
+    public interface ITestedDependency<TEntity, TPrimaryKey> : ISingletonDependency
     {
         public void Aa();
 

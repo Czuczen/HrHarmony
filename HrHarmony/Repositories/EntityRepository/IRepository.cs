@@ -5,7 +5,7 @@ using HrHarmony.Models.Entities;
 namespace HrHarmony.Repositories.EntityRepository;
 
 [RegisterOpenGenericInterfaceInDI(typeof(IRepository<,>))]
-public interface IRepository<TEntity, TPrimaryKey>
+public interface IRepository<TEntity, TPrimaryKey> : ISingletonDependency
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
 {
