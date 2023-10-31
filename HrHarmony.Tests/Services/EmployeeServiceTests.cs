@@ -1,12 +1,6 @@
 ﻿using HrHarmony.Models.Entities.Main;
-using HrHarmony.Repositories.EntityRepository;
 using HrHarmony.Services;
 using HrHarmony.Tests.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HrHarmony.Tests.Services
 {

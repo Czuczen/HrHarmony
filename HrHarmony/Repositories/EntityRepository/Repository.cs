@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HrHarmony.Attributes;
 using HrHarmony.Configuration.Database;
-using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -10,15 +9,12 @@ namespace HrHarmony.Repositories.EntityRepository;
 
 [RegisterOpenGenericClassInDI(typeof(Repository<,>))]
 public class Repository<TEntity, TPrimaryKey> :
-    IRepository<TEntity, TPrimaryKey>, ITestedDependency<TEntity, TPrimaryKey>, ITransientDependency
+    IRepository<TEntity, TPrimaryKey>
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
 {
     private readonly ApplicationDbContext _ctx;
     private readonly IMapper _mapper;
-
-    private Guid? _instanceGuid;
-    public Guid InstanceGuid => (Guid)(_instanceGuid ?? (_instanceGuid = Guid.NewGuid()));
 
     public Repository(IMapper mapper)
     {

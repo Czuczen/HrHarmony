@@ -2,7 +2,6 @@
 
 namespace HrHarmony.Services;
 
-public interface IEmployeeService : ISingletonDependency
+public interface IEmployeeService : ITransientDependency
 {
-    public Guid InstanceGuid { get; }
 }

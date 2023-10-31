@@ -4,8 +4,6 @@ using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
-using HrHarmony.Services;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Repositories;
