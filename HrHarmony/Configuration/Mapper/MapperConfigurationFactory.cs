@@ -16,33 +16,6 @@ public static class MapperConfigurationFactory
     {
         return  new MapperConfiguration(cfg =>
         {
-            // jeśli pole będzie null wartość będzie z obiektu, który posiada wartość
-            //cfg.CreateMap<Absence, Absence>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<Employee, Employee>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<EmploymentContract, EmploymentContract>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<Leave, Leave>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<Salary, Salary>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<AbsenceType, AbsenceType>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<Address, Address>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<ContractType, ContractType>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<EducationLevel, EducationLevel>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<Experience, Experience>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<LeaveType, LeaveType>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            //cfg.CreateMap<MaritalStatus, MaritalStatus>()
-            //    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-            
-
             // Entity => Dto
             cfg.CreateMap<Absence, AbsenceDto>();
             cfg.CreateMap<Employee, EmployeeDto>();
