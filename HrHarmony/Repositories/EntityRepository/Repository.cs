@@ -16,13 +16,11 @@ public class Repository<TEntity, TPrimaryKey> :
     private readonly ApplicationDbContext _ctx;
     private readonly IMapper _mapper;
 
-    public Repository(IMapper mapper)
+    public Repository(ApplicationDbContext context, IMapper mapper)
     {
-        _ctx = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>());
+        _ctx = context;
         _mapper = mapper;
     }
-
-    public void Aa() { }
 
     public async Task<IEnumerable<TEntity>> GetAll()
     {

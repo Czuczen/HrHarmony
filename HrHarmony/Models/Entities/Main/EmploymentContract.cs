@@ -1,4 +1,5 @@
 ﻿using HrHarmony.Models.Entities.Dictionary;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HrHarmony.Models.Entities.Main;
 
@@ -18,9 +19,12 @@ public class EmploymentContract : Entity<int>
 
     public Employee Employee { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal HourlyRate { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal MonthlyRate { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal BasicSalary { get; set; }
 }
