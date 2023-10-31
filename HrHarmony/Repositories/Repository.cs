@@ -4,7 +4,11 @@ using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
+using HrHarmony.Models.Entities.Main;
+using HrHarmony.Utils;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq.Expressions;
 
 namespace HrHarmony.Repositories;
 
@@ -37,6 +41,55 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var entity = await _ctx.Set<TEntity>().FindAsync(id);
         return _mapper.Map<TEntityDto>(entity);
     }
+
+    public async Task<IEnumerable<TEntity>> GetWhere(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _ctx.Set<TEntity>().Where(predicate).ToListAsync();
+    }
+
+    public async Task<IEnumerable<TEntity>> GetWhere(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        query = queryBuilder(query);
+
+        return await query.ToListAsync();
+    }
+
+    //public async Task<IEnumerable<TEntity>> GetActiveEntitiesWithValue(int value)
+    //{
+    //    return await GetWhere(PredicateUtils<TEntity>.IsActive
+    //                            .And(PredicateUtils<TEntity>.ByValue(value)));
+    //}
+
+    //public async Task<IEnumerable<TEntity>> GetPagedEntities(int pageNumber, int pageSize)
+    //{
+    //    // Oblicz ile rekordów pominąć
+    //    int skip = (pageNumber - 1) * pageSize;
+
+    //    return await _ctx.Set<TEntity>()
+    //        .Skip(skip)
+    //        .Take(pageSize)
+    //        .ToListAsync();
+    //}
+
+    //public async Task<PaginatedResult<TEntity>> GetPagedEntities(int pageNumber, int pageSize)
+    //{
+    //    int skip = (pageNumber - 1) * pageSize;
+    //    int totalCount = await _ctx.Set<TEntity>().CountAsync();
+
+    //    var items = await _ctx.Set<TEntity>()
+    //        .Skip(skip)
+    //        .Take(pageSize)
+    //        .ToListAsync();
+
+    //    return new PaginatedResult<TEntity>
+    //    {
+    //        Items = items,
+    //        TotalCount = totalCount,
+    //        PageNumber = pageNumber,
+    //        PageSize = pageSize
+    //    };
+    //}
 
     public async Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id)
     {
