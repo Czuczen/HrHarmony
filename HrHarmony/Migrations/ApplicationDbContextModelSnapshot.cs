@@ -428,7 +428,7 @@ namespace HrHarmony.Migrations
             modelBuilder.Entity("HrHarmony.Models.Entities.Main.Salary", b =>
                 {
                     b.HasOne("HrHarmony.Models.Entities.Main.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("Salaries")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -443,6 +443,8 @@ namespace HrHarmony.Migrations
                     b.Navigation("Contracts");
 
                     b.Navigation("Leaves");
+
+                    b.Navigation("Salaries");
                 });
 #pragma warning restore 612, 618
         }

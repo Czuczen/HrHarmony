@@ -1,4 +1,5 @@
 ﻿using HrHarmony.Models.Dto.Details.Dictionary;
+using HrHarmony.Models.Entities.Main;
 
 namespace HrHarmony.Models.Dto.Details.Main;
 
@@ -33,4 +34,6 @@ public class EmployeeDto : EntityDto<int>
     public List<LeaveDto> Leaves { get; set; }
 
     public List<AbsenceDto> Absences { get; set; }
+
+    public List<Salary> Salaries { get; set; }
 }

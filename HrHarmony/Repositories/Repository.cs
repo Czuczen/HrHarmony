@@ -4,14 +4,9 @@ using HrHarmony.Attributes;
 using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
-using HrHarmony.Models.Dto.Details.Main;
 using HrHarmony.Models.Entities;
-using HrHarmony.Models.Entities.Main;
-using HrHarmony.Utils;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HrHarmony.Repositories;
 
@@ -129,7 +124,7 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(await query.ToListAsync());
     }
 
-    public IEnumerable<TEntityDto> ExecuteWithRelatedQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    public IEnumerable<TEntityDto> ExecuteQueryWithRelated(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
     {
         var query = _ctx.Set<TEntity>().AsQueryable();
         query = queryBuilder(query);
@@ -157,17 +152,15 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 
     public PaginatedResult<TEntityDto> GetPagedEntities(int pageNumber, int pageSize)
     {
-        int skip = (pageNumber - 1) * pageSize;
-        int totalCount = _ctx.Set<TEntity>().Count();
+        var skip = (pageNumber - 1) * pageSize;
+        var totalCount = _ctx.Set<TEntity>().Count();
 
-        var items = _ctx.Set<TEntity>()
-            .Skip(skip)
-            .Take(pageSize)
-            .ToList();
+        var items = _ctx.Set<TEntity>().Skip(skip).Take(pageSize).ToList();
+        var entities = _mapper.Map<IEnumerable<TEntityDto>>(items);
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = _mapper.Map<IEnumerable<TEntityDto>>(items),
+            Items = entities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -176,17 +169,15 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize)
     {
-        int skip = (pageNumber - 1) * pageSize;
-        int totalCount = await _ctx.Set<TEntity>().CountAsync();
+        var skip = (pageNumber - 1) * pageSize;
+        var totalCount = await _ctx.Set<TEntity>().CountAsync();
 
-        var items = await _ctx.Set<TEntity>()
-            .Skip(skip)
-            .Take(pageSize)
-            .ToListAsync();
+        var items = await _ctx.Set<TEntity>().Skip(skip).Take(pageSize).ToListAsync();
+        var entities = _mapper.Map<IEnumerable<TEntityDto>>(items);
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = _mapper.Map<IEnumerable<TEntityDto>>(items),
+            Items = entities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -195,16 +186,15 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithRelated(int pageNumber, int pageSize)
     {
-        int skip = (pageNumber - 1) * pageSize;
-        int totalCount = _ctx.Set<TEntity>().Count();
+        var skip = (pageNumber - 1) * pageSize;
+        var totalCount = _ctx.Set<TEntity>().Count();
 
-        var query = _ctx.Set<TEntity>()
-            .Skip(skip)
-            .Take(pageSize);
+        var query = _ctx.Set<TEntity>().Skip(skip).Take(pageSize);
+        var entities = query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList();
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList(),
+            Items = entities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -213,16 +203,15 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithRelatedAsync(int pageNumber, int pageSize)
     {
-        int skip = (pageNumber - 1) * pageSize;
-        int totalCount = await _ctx.Set<TEntity>().CountAsync();
+        var skip = (pageNumber - 1) * pageSize;
+        var totalCount = await _ctx.Set<TEntity>().CountAsync();
 
-        var query = _ctx.Set<TEntity>()
-            .Skip(skip)
-            .Take(pageSize);
+        var query = _ctx.Set<TEntity>().Skip(skip).Take(pageSize);
+        var entities = await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync(),
+            Items = entities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -232,18 +221,17 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(
      int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
     {
-        int skip = (pageNumber - 1) * pageSize;
-        int totalCount = _ctx.Set<TEntity>().Count();
-
-        var query = _ctx.Set<TEntity>()
-            .Skip(skip)
-            .Take(pageSize);
+        var skip = (pageNumber - 1) * pageSize;
+        var totalCount = _ctx.Set<TEntity>().Count();
+        var query = _ctx.Set<TEntity>().Skip(skip).Take(pageSize);
 
         var customResult = customProjection(query);
+        var entities = customResult.ToList();
+        var mappedEntities = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = _mapper.Map<IEnumerable<TEntityDto>>(customResult.ToList()), // da radę zmapować
+            Items = mappedEntities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -253,32 +241,32 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(
     int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
     {
-        int skip = (pageNumber - 1) * pageSize;
-        int totalCount = await _ctx.Set<TEntity>().CountAsync();
-
-        var query = _ctx.Set<TEntity>()
-            .Skip(skip)
-            .Take(pageSize);
+        var skip = (pageNumber - 1) * pageSize;
+        var totalCount = await _ctx.Set<TEntity>().CountAsync();
+        var query = _ctx.Set<TEntity>().Skip(skip).Take(pageSize);
 
         var customResult = customProjection(query);
+        var entities = await customResult.ToListAsync();
+        var mappedEntities = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = _mapper.Map<IEnumerable<TEntityDto>>(await customResult.ToListAsync()),// da radę zmapować
+            Items = mappedEntities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
         };
     }
 
+    // GetPagedEntitiesWithCustomFieldsAsync  dodać with related????
+
     public async Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
     {
-        var query = _ctx.Set<TEntity>()
-            .Where(e => e.Id.Equals(id));
-
+        var query = _ctx.Set<TEntity>().Where(e => e.Id.Equals(id));
         var customResult = customProjection(query);
+        var entity = (await customResult.ToListAsync()).Single();
 
-        return _mapper.Map<TEntityDto>(await customResult.ToListAsync()); // da rade zmapować
+        return _mapper.Map<TEntityDto>(entity); // da rade zmapować
     }
 
     //public async Task<IEnumerable<TEntity>> GetActiveEntitiesWithValue(int value)
@@ -299,7 +287,7 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
-    public IEnumerable<TEntityDto> GetWithRelatedAll()
+    public IEnumerable<TEntityDto> GeAllWithRelated()
     {
         var query = _ctx.Set<TEntity>().AsQueryable();
         return query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList();
@@ -310,6 +298,9 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var query = _ctx.Set<TEntity>().AsQueryable();
         return await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
+
+
+
 
     public async Task<TEntityDto> Create(TCreateDto entity)
     {

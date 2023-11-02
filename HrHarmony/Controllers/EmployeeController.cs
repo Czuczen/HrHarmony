@@ -11,7 +11,6 @@ using HrHarmony.Models.ViewModels.Employee;
 using HrHarmony.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Controllers;
 
@@ -56,7 +55,6 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Index()
     {
-
         var GetById = _employeeRepository.GetById(1);
         var GetByIdAsync = await _employeeRepository.GetByIdAsync(1);
 
@@ -78,13 +76,34 @@ public class EmployeeController : Controller
         var ExecuteQuery = _employeeRepository.ExecuteQuery(query => query.Where(entity => entity.Id == 1));
         var ExecuteQueryAsync = await _employeeRepository.ExecuteQueryAsync(query => query.Where(entity => entity.Id == 1));
 
-        //var ExecuteQueryWithRelated = _employeeRepository.ExecuteQueryWithRelated(query => query.Where(entity => entity.Id == 1));
-        //var ExecuteQueryAsyncWithRelated = await _employeeRepository.ExecuteQueryWithRelatedAsync(query => query.Where(entity => entity.Id == 1));
+        var ExecuteQueryWithRelated = _employeeRepository.ExecuteQueryWithRelated(query => query.Where(entity => entity.Id == 1));
+        var ExecuteQueryWithRelatedAsync = await _employeeRepository.ExecuteQueryWithRelatedAsync(query => query.Where(entity => entity.Id == 1));
+
+        var GetPagedEntities = _employeeRepository.GetPagedEntities(2, 10);
+        var GetPagedEntitiesAsync = await _employeeRepository.GetPagedEntitiesAsync(2, 10);
+
+        var GetPagedEntitiesWithRelated = _employeeRepository.GetPagedEntitiesWithRelated(2, 10);
+        var GetPagedEntitiesWithRelatedAsync = await _employeeRepository.GetPagedEntitiesWithRelatedAsync(2, 10);
+
+        var GetPagedEntitiesWithCustomFields = _employeeRepository.GetPagedEntitiesWithCustomFields(2, 10, query => query.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
+        var GetPagedEntitiesWithCustomFieldsAsync = await _employeeRepository.GetPagedEntitiesWithCustomFieldsAsync(2, 10, query => query.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
 
 
-        var getAll = _employeeRepository.GetAll();
+        var GetEntityWithCustomFields = await _employeeRepository.GetEntityWithCustomFields(1, query => query.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
+        
+
+        var GetAll = _employeeRepository.GetAll();
         var GetAllAsync = await _employeeRepository.GetAllAsync();
 
+        var GeAllWithRelated = _employeeRepository.GeAllWithRelated();
+        var GetAllWithRelatedAsync = await _employeeRepository.GetAllWithRelatedAsync();
+
+        
+            
+
+
+        //===================================================
+        //===================================================
 
 
         var employees = await _employeeRepository.GetAllAsync();

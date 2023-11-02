@@ -29,4 +29,5 @@ public class DetailsViewModel : MainDetails
     public IEnumerable<EmploymentContract.DetailsViewModel> Contracts { get; set; }
     public IEnumerable<Leave.DetailsViewModel> Leaves { get; set; }
     public IEnumerable<Absence.DetailsViewModel> Absences { get; set; }
+    public IEnumerable<Salary.DetailsViewModel> Salaries { get; set; }
 }

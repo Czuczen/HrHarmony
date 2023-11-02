@@ -15,36 +15,59 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
     where TCreateDto : class, new()
 {
     public TEntityDto GetById(TPrimaryKey id);
+
     public Task<TEntityDto> GetByIdAsync(TPrimaryKey id);
+
     public TEntityDto GetByIdWithRelated(TPrimaryKey id);
+
     public Task<TEntityDto> GetByIdWithRelatedAsync(TPrimaryKey id);
+
     public IEnumerable<TEntityDto> GetWhere(Expression<Func<TEntity, bool>> predicate);
+
     public Task<IEnumerable<TEntityDto>> GetWhereAsync(Expression<Func<TEntity, bool>> predicate);
+
     public IEnumerable<TEntityDto> GetWhereWithRelated(Expression<Func<TEntity, bool>> predicate);
+
     public Task<IEnumerable<TEntityDto>> GetWhereWithRelatedAsync(Expression<Func<TEntity, bool>> predicate);
+
     public IQueryable<TEntityDto> GetQuery(Expression<Func<TEntity, bool>> predicate);
+
     public IQueryable<TEntityDto> GetQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
+
     public IQueryable<TEntityDto> GetQueryWithRelated(Expression<Func<TEntity, bool>> predicate);
+
     public IQueryable<TEntityDto> GetQueryWithRelated(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
+
     public IEnumerable<TEntityDto> ExecuteQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
+
     public Task<IEnumerable<TEntityDto>> ExecuteQueryAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
-    public IEnumerable<TEntityDto> ExecuteWithRelatedQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
+
+    public IEnumerable<TEntityDto> ExecuteQueryWithRelated(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
+
     public Task<IEnumerable<TEntityDto>> ExecuteQueryWithRelatedAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
 
-
     public Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id);
+
     public PaginatedResult<TEntityDto> GetPagedEntities(int pageNumber, int pageSize);
+
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize);
+
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithRelated(int pageNumber, int pageSize);
+
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithRelatedAsync(int pageNumber, int pageSize);
+
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection);
+
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection);
 
     public Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, Func<IQueryable<TEntity>, IQueryable<object>> customProjection);
 
     public IEnumerable<TEntityDto> GetAll();
+
     public Task<IEnumerable<TEntityDto>> GetAllAsync();
-    public IEnumerable<TEntityDto> GetWithRelatedAll();
+
+    public IEnumerable<TEntityDto> GeAllWithRelated();
+
     public Task<IEnumerable<TEntityDto>> GetAllWithRelatedAsync();
 
 

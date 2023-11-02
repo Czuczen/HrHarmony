@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrHarmony.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231101095722_InitialCreate")]
+    [Migration("20231102134619_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -431,7 +431,7 @@ namespace HrHarmony.Migrations
             modelBuilder.Entity("HrHarmony.Models.Entities.Main.Salary", b =>
                 {
                     b.HasOne("HrHarmony.Models.Entities.Main.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("Salaries")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -446,6 +446,8 @@ namespace HrHarmony.Migrations
                     b.Navigation("Contracts");
 
                     b.Navigation("Leaves");
+
+                    b.Navigation("Salaries");
                 });
 #pragma warning restore 612, 618
         }
