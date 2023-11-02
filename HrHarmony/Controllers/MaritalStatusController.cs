@@ -28,7 +28,7 @@ public class MaritalStatusController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var maritalStatuses = await _maritalStatusRepository.GetAll();
+        var maritalStatuses = await _maritalStatusRepository.GetAllAsync();
         var mappedMaritalStatuses = _mapper.Map<IEnumerable<IndexViewModel>>(maritalStatuses);
 
         return View(mappedMaritalStatuses);
@@ -36,7 +36,7 @@ public class MaritalStatusController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var maritalStatus = await _maritalStatusRepository.GetById(id);
+        var maritalStatus = await _maritalStatusRepository.GetByIdAsync(id);
         if (maritalStatus == null)
             return NotFound();
 
@@ -69,7 +69,7 @@ public class MaritalStatusController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var maritalStatus = await _maritalStatusRepository.GetById(id);
+        var maritalStatus = await _maritalStatusRepository.GetByIdAsync(id);
         if (maritalStatus == null)
             return NotFound();
 
@@ -95,7 +95,7 @@ public class MaritalStatusController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var maritalStatus = await _maritalStatusRepository.GetById(id);
+        var maritalStatus = await _maritalStatusRepository.GetByIdAsync(id);
         if (maritalStatus == null)
             return NotFound();
 

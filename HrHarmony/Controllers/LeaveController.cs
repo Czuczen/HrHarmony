@@ -39,7 +39,7 @@ public class LeaveController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var leaves = await _leaveRepository.GetAll();
+        var leaves = await _leaveRepository.GetAllAsync();
         var mappedLeaves = _mapper.Map<IEnumerable<IndexViewModel>>(leaves);
 
         return View(mappedLeaves);
@@ -47,14 +47,14 @@ public class LeaveController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var leave = await _leaveRepository.GetById(id);
+        var leave = await _leaveRepository.GetByIdAsync(id);
         if (leave == null)
             return NotFound();
 
         var mappedLeave = _mapper.Map<DetailsViewModel>(leave);
 
-        mappedLeave.LeaveType = await _leaveTypeRepository.GetById(mappedLeave.LeaveTypeId);
-        mappedLeave.Employee = await _employeeRepository.GetById(mappedLeave.EmployeeId);
+        mappedLeave.LeaveType = await _leaveTypeRepository.GetByIdAsync(mappedLeave.LeaveTypeId);
+        mappedLeave.Employee = await _employeeRepository.GetByIdAsync(mappedLeave.EmployeeId);
 
         mappedLeave.IsMainView = true;
 
@@ -65,10 +65,10 @@ public class LeaveController : Controller
     {
         var leaveViewModel = new CreateViewModel();
 
-        var allLeaveTypes = await _leaveTypeRepository.GetAll();
+        var allLeaveTypes = await _leaveTypeRepository.GetAllAsync();
         leaveViewModel.LeaveTypes = allLeaveTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         leaveViewModel.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(leaveViewModel);
@@ -87,10 +87,10 @@ public class LeaveController : Controller
 
         var mappedLeave = _mapper.Map<CreateViewModel>(leave);
 
-        var allLeaveTypes = await _leaveTypeRepository.GetAll();
+        var allLeaveTypes = await _leaveTypeRepository.GetAllAsync();
         mappedLeave.LeaveTypes = allLeaveTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedLeave.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedLeave);
@@ -98,7 +98,7 @@ public class LeaveController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var leave = await _leaveRepository.GetById(id);
+        var leave = await _leaveRepository.GetByIdAsync(id);
         if (leave == null)
             return NotFound();
 
@@ -124,7 +124,7 @@ public class LeaveController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var leave = await _leaveRepository.GetById(id);
+        var leave = await _leaveRepository.GetByIdAsync(id);
         if (leave == null)
             return NotFound();
 

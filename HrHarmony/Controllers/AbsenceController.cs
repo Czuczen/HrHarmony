@@ -39,7 +39,7 @@ public class AbsenceController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var absences = await _absenceRepository.GetAll();
+        var absences = await _absenceRepository.GetAllAsync();
         var mappedAbsences = _mapper.Map<IEnumerable<IndexViewModel>>(absences);
 
         return View(mappedAbsences);
@@ -47,14 +47,14 @@ public class AbsenceController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var absence = await _absenceRepository.GetById(id);
+        var absence = await _absenceRepository.GetByIdAsync(id);
         if (absence == null)
             return NotFound();
 
         var mappedAbsence = _mapper.Map<DetailsViewModel>(absence);
 
-        mappedAbsence.AbsenceType = await _absenceTypeRepository.GetById(mappedAbsence.AbsenceTypeId);
-        mappedAbsence.Employee = await _employeeRepository.GetById(mappedAbsence.EmployeeId);
+        mappedAbsence.AbsenceType = await _absenceTypeRepository.GetByIdAsync(mappedAbsence.AbsenceTypeId);
+        mappedAbsence.Employee = await _employeeRepository.GetByIdAsync(mappedAbsence.EmployeeId);
 
         mappedAbsence.IsMainView = true;
 
@@ -65,10 +65,10 @@ public class AbsenceController : Controller
     {
         var absenceViewModel = new CreateViewModel();
 
-        var allAbsenceTypes = await _absenceTypeRepository.GetAll();
+        var allAbsenceTypes = await _absenceTypeRepository.GetAllAsync();
         absenceViewModel.AbsenceTypes = allAbsenceTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         absenceViewModel.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(absenceViewModel);
@@ -87,10 +87,10 @@ public class AbsenceController : Controller
 
         var mappedAbsence = _mapper.Map<CreateViewModel>(absence);
 
-        var allAbsenceTypes = await _absenceTypeRepository.GetAll();
+        var allAbsenceTypes = await _absenceTypeRepository.GetAllAsync();
         mappedAbsence.AbsenceTypes = allAbsenceTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedAbsence.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedAbsence);
@@ -98,16 +98,16 @@ public class AbsenceController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var absence = await _absenceRepository.GetById(id);
+        var absence = await _absenceRepository.GetByIdAsync(id);
         if (absence == null)
             return NotFound();
 
         var mappedAbsence = _mapper.Map<UpdateViewModel>(absence);
 
-        var allAbsenceTypes = await _absenceTypeRepository.GetAll();
+        var allAbsenceTypes = await _absenceTypeRepository.GetAllAsync();
         mappedAbsence.AbsenceTypes = allAbsenceTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedAbsence.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedAbsence);
@@ -125,10 +125,10 @@ public class AbsenceController : Controller
 
         var mappedAbsence = _mapper.Map<UpdateViewModel>(absence);
 
-        var allAbsenceTypes = await _absenceTypeRepository.GetAll();
+        var allAbsenceTypes = await _absenceTypeRepository.GetAllAsync();
         mappedAbsence.AbsenceTypes = allAbsenceTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedAbsence.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedAbsence);
@@ -136,7 +136,7 @@ public class AbsenceController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var absence = await _absenceRepository.GetById(id);
+        var absence = await _absenceRepository.GetByIdAsync(id);
         if (absence == null)
             return NotFound();
 

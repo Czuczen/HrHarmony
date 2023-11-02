@@ -28,7 +28,7 @@ public class ExperienceController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var experiences = await _experienceRepository.GetAll();
+        var experiences = await _experienceRepository.GetAllAsync();
         var mappedExperiences = _mapper.Map<IEnumerable<IndexViewModel>>(experiences);
 
         return View(mappedExperiences);
@@ -36,7 +36,7 @@ public class ExperienceController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var experience = await _experienceRepository.GetById(id);
+        var experience = await _experienceRepository.GetByIdAsync(id);
         if (experience == null)
             return NotFound();
 
@@ -69,7 +69,7 @@ public class ExperienceController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var experience = await _experienceRepository.GetById(id);
+        var experience = await _experienceRepository.GetByIdAsync(id);
         if (experience == null)
             return NotFound();
 
@@ -95,7 +95,7 @@ public class ExperienceController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var experience = await _experienceRepository.GetById(id);
+        var experience = await _experienceRepository.GetByIdAsync(id);
         if (experience == null)
             return NotFound();
 

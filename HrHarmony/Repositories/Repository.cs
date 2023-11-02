@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using HrHarmony.Attributes;
 using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
+using HrHarmony.Models.Dto.Details.Main;
 using HrHarmony.Models.Entities;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HrHarmony.Repositories;
 
@@ -30,29 +33,252 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<TEntityDto>> GetAll()
+    public TEntityDto GetById(TPrimaryKey id)
     {
-        var entities = await _ctx.Set<TEntity>().ToListAsync();
-        return _mapper.Map<IEnumerable<TEntityDto>>(entities);
-    }
+        var entity = _ctx.Set<TEntity>().Find(id);
+        if (entity == null)
+            throw new EntityNotFoundException($"Entity of type {typeof(TEntity).FullName} with ID {id} was not found.");
 
-    public async Task<TEntityDto> GetById(TPrimaryKey id)
-    {
-        var entity = await _ctx.Set<TEntity>().FindAsync(id);
         return _mapper.Map<TEntityDto>(entity);
     }
 
-    public async Task<IEnumerable<TEntity>> GetWhere(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntityDto> GetByIdAsync(TPrimaryKey id)
     {
-        return await _ctx.Set<TEntity>().Where(predicate).ToListAsync();
+        var entity = await _ctx.Set<TEntity>().FindAsync(id);
+        if (entity == null)
+            throw new EntityNotFoundException($"Entity of type {typeof(TEntity).FullName} with ID {id} was not found.");
+
+        return _mapper.Map<TEntityDto>(entity);
     }
 
-    public async Task<IEnumerable<TEntity>> GetWhere(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    public TEntityDto GetByIdWithRelated(TPrimaryKey id)
+    {
+        var query = _ctx.Set<TEntity>().Where(e => e.Id.Equals(id));
+        return query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).Single();
+    }
+
+    public async Task<TEntityDto> GetByIdWithRelatedAsync(TPrimaryKey id)
+    {
+        var query = _ctx.Set<TEntity>().Where(e => e.Id.Equals(id));
+        return await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).SingleAsync();
+    }
+
+    public IEnumerable<TEntityDto> GetWhere(Expression<Func<TEntity, bool>> predicate)
+    {
+        var entities = _ctx.Set<TEntity>().Where(predicate).ToList();
+        return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+    }
+
+    public async Task<IEnumerable<TEntityDto>> GetWhereAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var entities = await _ctx.Set<TEntity>().Where(predicate).ToListAsync();
+        return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+    }
+
+    public IEnumerable<TEntityDto> GetWhereWithRelated(Expression<Func<TEntity, bool>> predicate)
+    {
+        var query = _ctx.Set<TEntity>().Where(predicate);
+        return query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList();
+    }
+
+    public async Task<IEnumerable<TEntityDto>> GetWhereWithRelatedAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var query = _ctx.Set<TEntity>().Where(predicate);
+        return await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    public IQueryable<TEntityDto> GetQuery(Expression<Func<TEntity, bool>> predicate)
+    {
+        return _ctx.Set<TEntity>().Where(predicate).Select(entity => _mapper.Map<TEntityDto>(entity));
+    }
+
+    public IQueryable<TEntityDto> GetQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        query = queryBuilder(query);
+   
+        return query.Select(entity => _mapper.Map<TEntityDto>(entity));
+    }
+
+    public IQueryable<TEntityDto> GetQueryWithRelated(Expression<Func<TEntity, bool>> predicate)
+    {
+        return _ctx.Set<TEntity>().Where(predicate).ProjectTo<TEntityDto>(_mapper.ConfigurationProvider);
+    }
+
+    public IQueryable<TEntityDto> GetQueryWithRelated(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
     {
         var query = _ctx.Set<TEntity>().AsQueryable();
         query = queryBuilder(query);
 
-        return await query.ToListAsync();
+        return query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider);
+    }
+
+    public IEnumerable<TEntityDto> ExecuteQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        query = queryBuilder(query);
+
+        return _mapper.Map<IEnumerable<TEntityDto>>(query.ToList());
+    }
+
+    public async Task<IEnumerable<TEntityDto>> ExecuteQueryAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        query = queryBuilder(query);
+
+        return _mapper.Map<IEnumerable<TEntityDto>>(await query.ToListAsync());
+    }
+
+    public IEnumerable<TEntityDto> ExecuteWithRelatedQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        query = queryBuilder(query);
+
+        return query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList();
+    }
+
+    public async Task<IEnumerable<TEntityDto>> ExecuteQueryWithRelatedAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        query = queryBuilder(query);
+
+        return await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    // do wywalenia na koniec
+    public async Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id)
+    {
+        var type = typeof(TEntity);
+
+        var entities = (await _ctx.Set<TEntity>().ToListAsync()).Where(item => type.GetProperty(key).GetValue(item).Equals(id));
+
+        return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+    }
+
+    public PaginatedResult<TEntityDto> GetPagedEntities(int pageNumber, int pageSize)
+    {
+        int skip = (pageNumber - 1) * pageSize;
+        int totalCount = _ctx.Set<TEntity>().Count();
+
+        var items = _ctx.Set<TEntity>()
+            .Skip(skip)
+            .Take(pageSize)
+            .ToList();
+
+        return new PaginatedResult<TEntityDto>
+        {
+            Items = _mapper.Map<IEnumerable<TEntityDto>>(items),
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize)
+    {
+        int skip = (pageNumber - 1) * pageSize;
+        int totalCount = await _ctx.Set<TEntity>().CountAsync();
+
+        var items = await _ctx.Set<TEntity>()
+            .Skip(skip)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedResult<TEntityDto>
+        {
+            Items = _mapper.Map<IEnumerable<TEntityDto>>(items),
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    public PaginatedResult<TEntityDto> GetPagedEntitiesWithRelated(int pageNumber, int pageSize)
+    {
+        int skip = (pageNumber - 1) * pageSize;
+        int totalCount = _ctx.Set<TEntity>().Count();
+
+        var query = _ctx.Set<TEntity>()
+            .Skip(skip)
+            .Take(pageSize);
+
+        return new PaginatedResult<TEntityDto>
+        {
+            Items = query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList(),
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithRelatedAsync(int pageNumber, int pageSize)
+    {
+        int skip = (pageNumber - 1) * pageSize;
+        int totalCount = await _ctx.Set<TEntity>().CountAsync();
+
+        var query = _ctx.Set<TEntity>()
+            .Skip(skip)
+            .Take(pageSize);
+
+        return new PaginatedResult<TEntityDto>
+        {
+            Items = await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync(),
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(
+     int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
+    {
+        int skip = (pageNumber - 1) * pageSize;
+        int totalCount = _ctx.Set<TEntity>().Count();
+
+        var query = _ctx.Set<TEntity>()
+            .Skip(skip)
+            .Take(pageSize);
+
+        var customResult = customProjection(query);
+
+        return new PaginatedResult<TEntityDto>
+        {
+            Items = _mapper.Map<IEnumerable<TEntityDto>>(customResult.ToList()), // da radę zmapować
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(
+    int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
+    {
+        int skip = (pageNumber - 1) * pageSize;
+        int totalCount = await _ctx.Set<TEntity>().CountAsync();
+
+        var query = _ctx.Set<TEntity>()
+            .Skip(skip)
+            .Take(pageSize);
+
+        var customResult = customProjection(query);
+
+        return new PaginatedResult<TEntityDto>
+        {
+            Items = _mapper.Map<IEnumerable<TEntityDto>>(await customResult.ToListAsync()),// da radę zmapować
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    public async Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
+    {
+        var query = _ctx.Set<TEntity>()
+            .Where(e => e.Id.Equals(id));
+
+        var customResult = customProjection(query);
+
+        return _mapper.Map<TEntityDto>(await customResult.ToListAsync()); // da rade zmapować
     }
 
     //public async Task<IEnumerable<TEntity>> GetActiveEntitiesWithValue(int value)
@@ -61,43 +287,28 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
     //                            .And(PredicateUtils<TEntity>.ByValue(value)));
     //}
 
-    //public async Task<IEnumerable<TEntity>> GetPagedEntities(int pageNumber, int pageSize)
-    //{
-    //    // Oblicz ile rekordów pominąć
-    //    int skip = (pageNumber - 1) * pageSize;
-
-    //    return await _ctx.Set<TEntity>()
-    //        .Skip(skip)
-    //        .Take(pageSize)
-    //        .ToListAsync();
-    //}
-
-    //public async Task<PaginatedResult<TEntity>> GetPagedEntities(int pageNumber, int pageSize)
-    //{
-    //    int skip = (pageNumber - 1) * pageSize;
-    //    int totalCount = await _ctx.Set<TEntity>().CountAsync();
-
-    //    var items = await _ctx.Set<TEntity>()
-    //        .Skip(skip)
-    //        .Take(pageSize)
-    //        .ToListAsync();
-
-    //    return new PaginatedResult<TEntity>
-    //    {
-    //        Items = items,
-    //        TotalCount = totalCount,
-    //        PageNumber = pageNumber,
-    //        PageSize = pageSize
-    //    };
-    //}
-
-    public async Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id)
+    public IEnumerable<TEntityDto> GetAll()
     {
-        var type = typeof(TEntity);
-
-        var entities = (await _ctx.Set<TEntity>().ToListAsync()).Where(item => type.GetProperty(key).GetValue(item).Equals(id));
-
+        var entities = _ctx.Set<TEntity>().ToList();
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+    }
+
+    public async Task<IEnumerable<TEntityDto>> GetAllAsync()
+    {
+        var entities = await _ctx.Set<TEntity>().ToListAsync();
+        return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+    }
+
+    public IEnumerable<TEntityDto> GetWithRelatedAll()
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        return query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList();
+    }
+
+    public async Task<IEnumerable<TEntityDto>> GetAllWithRelatedAsync()
+    {
+        var query = _ctx.Set<TEntity>().AsQueryable();
+        return await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
     public async Task<TEntityDto> Create(TCreateDto entity)
@@ -133,13 +344,11 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
     public async Task Delete(TPrimaryKey id)
     {
         var entity = await _ctx.Set<TEntity>().FindAsync(id);
-        if (entity != null)
-        {
-            _ctx.Set<TEntity>().Remove(entity);
-            await _ctx.SaveChangesAsync();
-        }
-        else
-            throw new EntityNotFoundException("Entity not found!");
+        if (entity == null)
+            throw new EntityNotFoundException($"Entity of type {typeof(TEntity).FullName} with ID {id} was not found.");
+
+        _ctx.Set<TEntity>().Remove(entity);
+        await _ctx.SaveChangesAsync();
     }
 
     public async Task Delete(TEntityDto entity)

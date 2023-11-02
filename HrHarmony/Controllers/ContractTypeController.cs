@@ -28,7 +28,7 @@ public class ContractTypeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var contractTypes = await _contractTypeRepository.GetAll();
+        var contractTypes = await _contractTypeRepository.GetAllAsync();
         var mappedContractTypes = _mapper.Map<IEnumerable<IndexViewModel>>(contractTypes);
 
         return View(mappedContractTypes);
@@ -36,7 +36,7 @@ public class ContractTypeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var contractType = await _contractTypeRepository.GetById(id);
+        var contractType = await _contractTypeRepository.GetByIdAsync(id);
         if (contractType == null)
             return NotFound();
 
@@ -69,7 +69,7 @@ public class ContractTypeController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var contractType = await _contractTypeRepository.GetById(id);
+        var contractType = await _contractTypeRepository.GetByIdAsync(id);
         if (contractType == null)
             return NotFound();
 
@@ -95,7 +95,7 @@ public class ContractTypeController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var contractType = await _contractTypeRepository.GetById(id);
+        var contractType = await _contractTypeRepository.GetByIdAsync(id);
         if (contractType == null)
             return NotFound();
 

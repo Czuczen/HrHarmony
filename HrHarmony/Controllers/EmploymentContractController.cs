@@ -39,7 +39,7 @@ public class EmploymentContractController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var employmentContracts = await _employmentContractRepository.GetAll();
+        var employmentContracts = await _employmentContractRepository.GetAllAsync();
         var mappedEmploymentContracts = _mapper.Map<IEnumerable<IndexViewModel>>(employmentContracts);
 
         return View(mappedEmploymentContracts);
@@ -47,14 +47,14 @@ public class EmploymentContractController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var employmentContract = await _employmentContractRepository.GetById(id);
+        var employmentContract = await _employmentContractRepository.GetByIdAsync(id);
         if (employmentContract == null)
             return NotFound();
 
         var mappedEmploymentContract = _mapper.Map<DetailsViewModel>(employmentContract);
 
-        mappedEmploymentContract.ContractType = await _contractTypeRepository.GetById(mappedEmploymentContract.ContractTypeId);
-        mappedEmploymentContract.Employee = await _employeeRepository.GetById(mappedEmploymentContract.EmployeeId);
+        mappedEmploymentContract.ContractType = await _contractTypeRepository.GetByIdAsync(mappedEmploymentContract.ContractTypeId);
+        mappedEmploymentContract.Employee = await _employeeRepository.GetByIdAsync(mappedEmploymentContract.EmployeeId);
 
         mappedEmploymentContract.IsMainView = true;
 
@@ -65,10 +65,10 @@ public class EmploymentContractController : Controller
     {
         var employmentContractViewModel = new CreateViewModel();
 
-        var allContractTypes = await _contractTypeRepository.GetAll();
+        var allContractTypes = await _contractTypeRepository.GetAllAsync();
         employmentContractViewModel.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         employmentContractViewModel.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(employmentContractViewModel);
@@ -87,10 +87,10 @@ public class EmploymentContractController : Controller
 
         var mappedEmploymentContract = _mapper.Map<CreateViewModel>(employmentContract);
 
-        var allContractTypes = await _contractTypeRepository.GetAll();
+        var allContractTypes = await _contractTypeRepository.GetAllAsync();
         mappedEmploymentContract.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedEmploymentContract.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedEmploymentContract);
@@ -98,16 +98,16 @@ public class EmploymentContractController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var employmentContract = await _employmentContractRepository.GetById(id);
+        var employmentContract = await _employmentContractRepository.GetByIdAsync(id);
         if (employmentContract == null)
             return NotFound();
 
         var mappedEmploymentContract = _mapper.Map<UpdateViewModel>(employmentContract);
 
-        var allContractTypes = await _contractTypeRepository.GetAll();
+        var allContractTypes = await _contractTypeRepository.GetAllAsync();
         mappedEmploymentContract.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedEmploymentContract.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedEmploymentContract);
@@ -125,10 +125,10 @@ public class EmploymentContractController : Controller
 
         var mappedEmploymentContract = _mapper.Map<UpdateViewModel>(employmentContract);
 
-        var allContractTypes = await _contractTypeRepository.GetAll();
+        var allContractTypes = await _contractTypeRepository.GetAllAsync();
         mappedEmploymentContract.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedEmploymentContract.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedEmploymentContract);
@@ -136,7 +136,7 @@ public class EmploymentContractController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var employmentContract = await _employmentContractRepository.GetById(id);
+        var employmentContract = await _employmentContractRepository.GetByIdAsync(id);
         if (employmentContract == null)
             return NotFound();
 

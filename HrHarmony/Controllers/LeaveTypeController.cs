@@ -28,7 +28,7 @@ public class LeaveTypeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var leaveTypes = await _leaveTypeRepository.GetAll();
+        var leaveTypes = await _leaveTypeRepository.GetAllAsync();
         var mappedLeaveTypes = _mapper.Map<IEnumerable<IndexViewModel>>(leaveTypes);
 
         return View(mappedLeaveTypes);
@@ -36,7 +36,7 @@ public class LeaveTypeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var leaveType = await _leaveTypeRepository.GetById(id);
+        var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
         if (leaveType == null)
             return NotFound();
 
@@ -69,7 +69,7 @@ public class LeaveTypeController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var leaveType = await _leaveTypeRepository.GetById(id);
+        var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
         if (leaveType == null)
             return NotFound();
 
@@ -95,7 +95,7 @@ public class LeaveTypeController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var leaveType = await _leaveTypeRepository.GetById(id);
+        var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
         if (leaveType == null)
             return NotFound();
 

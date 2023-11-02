@@ -11,6 +11,7 @@ using HrHarmony.Models.ViewModels.Employee;
 using HrHarmony.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Controllers;
 
@@ -55,7 +56,38 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var employees = await _employeeRepository.GetAll();
+
+        var GetById = _employeeRepository.GetById(1);
+        var GetByIdAsync = await _employeeRepository.GetByIdAsync(1);
+
+        var GetByIdWithRelated = _employeeRepository.GetByIdWithRelated(1);
+        var GetByIdWithRelatedAsync = await _employeeRepository.GetByIdWithRelatedAsync(1);
+
+        var GetWhere = _employeeRepository.GetWhere(item => item.Id == 1);
+        var GetWhereAsync = await _employeeRepository.GetWhereAsync(item => item.Id == 1);
+
+        var GetWhereWithRelated = _employeeRepository.GetWhereWithRelated(item => item.Id == 1);
+        var GetWhereWithRelatedAsync = await _employeeRepository.GetWhereWithRelatedAsync(item => item.Id == 1);
+
+        var GetQuerye = _employeeRepository.GetQuery(item => item.Id == 1).ToList();
+        var GetQueryq = _employeeRepository.GetQuery(query => query.Where(entity => entity.Id == 1)).ToList();
+
+        var GetQueryWithRelatede = _employeeRepository.GetQueryWithRelated(item => item.Id == 1).ToList();
+        var GetQueryWithRelatedq = _employeeRepository.GetQueryWithRelated(query => query.Where(entity => entity.Id == 1)).ToList();
+
+        var ExecuteQuery = _employeeRepository.ExecuteQuery(query => query.Where(entity => entity.Id == 1));
+        var ExecuteQueryAsync = await _employeeRepository.ExecuteQueryAsync(query => query.Where(entity => entity.Id == 1));
+
+        //var ExecuteQueryWithRelated = _employeeRepository.ExecuteQueryWithRelated(query => query.Where(entity => entity.Id == 1));
+        //var ExecuteQueryAsyncWithRelated = await _employeeRepository.ExecuteQueryWithRelatedAsync(query => query.Where(entity => entity.Id == 1));
+
+
+        var getAll = _employeeRepository.GetAll();
+        var GetAllAsync = await _employeeRepository.GetAllAsync();
+
+
+
+        var employees = await _employeeRepository.GetAllAsync();
         var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
 
         return View(mappedEmployees);
@@ -63,16 +95,16 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var employee = await _employeeRepository.GetById(id);
+        var employee = await _employeeRepository.GetByIdAsync(id);
         if (employee == null)
             return NotFound();
 
         var mappedEmployee = _mapper.Map<DetailsViewModel>(employee);
 
-        mappedEmployee.MaritalStatus = await _maritalStatusRepository.GetById(mappedEmployee.MaritalStatusId);
-        mappedEmployee.Address = await _addressRepository.GetById(mappedEmployee.AddressId);
-        mappedEmployee.EducationLevel = await _educationLevelRepository.GetById(mappedEmployee.EducationLevelId);
-        mappedEmployee.Experience = await _experienceRepository.GetById(mappedEmployee.ExperienceId);
+        mappedEmployee.MaritalStatus = await _maritalStatusRepository.GetByIdAsync(mappedEmployee.MaritalStatusId);
+        mappedEmployee.Address = await _addressRepository.GetByIdAsync(mappedEmployee.AddressId);
+        mappedEmployee.EducationLevel = await _educationLevelRepository.GetByIdAsync(mappedEmployee.EducationLevelId);
+        mappedEmployee.Experience = await _experienceRepository.GetByIdAsync(mappedEmployee.ExperienceId);
 
         mappedEmployee.Absences = _mapper.Map<IEnumerable<Models.ViewModels.Absence.DetailsViewModel>>(await _absenceRepository.GetWhere("EmployeeId", mappedEmployee.Id));
         mappedEmployee.Contracts = _mapper.Map<IEnumerable<Models.ViewModels.EmploymentContract.DetailsViewModel>>(await _employmentContractRepository.GetWhere("EmployeeId", mappedEmployee.Id));
@@ -87,16 +119,16 @@ public class EmployeeController : Controller
     {
         var employeeViewModel = new CreateViewModel();
 
-        var allMaritalStatuses = await _maritalStatusRepository.GetAll();
+        var allMaritalStatuses = await _maritalStatusRepository.GetAllAsync();
         employeeViewModel.MaritalStatuses = allMaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
 
-        var allAddresses = await _addressRepository.GetAll();
+        var allAddresses = await _addressRepository.GetAllAsync();
         employeeViewModel.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
 
-        var allEducationLevels = await _educationLevelRepository.GetAll();
+        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
         employeeViewModel.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
 
-        var allExperiances = await _experienceRepository.GetAll();
+        var allExperiances = await _experienceRepository.GetAllAsync();
         employeeViewModel.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
 
         return View(employeeViewModel);
@@ -115,16 +147,16 @@ public class EmployeeController : Controller
 
         var mappedEmployee = _mapper.Map<CreateViewModel>(employee);
 
-        var allMaritalStatuses = await _maritalStatusRepository.GetAll();
+        var allMaritalStatuses = await _maritalStatusRepository.GetAllAsync();
         mappedEmployee.MaritalStatuses = allMaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
 
-        var allAddresses = await _addressRepository.GetAll();
+        var allAddresses = await _addressRepository.GetAllAsync();
         mappedEmployee.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
 
-        var allEducationLevels = await _educationLevelRepository.GetAll();
+        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
         mappedEmployee.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
 
-        var allExperiances = await _experienceRepository.GetAll();
+        var allExperiances = await _experienceRepository.GetAllAsync();
         mappedEmployee.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
 
         return View(mappedEmployee);
@@ -132,22 +164,22 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var employee = await _employeeRepository.GetById(id);
+        var employee = await _employeeRepository.GetByIdAsync(id);
         if (employee == null)
             return NotFound();
 
         var mappedEmployee = _mapper.Map<UpdateViewModel>(employee);
 
-        var allmaritalStatuses = await _maritalStatusRepository.GetAll();
+        var allmaritalStatuses = await _maritalStatusRepository.GetAllAsync();
         mappedEmployee.MaritalStatuses = allmaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
 
-        var allAddresses = await _addressRepository.GetAll();
+        var allAddresses = await _addressRepository.GetAllAsync();
         mappedEmployee.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
 
-        var allEducationLevels = await _educationLevelRepository.GetAll();
+        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
         mappedEmployee.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
 
-        var allExperiances = await _experienceRepository.GetAll();
+        var allExperiances = await _experienceRepository.GetAllAsync();
         mappedEmployee.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
 
         return View(mappedEmployee);
@@ -165,16 +197,16 @@ public class EmployeeController : Controller
 
         var mappedEmployee = _mapper.Map<UpdateViewModel>(employee);
 
-        var allmaritalStatuses = await _maritalStatusRepository.GetAll();
+        var allmaritalStatuses = await _maritalStatusRepository.GetAllAsync();
         mappedEmployee.MaritalStatuses = allmaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
 
-        var allAddresses = await _addressRepository.GetAll();
+        var allAddresses = await _addressRepository.GetAllAsync();
         mappedEmployee.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
 
-        var allEducationLevels = await _educationLevelRepository.GetAll();
+        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
         mappedEmployee.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
 
-        var allExperiances = await _experienceRepository.GetAll();
+        var allExperiances = await _experienceRepository.GetAllAsync();
         mappedEmployee.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
 
 
@@ -183,7 +215,7 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var employee = await _employeeRepository.GetById(id);
+        var employee = await _employeeRepository.GetByIdAsync(id);
         if (employee == null)
             return NotFound();
 

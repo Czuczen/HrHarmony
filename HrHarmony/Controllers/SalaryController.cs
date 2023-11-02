@@ -32,7 +32,7 @@ public class SalaryController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var salaries = await _salaryRepository.GetAll();
+        var salaries = await _salaryRepository.GetAllAsync();
         var mappedSalaries = _mapper.Map<IEnumerable<IndexViewModel>>(salaries);
 
         return View(mappedSalaries);
@@ -40,12 +40,12 @@ public class SalaryController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var salary = await _salaryRepository.GetById(id);
+        var salary = await _salaryRepository.GetByIdAsync(id);
         if (salary == null)
             return NotFound();
 
         var mappedSalary = _mapper.Map<DetailsViewModel>(salary);
-        mappedSalary.Employee = await _employeeRepository.GetById(mappedSalary.EmployeeId);
+        mappedSalary.Employee = await _employeeRepository.GetByIdAsync(mappedSalary.EmployeeId);
         mappedSalary.IsMainView = true;
 
         return View(mappedSalary);
@@ -55,7 +55,7 @@ public class SalaryController : Controller
     {
         var salaryViewModel = new CreateViewModel();
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         salaryViewModel.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(salaryViewModel);
@@ -74,7 +74,7 @@ public class SalaryController : Controller
 
         var mappedSalary = _mapper.Map<CreateViewModel>(salary);
 
-        var allEmployees = await _employeeRepository.GetAll();
+        var allEmployees = await _employeeRepository.GetAllAsync();
         mappedSalary.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
 
         return View(mappedSalary);
@@ -82,7 +82,7 @@ public class SalaryController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var salary = await _salaryRepository.GetById(id);
+        var salary = await _salaryRepository.GetByIdAsync(id);
         if (salary == null)
             return NotFound();
 
@@ -108,7 +108,7 @@ public class SalaryController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var salary = await _salaryRepository.GetById(id);
+        var salary = await _salaryRepository.GetByIdAsync(id);
         if (salary == null)
             return NotFound();
 

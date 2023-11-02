@@ -28,7 +28,7 @@ public class EducationLevelController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var educationLevels = await _educationLevelRepository.GetAll();
+        var educationLevels = await _educationLevelRepository.GetAllAsync();
         var mappedEducationLevels = _mapper.Map<IEnumerable<IndexViewModel>>(educationLevels);
 
         return View(mappedEducationLevels);
@@ -36,7 +36,7 @@ public class EducationLevelController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var educationLevel = await _educationLevelRepository.GetById(id);
+        var educationLevel = await _educationLevelRepository.GetByIdAsync(id);
         if (educationLevel == null)
             return NotFound();
 
@@ -69,7 +69,7 @@ public class EducationLevelController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var educationLevel = await _educationLevelRepository.GetById(id);
+        var educationLevel = await _educationLevelRepository.GetByIdAsync(id);
         if (educationLevel == null)
             return NotFound();
 
@@ -95,7 +95,7 @@ public class EducationLevelController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var educationLevel = await _educationLevelRepository.GetById(id);
+        var educationLevel = await _educationLevelRepository.GetByIdAsync(id);
         if (educationLevel == null)
             return NotFound();
 

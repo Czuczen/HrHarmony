@@ -28,7 +28,7 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var addresses = await _addressRepository.GetAll();
+        var addresses = await _addressRepository.GetAllAsync();
         var mappedAddresses = _mapper.Map<IEnumerable<IndexViewModel>>(addresses);
 
         return View(mappedAddresses);
@@ -36,7 +36,7 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var address = await _addressRepository.GetById(id);
+        var address = await _addressRepository.GetByIdAsync(id);
         if (address == null)
             return NotFound();
 
@@ -69,7 +69,7 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var address = await _addressRepository.GetById(id);
+        var address = await _addressRepository.GetByIdAsync(id);
         if (address == null)
             return NotFound();
 
@@ -95,7 +95,7 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var address = await _addressRepository.GetById(id);
+        var address = await _addressRepository.GetByIdAsync(id);
         if (address == null)
             return NotFound();
 

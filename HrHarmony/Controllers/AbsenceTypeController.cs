@@ -28,7 +28,7 @@ public class AbsenceTypeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var absenceTypes = await _absenceTypeRepository.GetAll();
+        var absenceTypes = await _absenceTypeRepository.GetAllAsync();
         var mappedAbsenceTypes = _mapper.Map<IEnumerable<IndexViewModel>>(absenceTypes);
 
         return View(mappedAbsenceTypes);
@@ -36,7 +36,7 @@ public class AbsenceTypeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var absenceType = await _absenceTypeRepository.GetById(id);
+        var absenceType = await _absenceTypeRepository.GetByIdAsync(id);
         if (absenceType == null)
             return NotFound();
 
@@ -69,7 +69,7 @@ public class AbsenceTypeController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var absenceType = await _absenceTypeRepository.GetById(id);
+        var absenceType = await _absenceTypeRepository.GetByIdAsync(id);
         if (absenceType == null)
             return NotFound();
 
@@ -95,7 +95,7 @@ public class AbsenceTypeController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var absenceType = await _absenceTypeRepository.GetById(id);
+        var absenceType = await _absenceTypeRepository.GetByIdAsync(id);
         if (absenceType == null)
             return NotFound();
 
