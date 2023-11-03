@@ -19,6 +19,12 @@ namespace HrHarmony.Models.ViewModels
 
         public bool IsDescending { get; set; }
 
+        public string? SearchString { get; set; }
+
+        public string? SearchBy { get; set; }
+
+
+
 
 
         public string ValidPageSize => (PageSize > TotalCount ? TotalCount : PageSize > Items.Count ? Items.Count : PageSize).ToString();

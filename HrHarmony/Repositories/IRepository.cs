@@ -48,7 +48,8 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
 
     public Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id);
 
-    public PaginatedResult<TEntityDto> GetPagedEntities(int? pageNumber, int? pageSize, string? orderBy, bool? isDescending);
+    public PaginatedResult<TEntityDto> GetPagedEntities(int? pageNumber, int? pageSize, string? orderBy,
+       bool? isDescending, string? searchString, string? searchBy);
 
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize);
 

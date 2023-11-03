@@ -56,9 +56,10 @@ public class EmployeeController : Controller
         _leaveRepository = leaveRepository;
     }
 
-    public async Task<IActionResult> Index(int? pageNumber, int? pageSize, string? orderBy, bool? isDescending)
+    public async Task<IActionResult> Index(int? pageNumber, int? pageSize, string? orderBy, 
+        bool? isDescending, string? searchString, string? searchBy)
     {
-        var pagedEntities = _employeeRepository.GetPagedEntities(pageNumber, pageSize, orderBy, isDescending);
+        var pagedEntities = _employeeRepository.GetPagedEntities(pageNumber, pageSize, orderBy, isDescending, searchString, searchBy);
         var mappedEmployees = _mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities);
 
         return View(mappedEmployees);

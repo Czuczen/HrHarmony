@@ -13,4 +13,8 @@ public class PaginatedResult<TEntityDto>
     public string OrderBy { get; set; }
 
     public bool IsDescending { get; set; }
+
+    public string? SearchString { get; set; }
+
+    public string? SearchBy { get; set; }
 }

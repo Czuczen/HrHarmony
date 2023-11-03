@@ -153,7 +153,8 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
-    public PaginatedResult<TEntityDto> GetPagedEntities(int? pageNumber, int? pageSize, string? orderBy, bool? isDescending)
+    public PaginatedResult<TEntityDto> GetPagedEntities(int? pageNumber, int? pageSize, string? orderBy, 
+        bool? isDescending, string? searchString, string? searchBy)
     {
         var tempPageNumber = pageNumber ?? 1;
         var tempPageSize = pageSize ?? 10;
@@ -163,8 +164,8 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var totalCount = _ctx.Set<TEntity>().Count();
         var query = _ctx.Set<TEntity>().AsQueryable();
 
-        orderBy = RepositoriesHelper.GetDefaultSortField<TEntityDto>(orderBy);
-
+        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey>(query, searchString, searchBy);
+        orderBy = RepositoriesHelper.GetDefaultSortField<TEntityDto, TPrimaryKey>(orderBy);
         query = tempIsDescending
                     ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy))
                     : query.OrderBy(x => EF.Property<TEntity>(x, orderBy));
@@ -182,6 +183,8 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
             PageSize = tempPageSize,
             OrderBy = orderBy,
             IsDescending = tempIsDescending,
+            SearchString = searchString,
+            SearchBy = searchBy
         };
 
         //====================
