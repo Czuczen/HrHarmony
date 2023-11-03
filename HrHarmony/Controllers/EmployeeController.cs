@@ -7,6 +7,7 @@ using HrHarmony.Models.Dto.Update.Dictionary;
 using HrHarmony.Models.Dto.Update.Main;
 using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
+using HrHarmony.Models.ViewModels;
 using HrHarmony.Models.ViewModels.Employee;
 using HrHarmony.Repositories;
 using HrHarmony.Utils;
@@ -55,12 +56,18 @@ public class EmployeeController : Controller
         _leaveRepository = leaveRepository;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? pageNumber, int? pageSize, string? orderBy, bool? isDescending)
     {
-        var employees = await _employeeRepository.GetAllAsync();
-        var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
+        var pagedEntities = _employeeRepository.GetPagedEntities(pageNumber, pageSize, orderBy, isDescending);
+        var mappedEmployees = _mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities);
 
         return View(mappedEmployees);
+
+        // ===========
+        //var employees = await _employeeRepository.GetAllAsync();
+        //var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
+
+        //return View(mappedEmployees);
     }
 
     public async Task<IActionResult> Details(int id)

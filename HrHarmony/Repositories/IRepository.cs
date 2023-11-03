@@ -48,7 +48,7 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
 
     public Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id);
 
-    public PaginatedResult<TEntityDto> GetPagedEntities(int pageNumber, int pageSize);
+    public PaginatedResult<TEntityDto> GetPagedEntities(int? pageNumber, int? pageSize, string? orderBy, bool? isDescending);
 
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize);
 
@@ -59,7 +59,9 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
-    
+
+    public TEntityDto GetEntityWithCustomFields(TPrimaryKey id, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
+
     public Task<TEntityDto> GetEntityWithCustomFieldsAsync(TPrimaryKey id, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 
     public IEnumerable<TEntityDto> GetAll();

@@ -9,6 +9,7 @@ using HrHarmony.Models.Entities.Main;
 using HrHarmony.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace HrHarmony.Repositories;
 
@@ -152,21 +153,51 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
-    public PaginatedResult<TEntityDto> GetPagedEntities(int pageNumber, int pageSize)
+    public PaginatedResult<TEntityDto> GetPagedEntities(int? pageNumber, int? pageSize, string? orderBy, bool? isDescending)
     {
-        var skip = (pageNumber - 1) * pageSize;
-        var totalCount = _ctx.Set<TEntity>().Count();
+        var tempPageNumber = pageNumber ?? 1;
+        var tempPageSize = pageSize ?? 10;
+        var skip = (tempPageNumber - 1) * tempPageSize;
+        var tempIsDescending = isDescending ?? false;
 
-        var items = _ctx.Set<TEntity>().Skip(skip).Take(pageSize).ToList();
+        var totalCount = _ctx.Set<TEntity>().Count();
+        var query = _ctx.Set<TEntity>().AsQueryable();
+
+        orderBy = RepositoriesHelper.GetDefaultSortField<TEntityDto>(orderBy);
+
+        query = tempIsDescending
+                    ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy))
+                    : query.OrderBy(x => EF.Property<TEntity>(x, orderBy));
+
+        query = query.Skip(skip).Take(tempPageSize);
+
+        var items = query.ToList();
         var entities = _mapper.Map<IEnumerable<TEntityDto>>(items);
 
         return new PaginatedResult<TEntityDto>
         {
             Items = entities,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = tempPageNumber,
+            PageSize = tempPageSize,
+            OrderBy = orderBy,
+            IsDescending = tempIsDescending,
         };
+
+        //====================
+        //var skip = (pageNumber - 1) * pageSize;
+        //var totalCount = _ctx.Set<TEntity>().Count();
+
+        //var items = _ctx.Set<TEntity>().Skip(skip).Take(pageSize).ToList();
+        //var entities = _mapper.Map<IEnumerable<TEntityDto>>(items);
+
+        //return new PaginatedResult<TEntityDto>
+        //{
+        //    Items = entities,
+        //    TotalCount = totalCount,
+        //    PageNumber = pageNumber,
+        //    PageSize = pageSize
+        //};
     }
 
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize)

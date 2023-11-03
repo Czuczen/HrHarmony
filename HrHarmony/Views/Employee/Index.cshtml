@@ -1,10 +1,85 @@
 ﻿@using HrHarmony.Models.ViewModels.Employee;
-@model IEnumerable<IndexViewModel>
+@using HrHarmony.Models.ViewModels;
+@model PagedRecordsViewModel<IndexViewModel>
 
 @{
     ViewData["Title"] = "Pracownicy";
 }
 
+<div class="d-flex justify-content-between align-items-center">
+    <h2 class="mb-4">Lista pracowników</h2>
+    <a class="btn btn-primary" asp-controller="Employee" asp-action="Create">Dodaj Nowy Rekord</a>
+</div>
+
+<div class="row">
+    <form method="get">
+        <div class="d-flex bd-highlight mb-1">
+            <div class="form-group me-auto p-1 bd-highlight">
+                <select name="PageSize" id="pageSize" onchange="this.form.submit()">
+                    @Model.PageSizeOptions
+                </select>
+            </div>
+            <div class="form-group p-1 bd-highlight">
+                <label for="search">Search:</label>
+                <input type="text" name="Search" id="search" placeholder="Szukaj..." disabled>
+                <button type="submit" disabled>Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    <a class="custom-link" href="?PageNumber=@Model.PageNumber&PageSize=@Model.PageSize&OrderBy=Id&IsDescending=@(Model.OrderBy == "Id" && Model.IsDescending ? "false" : "true")">
+                        ID
+                        @(Model.OrderBy == "Id" ? Model.Arrow : "")
+                    </a>
+                </th>
+                <th>
+                    <a class="custom-link" href="?PageNumber=@Model.PageNumber&PageSize=@Model.PageSize&OrderBy=FullName&IsDescending=@(Model.OrderBy == "FullName" && Model.IsDescending ? "false" : "true")">
+                        Full Name
+                        @(Model.OrderBy == "FullName" ? Model.Arrow : "")
+                    </a>
+                </th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.FullName</td>
+                    <td>
+                        <a class="btn btn-success btn-sm" asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+                        <a class="btn btn-info btn-sm" asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="d-flex bd-highlight mb-1">
+        <div class="me-auto p-1 bd-highlight">
+            <span class="text-muted">Wyświetlone rekordy: @(Model.ValidPageSize) z @Model.TotalCount</span>
+        </div>
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <a href="?PageNumber=@i&PageSize=@Model.PageSize&OrderBy=@Model.OrderBy&IsDescending=@Model.IsDescending" class="btn m-1 p-r-1 p-l-1 bd-highlight @(Model.PageNumber == i ? "btn-secondary disabled" : "btn-primary")">@i</a>
+        }
+    </div>
+</div>
+
+
+
+@* ===================================== *@
+@* 
 <div class="container mt-5">
  
     <div class="d-flex justify-content-between align-items-center">
@@ -36,3 +111,4 @@
         </tbody>
     </table>
 </div>
+ *@

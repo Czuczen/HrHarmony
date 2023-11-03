@@ -7,6 +7,8 @@ using HrHarmony.Models.Dto.Update.Dictionary;
 using HrHarmony.Models.Dto.Update.Main;
 using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
+using HrHarmony.Models.ViewModels;
+using HrHarmony.Repositories;
 
 namespace HrHarmony.Configuration.Mapper;
 
@@ -165,7 +167,22 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<MaritalStatusDto, Models.ViewModels.MaritalStatus.UpdateViewModel>();
             cfg.CreateMap<MaritalStatusUpdateDto, Models.ViewModels.MaritalStatus.UpdateViewModel>();
             cfg.CreateMap<MaritalStatusDto, Models.ViewModels.MaritalStatus.DeleteViewModel>();
-            
+
+
+            // PaginatedResult<> => PagedRecordsViewModel<>
+            cfg.CreateMap<PaginatedResult<AbsenceDto>, PagedRecordsViewModel<Models.ViewModels.Absence.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<EmployeeDto>, PagedRecordsViewModel<Models.ViewModels.Employee.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<EmploymentContractDto>, PagedRecordsViewModel<Models.ViewModels.EmploymentContract.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<LeaveDto>, PagedRecordsViewModel<Models.ViewModels.Leave.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<SalaryDto>, PagedRecordsViewModel<Models.ViewModels.Salary.IndexViewModel>>();
+
+            cfg.CreateMap<PaginatedResult<AbsenceTypeDto>, PagedRecordsViewModel<Models.ViewModels.AbsenceType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<AddressDto>, PagedRecordsViewModel<Models.ViewModels.Address.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<ContractTypeDto>, PagedRecordsViewModel<Models.ViewModels.ContractType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<EducationLevelDto>, PagedRecordsViewModel<Models.ViewModels.EducationLevel.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<ExperienceDto>, PagedRecordsViewModel<Models.ViewModels.Experience.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<LeaveTypeDto>, PagedRecordsViewModel<Models.ViewModels.LeaveType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<MaritalStatusDto>, PagedRecordsViewModel<Models.ViewModels.MaritalStatus.IndexViewModel>>();
         });
     }
 }
