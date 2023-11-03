@@ -59,8 +59,8 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
-
-    public Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
+    
+    public Task<TEntityDto> GetEntityWithCustomFieldsAsync(TPrimaryKey id, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 
     public IEnumerable<TEntityDto> GetAll();
 
@@ -70,16 +70,19 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
 
     public Task<IEnumerable<TEntityDto>> GetAllWithRelatedAsync();
 
+    public TEntityDto Create(TCreateDto entity);
 
+    public Task<TEntityDto> CreateAsync(TCreateDto entity);
 
+    public TEntityDto Update(TUpdateDto entity);
 
-   
+    public Task<TEntityDto> UpdateAsync(TUpdateDto entity);
 
-    public Task<TEntityDto> Create(TCreateDto entity);
+    public void Delete(TPrimaryKey id);
 
-    public Task<TEntityDto> Update(TUpdateDto entity);
+    public Task DeleteAsync(TPrimaryKey id);
 
-    public Task Delete(TPrimaryKey id);
+    public void Delete(TEntityDto entity);
 
-    public Task Delete(TEntityDto entity);
+    public Task DeleteAsync(TEntityDto entity);
 }

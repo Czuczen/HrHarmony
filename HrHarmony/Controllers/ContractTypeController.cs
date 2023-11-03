@@ -57,7 +57,7 @@ public class ContractTypeController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _contractTypeRepository.Create(contractType);
+            await _contractTypeRepository.CreateAsync(contractType);
 
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ public class ContractTypeController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _contractTypeRepository.Update(contractType);
+            await _contractTypeRepository.UpdateAsync(contractType);
             return RedirectToAction("Index");
         }
 
@@ -108,7 +108,7 @@ public class ContractTypeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _contractTypeRepository.Delete(id);
+        await _contractTypeRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

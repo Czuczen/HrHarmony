@@ -35,5 +35,5 @@ public class EmployeeDto : EntityDto<int>
 
     public List<AbsenceDto> Absences { get; set; }
 
-    public List<Salary> Salaries { get; set; }
+    public List<SalaryDto> Salaries { get; set; }
 }

@@ -57,7 +57,7 @@ public class LeaveTypeController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _leaveTypeRepository.Create(leaveType);
+            await _leaveTypeRepository.CreateAsync(leaveType);
 
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ public class LeaveTypeController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _leaveTypeRepository.Update(leaveType);
+            await _leaveTypeRepository.UpdateAsync(leaveType);
             return RedirectToAction("Index");
         }
 
@@ -108,7 +108,7 @@ public class LeaveTypeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _leaveTypeRepository.Delete(id);
+        await _leaveTypeRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

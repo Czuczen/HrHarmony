@@ -80,7 +80,7 @@ public class EmploymentContractController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _employmentContractRepository.Create(employmentContract);
+            await _employmentContractRepository.CreateAsync(employmentContract);
 
             return RedirectToAction("Index");
         }
@@ -119,7 +119,7 @@ public class EmploymentContractController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _employmentContractRepository.Update(employmentContract);
+            await _employmentContractRepository.UpdateAsync(employmentContract);
             return RedirectToAction("Index");
         }
 
@@ -149,7 +149,7 @@ public class EmploymentContractController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _employmentContractRepository.Delete(id);
+        await _employmentContractRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

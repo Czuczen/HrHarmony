@@ -57,7 +57,7 @@ public class EducationLevelController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _educationLevelRepository.Create(educationLevel);
+            await _educationLevelRepository.CreateAsync(educationLevel);
 
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ public class EducationLevelController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _educationLevelRepository.Update(educationLevel);
+            await _educationLevelRepository.UpdateAsync(educationLevel);
             return RedirectToAction("Index");
         }
 
@@ -108,7 +108,7 @@ public class EducationLevelController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _educationLevelRepository.Delete(id);
+        await _educationLevelRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

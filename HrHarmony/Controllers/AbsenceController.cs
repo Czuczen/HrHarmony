@@ -80,7 +80,7 @@ public class AbsenceController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _absenceRepository.Create(absence);
+            await _absenceRepository.CreateAsync(absence);
 
             return RedirectToAction("Index");
         }
@@ -119,7 +119,7 @@ public class AbsenceController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _absenceRepository.Update(absence);
+            await _absenceRepository.UpdateAsync(absence);
             return RedirectToAction("Index");
         }
 
@@ -149,7 +149,7 @@ public class AbsenceController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _absenceRepository.Delete(id);
+        await _absenceRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

@@ -57,7 +57,7 @@ public class AddressController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _addressRepository.Create(address);
+            await _addressRepository.CreateAsync(address);
 
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ public class AddressController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _addressRepository.Update(address);
+            await _addressRepository.UpdateAsync(address);
             return RedirectToAction("Index");
         }
 
@@ -108,7 +108,7 @@ public class AddressController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _addressRepository.Delete(id);
+        await _addressRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

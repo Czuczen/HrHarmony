@@ -57,7 +57,7 @@ public class ExperienceController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _experienceRepository.Create(experience);
+            await _experienceRepository.CreateAsync(experience);
 
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ public class ExperienceController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _experienceRepository.Update(experience);
+            await _experienceRepository.UpdateAsync(experience);
             return RedirectToAction("Index");
         }
 
@@ -108,7 +108,7 @@ public class ExperienceController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _experienceRepository.Delete(id);
+        await _experienceRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

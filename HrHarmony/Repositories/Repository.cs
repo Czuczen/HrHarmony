@@ -231,11 +231,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var customResult = customProjection(selectable);
 
         var entities = customResult.ToList();
-        var mappedEntities = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = mappedEntities,
+            Items = entities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -253,20 +252,29 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var customResult = customProjection(selectable);
 
         var entities = await customResult.ToListAsync();
-        var mappedEntities = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
         return new PaginatedResult<TEntityDto>
         {
-            Items = mappedEntities,
+            Items = entities,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize
         };
     }
 
-    // GetPagedEntitiesWithCustomFieldsAsync  dodać with related????
+    public TEntityDto GetEntityWithCustomFields(TPrimaryKey id,
+      Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
+    {
+        var query = _ctx.Set<TEntity>().Where(e => e.Id.Equals(id));
+        var selectable = new Selectable<TEntity, TEntityDto>(query);
 
-    public async Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, 
+        var customResult = customProjection(selectable);
+        var entity = customResult.ToList().Single();
+
+        return entity;
+    }
+
+    public async Task<TEntityDto> GetEntityWithCustomFieldsAsync(TPrimaryKey id, 
         Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
     {
         var query = _ctx.Set<TEntity>().Where(e => e.Id.Equals(id));
@@ -275,12 +283,8 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var customResult = customProjection(selectable);
         var entity = (await customResult.ToListAsync()).Single();
 
-        return _mapper.Map<TEntityDto>(entity);
+        return entity;
     }
-
-
-
-
 
     public IEnumerable<TEntityDto> GetAll()
     {
@@ -306,10 +310,15 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
+    public TEntityDto Create(TCreateDto entity)
+    {
+        var entityEntry = _ctx.Set<TEntity>().Add(_mapper.Map<TEntity>(entity));
+        _ctx.SaveChanges();
 
+        return _mapper.Map<TEntityDto>(entityEntry.Entity);
+    }
 
-
-    public async Task<TEntityDto> Create(TCreateDto entity)
+    public async Task<TEntityDto> CreateAsync(TCreateDto entity)
     {
         var entityEntry = await _ctx.Set<TEntity>().AddAsync(_mapper.Map<TEntity>(entity));
         await _ctx.SaveChangesAsync();
@@ -317,7 +326,29 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<TEntityDto>(entityEntry.Entity);
     }
 
-    public async Task<TEntityDto> Update(TUpdateDto entity)
+    public TEntityDto Update(TUpdateDto entity)
+    {
+        var updateType = typeof(TUpdateDto);
+        var entityType = typeof(TEntity);
+        var entityProperties = entityType.GetProperties().ToList();
+        var existingEntity = _ctx.Set<TEntity>().Find(entity.Id);
+
+        foreach (var property in updateType.GetProperties())
+        {
+            var newVal = property.GetValue(entity);
+            var entProp = entityProperties.FirstOrDefault(item => item.Name == property.Name);
+
+            if (newVal != null && entProp != null)
+                entProp.SetValue(existingEntity, newVal);
+        }
+
+        var entityEntry = _ctx.Set<TEntity>().Update(existingEntity);
+        _ctx.SaveChanges();
+
+        return _mapper.Map<TEntityDto>(entityEntry.Entity);
+    }
+
+    public async Task<TEntityDto> UpdateAsync(TUpdateDto entity)
     {
         var updateType = typeof(TUpdateDto);
         var entityType = typeof(TEntity);
@@ -339,7 +370,17 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<TEntityDto>(entityEntry.Entity);
     }
 
-    public async Task Delete(TPrimaryKey id)
+    public void Delete(TPrimaryKey id)
+    {
+        var entity = _ctx.Set<TEntity>().Find(id);
+        if (entity == null)
+            throw new EntityNotFoundException($"Entity of type {typeof(TEntity).FullName} with ID {id} was not found.");
+
+        _ctx.Set<TEntity>().Remove(entity);
+        _ctx.SaveChanges();
+    }
+
+    public async Task DeleteAsync(TPrimaryKey id)
     {
         var entity = await _ctx.Set<TEntity>().FindAsync(id);
         if (entity == null)
@@ -349,7 +390,13 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         await _ctx.SaveChangesAsync();
     }
 
-    public async Task Delete(TEntityDto entity)
+    public void Delete(TEntityDto entity)
+    {
+        _ctx.Set<TEntity>().Remove(_mapper.Map<TEntity>(entity));
+        _ctx.SaveChanges();
+    }
+
+    public async Task DeleteAsync(TEntityDto entity)
     {
         _ctx.Set<TEntity>().Remove(_mapper.Map<TEntity>(entity));
         await _ctx.SaveChangesAsync();

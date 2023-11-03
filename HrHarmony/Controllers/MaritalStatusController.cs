@@ -57,7 +57,7 @@ public class MaritalStatusController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _maritalStatusRepository.Create(maritalStatus);
+            await _maritalStatusRepository.CreateAsync(maritalStatus);
 
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ public class MaritalStatusController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _maritalStatusRepository.Update(maritalStatus);
+            await _maritalStatusRepository.UpdateAsync(maritalStatus);
             return RedirectToAction("Index");
         }
 
@@ -108,7 +108,7 @@ public class MaritalStatusController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _maritalStatusRepository.Delete(id);
+        await _maritalStatusRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }

@@ -67,7 +67,7 @@ public class SalaryController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _salaryRepository.Create(salary);
+            await _salaryRepository.CreateAsync(salary);
 
             return RedirectToAction("Index");
         }
@@ -97,7 +97,7 @@ public class SalaryController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _salaryRepository.Update(salary);
+            await _salaryRepository.UpdateAsync(salary);
             return RedirectToAction("Index");
         }
 
@@ -121,7 +121,7 @@ public class SalaryController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _salaryRepository.Delete(id);
+        await _salaryRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
     }
