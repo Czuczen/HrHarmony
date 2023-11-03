@@ -4,6 +4,8 @@ using HrHarmony.Models.Entities.Main;
 using HrHarmony.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net;
 
 namespace HrHarmony.Tests.Infrastructure;
 
@@ -11,279 +13,341 @@ public static class SeedData
 {
     private static readonly Random _random = new();
 
-    public static void Initialize(IServiceProvider serviceProvider)
+    public static void Initialize(ApplicationDbContext context)
     {
-        using var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
-
+        // kolejność ma znaczenie
         CreateMaritalStatuses(context);
         CreateAddresses(context);
         CreateEducationLevels(context);
         CreateExperiences(context);
-        context.SaveChanges();
-
+        
         CreateEmployees(context);
-        context.SaveChanges();
-
+        
         CreateContractTypes(context);
         CreateLeaveTypes(context);
         CreateAbsenceTypes(context);
-        context.SaveChanges();
-
+        
         CreateEmploymentContracts(context);
         CreateLeaves(context);
         CreateAbsences(context);
         CreateSalaries(context);
-        context.SaveChanges();
     }
 
     // ============== słownikowe połączone z employee ===========================
 
-    private static void CreateMaritalStatuses(ApplicationDbContext context)
+    public static MaritalStatus CreateMaritalStatus(ApplicationDbContext context)
     {
-        var howMany = _random.Next(1, 11);
-        for (int i = 0; i < howMany; i++)
+        var stringLength = _random.Next(3, 21);
+        var maritalStatus = new MaritalStatus
         {
-            var stringLength = _random.Next(1, 21);
-            var maritalStatus = new MaritalStatus
-            {
-                StatusName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
-            };
+            StatusName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
+        };
 
-            context.MaritalStatuses.Add(maritalStatus);
-        }
+        context.MaritalStatuses.Add(maritalStatus);
+        context.SaveChanges();
+        
+        return maritalStatus;
     }
 
-    private static void CreateAddresses(ApplicationDbContext context)
+    public static void CreateMaritalStatuses(ApplicationDbContext context, int? howMany = null)
     {
-        var howMany = _random.Next(1, 11); 
+        howMany = howMany ?? _random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-        {
-            var streetLength = _random.Next(1, 21);
-            var cityLength = _random.Next(1, 21);
-
-            var firstPart = _random.Next(10, 100);
-            var secondPart = _random.Next(100, 1000);
-            
-            var address = new Address
-            {
-                Street = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(streetLength)),
-                City = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(cityLength)),
-                PostalCode = $"{firstPart:D2}-{secondPart:D3}"
-            };
-
-            context.Addresses.Add(address);
-        }
+            CreateMaritalStatus(context);
     }
 
-    private static void CreateEducationLevels(ApplicationDbContext context)
+    public static Address CreateAddress(ApplicationDbContext context)
     {
-        var howMany = _random.Next(1, 11);
-        for (int i = 0; i < howMany; i++)
-        {
-            var stringLength = _random.Next(1, 21);
-            var educationLevel = new EducationLevel
-            {
-                LevelName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
-            };
+        var streetLength = _random.Next(3, 21);
+        var cityLength = _random.Next(3, 21);
 
-            context.EducationLevels.Add(educationLevel);
-        }
+        var firstPart = _random.Next(10, 100);
+        var secondPart = _random.Next(100, 1000);
+
+        var address = new Address
+        {
+            Street = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(streetLength)),
+            City = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(cityLength)),
+            PostalCode = $"{firstPart:D2}-{secondPart:D3}"
+        };
+
+        context.Addresses.Add(address);
+        context.SaveChanges();
+        
+        return address;
     }
 
-    private static void CreateExperiences(ApplicationDbContext context)
+    public static void CreateAddresses(ApplicationDbContext context, int? howMany = null)
     {
-        var howMany = _random.Next(1, 11);
+        howMany = howMany ?? _random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-        {
-            var stringLength = _random.Next(1, 21);
-            var experience = new Experience
-            {
-                ExperienceDescription = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
-            };
+            CreateAddress(context);
+    }
 
-            context.Experiences.Add(experience);
-        }
+    public static EducationLevel CreateEducationLevel(ApplicationDbContext context)
+    {
+        var stringLength = _random.Next(3, 21);
+        var educationLevel = new EducationLevel
+        {
+            LevelName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
+        };
+
+        context.EducationLevels.Add(educationLevel);
+        context.SaveChanges();
+
+        return educationLevel;
+    }
+
+    public static void CreateEducationLevels(ApplicationDbContext context, int? howMany = null)
+    {
+        howMany = howMany ?? _random.Next(1, 11);
+        for (int i = 0; i < howMany; i++)
+            CreateEducationLevel(context);
+    }
+
+    public static Experience CreateExperience(ApplicationDbContext context)
+    {
+        var stringLength = _random.Next(3, 21);
+        var experience = new Experience
+        {
+            ExperienceDescription = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
+        };
+
+        context.Experiences.Add(experience);
+        context.SaveChanges();
+        
+        return experience;
+    }
+
+    public static void CreateExperiences(ApplicationDbContext context, int? howMany = null)
+    {
+        howMany = howMany ?? _random.Next(1, 11);
+        for (int i = 0; i < howMany; i++)
+            CreateExperience(context);
     }
 
     // ============== słownikowe połączone z innymi ===========================
 
-    private static void CreateContractTypes(ApplicationDbContext context)
+    public static ContractType CreateContractType(ApplicationDbContext context)
     {
-        var howMany = _random.Next(1, 11);
-        for (int i = 0; i < howMany; i++)
+        var stringLength = _random.Next(3, 21);
+        var contractType = new ContractType
         {
-            var stringLength = _random.Next(1, 21);
-            var contractType = new ContractType
-            {
-                TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
-            };
+            TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
+        };
 
-            context.ContractTypes.Add(contractType);
-        }
+        context.ContractTypes.Add(contractType);
+        context.SaveChanges();
+
+        return contractType;
     }
 
-    private static void CreateLeaveTypes(ApplicationDbContext context)
+    public static void CreateContractTypes(ApplicationDbContext context, int? howMany = null)
     {
-        var howMany = _random.Next(1, 11);
+        howMany = howMany ?? _random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-        {
-            var stringLength = _random.Next(1, 21);
-            var leaveType = new LeaveType
-            {
-                TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
-            };
-
-            context.LeaveTypes.Add(leaveType);
-        }
+            CreateContractType(context);
     }
 
-    private static void CreateAbsenceTypes(ApplicationDbContext context)
+    public static LeaveType CreateLeaveType(ApplicationDbContext context)
     {
-        var howMany = _random.Next(1, 11);
-        for (int i = 0; i < howMany; i++)
+        var stringLength = _random.Next(3, 21);
+        var leaveType = new LeaveType
         {
-            var stringLength = _random.Next(1, 21);
-            var absenceType = new AbsenceType
-            {
-                TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
-            };
+            TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
+        };
 
-            context.AbsenceTypes.Add(absenceType);
-        }
+        context.LeaveTypes.Add(leaveType);
+        context.SaveChanges();
+
+        return leaveType;
     }
-    
+
+    public static void CreateLeaveTypes(ApplicationDbContext context, int? howMany = null)
+    {
+        howMany = howMany ?? _random.Next(1, 11);
+        for (int i = 0; i < howMany; i++)
+            CreateLeaveType(context);
+    }
+
+    public static AbsenceType CreateAbsenceType(ApplicationDbContext context)
+    {
+        var stringLength = _random.Next(3, 21);
+        var absenceType = new AbsenceType
+        {
+            TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
+        };
+
+        context.AbsenceTypes.Add(absenceType);
+        context.SaveChanges();
+        
+        return absenceType;
+    }
+
+    public static void CreateAbsenceTypes(ApplicationDbContext context, int? howMany = null)
+    {
+        howMany = howMany ?? _random.Next(1, 11);
+        for (int i = 0; i < howMany; i++)
+            CreateAbsenceType(context);
+    }
+
     // ============== employee ===========================
 
-    private static void CreateEmployees(ApplicationDbContext context)
+    public static Employee CreateEmployee(ApplicationDbContext context)
     {
-        var howMany = _random.Next(1, 11);
+        var maritalStatusIds = context.MaritalStatuses.Select(a => a.Id).ToList();
+        var addressIds = context.Addresses.Select(a => a.Id).ToList();
+        var educationLevelIds = context.EducationLevels.Select(a => a.Id).ToList();
+        var experienceIds = context.Experiences.Select(a => a.Id).ToList();
 
-        var maritalStatusCount = context.MaritalStatuses.Count();
-        var addressCount = context.Addresses.Count();
-        var educationLevelCount = context.EducationLevels.Count();
-        var experienceCount = context.Experiences.Count();
+        var fullNameLength = _random.Next(3, 21);
+        var emailLength = _random.Next(3, 11);
 
-        for (int i = 0; i < howMany; i++)
+        var employee = new Employee
         {
-            var fullNameLength = _random.Next(1, 21);
-            var emailLength = _random.Next(1, 11);
+            FullName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(fullNameLength)),
+            Email = StringUtils.GenerateRandomString(emailLength).ToLower() + "@example.com",
+            PhoneNumber = "+48" + _random.Next(10000000, 99999999),
+            DateOfBirth = DateTime.Now.AddYears(-30).AddDays(_random.Next(365 * 30)),
+            MaritalStatusId = maritalStatusIds[_random.Next(0, maritalStatusIds.Count)],
+            AddressId = addressIds[_random.Next(0, addressIds.Count)],
+            EducationLevelId = educationLevelIds[_random.Next(0, educationLevelIds.Count)],
+            ExperienceId = experienceIds[_random.Next(0, experienceIds.Count)]
+        };
 
-            var employee = new Employee
-            {
-                FullName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(fullNameLength)),
-                Email = StringUtils.GenerateRandomString(emailLength).ToLower() + "@example.com",
-                PhoneNumber = "+48" + _random.Next(1, 9),
-                DateOfBirth = DateTime.Now.AddYears(-30).AddDays(_random.Next(365 * 30)),
-                MaritalStatusId = _random.Next(1, maritalStatusCount + 1),
-                AddressId = _random.Next(1, addressCount + 1),
-                EducationLevelId = _random.Next(1, educationLevelCount + 1),
-                ExperienceId = _random.Next(1, experienceCount + 1)
-            };
+        context.Employees.Add(employee);
+        context.SaveChanges();
 
-            context.Employees.Add(employee);
-        }
+        return employee;
+    }
+
+    public static void CreateEmployees(ApplicationDbContext context, int? howMany = null)
+    {
+        howMany = howMany ?? _random.Next(1, 11);
+        for (int i = 0; i < howMany; i++)
+            CreateEmployee(context);
     }
 
     // ============== główne połączone z employee ===========================
 
-    private static void CreateEmploymentContracts(ApplicationDbContext context)
+    public static EmploymentContract CreateEmploymentContract(ApplicationDbContext context)
     {
-        var howMany = _random.Next(1, 11);
+        var contractTypesIds = context.ContractTypes.Select(a => a.Id).ToList();
+        var employeesIds = context.Employees.Select(a => a.Id).ToList();
 
-        var contractTypesCount = context.ContractTypes.Count();
-        var employeesCount = context.Employees.Count();
+        var hourlyRate = (decimal)(_random.Next(1000, 5000) / 100.0);
+        var monthlyRate = (decimal)(_random.Next(50000, 100000) / 100.0);
+        var basicSalary = (decimal)(_random.Next(3000000, 8000000) / 100.0);
 
-        for (int i = 0; i < howMany; i++)
+        var employmentContract = new EmploymentContract
         {
-            var hourlyRate = (decimal) (_random.Next(1000, 5000) / 100.0);
-            var monthlyRate = (decimal) (_random.Next(50000, 100000) / 100.0);
-            var basicSalary = (decimal) (_random.Next(3000000, 8000000) / 100.0);
+            ContractNumber = "Contract-" + _random.Next(1000, 10000),
+            StartDate = DateTime.Now.AddMonths(-_random.Next(1, 13)),
+            EndDate = DateTime.Now.AddMonths(_random.Next(1, 13)),
+            ContractTypeId = contractTypesIds[_random.Next(0, contractTypesIds.Count)],
+            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+            HourlyRate = Math.Round(hourlyRate, 2),
+            MonthlyRate = Math.Round(monthlyRate, 2),
+            BasicSalary = Math.Round(basicSalary, 2),
+        };
 
-            var employmentContract = new EmploymentContract
-            {
-                ContractNumber = "Contract-" + _random.Next(1000, 10000),
-                StartDate = DateTime.Now.AddMonths(-_random.Next(1, 13)),
-                EndDate = DateTime.Now.AddMonths(_random.Next(1, 13)),
-                ContractTypeId = _random.Next(1, contractTypesCount + 1),
-                EmployeeId = _random.Next(1, employeesCount + 1),
-                HourlyRate = Math.Round(hourlyRate, 2),
-                MonthlyRate = Math.Round(monthlyRate, 2),
-                BasicSalary = Math.Round(basicSalary, 2),
-            };
+        context.EmploymentContracts.Add(employmentContract);
+        context.SaveChanges();
 
-            context.EmploymentContracts.Add(employmentContract);
-        }
+        return employmentContract;
     }
 
-    private static void CreateLeaves(ApplicationDbContext context)
+    public static void CreateEmploymentContracts(ApplicationDbContext context, int? howMany = null)
     {
-        var howMany = _random.Next(1, 11);
-
-        var employeesCount = context.Employees.Count();
-        var leaveTypesCount = context.LeaveTypes.Count();
-
+        howMany = howMany ?? _random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-        {
-            var leave = new Leave
-            {
-                StartDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
-                EndDate = DateTime.Now.AddDays(_random.Next(1, 11)),
-                LeaveTypeId = _random.Next(1, leaveTypesCount + 1),
-                EmployeeId = _random.Next(1, employeesCount + 1),
-            };
-
-            context.Leaves.Add(leave);
-        }
+            CreateEmploymentContract(context);
     }
 
-    private static void CreateAbsences(ApplicationDbContext context)
+    public static Leave CreateLeave(ApplicationDbContext context)
     {
-        var howMany = _random.Next(1, 11);
+        var employeesIds = context.Employees.Select(a => a.Id).ToList();
+        var leaveTypesIds = context.LeaveTypes.Select(a => a.Id).ToList();
 
-        var employeesCount = context.Employees.Count();
-        var absenceTypesCount = context.AbsenceTypes.Count();
-
-        for (int i = 0; i < howMany; i++)
+        var leave = new Leave
         {
-            var absence = new Absence
-            {
-                AbsenceDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
-                AbsenceTypeId = _random.Next(1, absenceTypesCount + 1),
-                EmployeeId = _random.Next(1, employeesCount + 1),
-            };
+            StartDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
+            EndDate = DateTime.Now.AddDays(_random.Next(1, 11)),
+            LeaveTypeId = leaveTypesIds[_random.Next(0, leaveTypesIds.Count)],
+            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+        };
 
-            context.Absences.Add(absence);
-        }
+        context.Leaves.Add(leave);
+        context.SaveChanges();
+        
+        return leave;
     }
 
-    private static void CreateSalaries(ApplicationDbContext context)
+    public static void CreateLeaves(ApplicationDbContext context, int? howMany = null)
     {
-        var howMany = _random.Next(1, 11);
-
-        var employeesCount = context.Employees.Count();
-
+        howMany = howMany ?? _random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
+            CreateLeave(context);
+    }
+
+    public static Absence CreateAbsence(ApplicationDbContext context)
+    {
+        var employeesIds = context.Employees.Select(a => a.Id).ToList();
+        var absenceTypesIds = context.AbsenceTypes.Select(a => a.Id).ToList();
+
+        var absence = new Absence
         {
-            var basicSalary = (decimal) (_random.Next(3000000, 8000000) / 100.0);
-            var additionalSalary = (decimal) (_random.Next(50000, 100000) / 100.0);
-            var bonuses = (decimal) (_random.Next(10000, 50000) / 100.0);
-            var allowances = (decimal) (_random.Next(1000, 5000) / 100.0);
-            var zusContributions = (decimal) (_random.Next(100, 500) / 100.0);
-            var incomeTax = (decimal) (_random.Next(200, 1000) / 100.0);
+            AbsenceDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
+            AbsenceTypeId = absenceTypesIds[_random.Next(0, absenceTypesIds.Count)],
+            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+        };
 
-            var salary = new Salary
-            {
-                PaymentDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
-                EmployeeId = _random.Next(1, employeesCount + 1),
-                BasicSalary = Math.Round(basicSalary, 2),
-                AdditionalSalary = Math.Round(additionalSalary, 2),
-                Bonuses = Math.Round(bonuses, 2),
-                Allowances = Math.Round(allowances, 2),
-                ZUSContributions = Math.Round(zusContributions, 2),
-                IncomeTax = Math.Round(incomeTax, 2),
-            };
+        context.Absences.Add(absence);
+        context.SaveChanges();
+        
+        return absence;
+    }
 
-            context.Salaries.Add(salary);
-        }
+    public static void CreateAbsences(ApplicationDbContext context, int? howMany = null)
+    {
+        howMany = howMany ?? _random.Next(1, 11);
+        for (int i = 0; i < howMany; i++)
+            CreateAbsence(context);
+    }
+
+    public static Salary CreateSalary(ApplicationDbContext context)
+    {
+        var employeesIds = context.Employees.Select(a => a.Id).ToList();
+
+        var basicSalary = (decimal)(_random.Next(3000000, 8000000) / 100.0);
+        var additionalSalary = (decimal)(_random.Next(50000, 100000) / 100.0);
+        var bonuses = (decimal)(_random.Next(10000, 50000) / 100.0);
+        var allowances = (decimal)(_random.Next(1000, 5000) / 100.0);
+        var zusContributions = (decimal)(_random.Next(100, 500) / 100.0);
+        var incomeTax = (decimal)(_random.Next(200, 1000) / 100.0);
+
+        var salary = new Salary
+        {
+            PaymentDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
+            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+            BasicSalary = Math.Round(basicSalary, 2),
+            AdditionalSalary = Math.Round(additionalSalary, 2),
+            Bonuses = Math.Round(bonuses, 2),
+            Allowances = Math.Round(allowances, 2),
+            ZUSContributions = Math.Round(zusContributions, 2),
+            IncomeTax = Math.Round(incomeTax, 2),
+        };
+
+        context.Salaries.Add(salary);
+        context.SaveChanges();
+        
+        return salary;
+    }
+
+    public static void CreateSalaries(ApplicationDbContext context, int? howMany = null)
+    {
+        howMany = howMany ?? _random.Next(1, 11);
+        for (int i = 0; i < howMany; i++)
+            CreateSalary(context);
     }
 }

@@ -55,29 +55,31 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var GetById = _employeeRepository.GetById(1);
-        var GetByIdAsync = await _employeeRepository.GetByIdAsync(1);
+        //var ddGetEntityWithCustomFields = await _employeeRepository.GetEntityWithCustomFields(1, s => s.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
 
-        var GetByIdWithRelated = _employeeRepository.GetByIdWithRelated(1);
-        var GetByIdWithRelatedAsync = await _employeeRepository.GetByIdWithRelatedAsync(1);
+        //var GetById = _employeeRepository.GetById(1);
+        //var GetByIdAsync = await _employeeRepository.GetByIdAsync(1);
 
-        var GetWhere = _employeeRepository.GetWhere(item => item.Id == 1);
-        var GetWhereAsync = await _employeeRepository.GetWhereAsync(item => item.Id == 1);
+        //var GetByIdWithRelated = _employeeRepository.GetByIdWithRelated(1);
+        //var GetByIdWithRelatedAsync = await _employeeRepository.GetByIdWithRelatedAsync(1);
 
-        var GetWhereWithRelated = _employeeRepository.GetWhereWithRelated(item => item.Id == 1);
-        var GetWhereWithRelatedAsync = await _employeeRepository.GetWhereWithRelatedAsync(item => item.Id == 1);
+        //var GetWhere = _employeeRepository.GetWhere(item => item.Id == 1);
+        //var GetWhereAsync = await _employeeRepository.GetWhereAsync(item => item.Id == 1);
 
-        var GetQuerye = _employeeRepository.GetQuery(item => item.Id == 1).ToList();
-        var GetQueryq = _employeeRepository.GetQuery(query => query.Where(entity => entity.Id == 1)).ToList();
+        //var GetWhereWithRelated = _employeeRepository.GetWhereWithRelated(item => item.Id == 1);
+        //var GetWhereWithRelatedAsync = await _employeeRepository.GetWhereWithRelatedAsync(item => item.Id == 1);
 
-        var GetQueryWithRelatede = _employeeRepository.GetQueryWithRelated(item => item.Id == 1).ToList();
-        var GetQueryWithRelatedq = _employeeRepository.GetQueryWithRelated(query => query.Where(entity => entity.Id == 1)).ToList();
+        //var GetQuerye = _employeeRepository.GetQuery(item => item.Id == 1).ToList();
+        //var GetQueryq = _employeeRepository.GetQuery(query => query.Where(entity => entity.Id == 1)).ToList();
 
-        var ExecuteQuery = _employeeRepository.ExecuteQuery(query => query.Where(entity => entity.Id == 1));
-        var ExecuteQueryAsync = await _employeeRepository.ExecuteQueryAsync(query => query.Where(entity => entity.Id == 1));
+        //var GetQueryWithRelatede = _employeeRepository.GetQueryWithRelated(item => item.Id == 1).ToList();
+        //var GetQueryWithRelatedq = _employeeRepository.GetQueryWithRelated(query => query.Where(entity => entity.Id == 1)).ToList();
 
-        var ExecuteQueryWithRelated = _employeeRepository.ExecuteQueryWithRelated(query => query.Where(entity => entity.Id == 1));
-        var ExecuteQueryWithRelatedAsync = await _employeeRepository.ExecuteQueryWithRelatedAsync(query => query.Where(entity => entity.Id == 1));
+        //var ExecuteQuery = _employeeRepository.ExecuteQuery(query => query.Where(entity => entity.Id == 1));
+        //var ExecuteQueryAsync = await _employeeRepository.ExecuteQueryAsync(query => query.Where(entity => entity.Id == 1));
+
+        //var ExecuteQueryWithRelated = _employeeRepository.ExecuteQueryWithRelated(query => query.Where(entity => entity.Id == 1));
+        //var ExecuteQueryWithRelatedAsync = await _employeeRepository.ExecuteQueryWithRelatedAsync(query => query.Where(entity => entity.Id == 1));
 
         var GetPagedEntities = _employeeRepository.GetPagedEntities(2, 10);
         var GetPagedEntitiesAsync = await _employeeRepository.GetPagedEntitiesAsync(2, 10);
@@ -85,11 +87,11 @@ public class EmployeeController : Controller
         var GetPagedEntitiesWithRelated = _employeeRepository.GetPagedEntitiesWithRelated(2, 10);
         var GetPagedEntitiesWithRelatedAsync = await _employeeRepository.GetPagedEntitiesWithRelatedAsync(2, 10);
 
-        var GetPagedEntitiesWithCustomFields = _employeeRepository.GetPagedEntitiesWithCustomFields(2, 10, query => query.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
-        var GetPagedEntitiesWithCustomFieldsAsync = await _employeeRepository.GetPagedEntitiesWithCustomFieldsAsync(2, 10, query => query.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
+        var GetPagedEntitiesWithCustomFields = _employeeRepository.GetPagedEntitiesWithCustomFields(2, 10, s => s.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
+        var GetPagedEntitiesWithCustomFieldsAsync = await _employeeRepository.GetPagedEntitiesWithCustomFieldsAsync(2, 10, s => s.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
 
 
-        var GetEntityWithCustomFields = await _employeeRepository.GetEntityWithCustomFields(1, query => query.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
+        var GetEntityWithCustomFields = await _employeeRepository.GetEntityWithCustomFields(1, s => s.Select(item => new EmployeeDto { Id = item.Id, FullName = item.FullName }));
         
 
         var GetAll = _employeeRepository.GetAll();

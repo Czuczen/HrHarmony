@@ -1,6 +1,7 @@
 ﻿using HrHarmony.Models.Entities.Main;
 using HrHarmony.Repositories.EntityRepository;
 using HrHarmony.Tests.Configuration;
+using HrHarmony.Tests.Infrastructure;
 
 namespace HrHarmony.Tests.Services;
 
@@ -12,28 +13,15 @@ public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, 
     }
 
     [Fact]
-    public async Task Create_EmployeeTemporary_Test()
+    public async Task Create_Employee_Test()
     {
         // Arrange
-        var employee = new Employee
-        {
-            FullName = "Johny",
-            Email = "Wick",
-            PhoneNumber = "765986156",
-            DateOfBirth = DateTime.Now,
-            MaritalStatusId = 5,
-            AddressId = 1,
-            EducationLevelId = 1, // dodać tworzenie połączonych encji
-            ExperienceId = 1
-        };
+        var employee = SeedData.CreateEmployee(Ctx);
 
         // Act
-        //var createdEmployee = await Service.Create(employee);
-        //var downloadedEmployee = await Service.GetById(createdEmployee.Id);
-        var result = new Employee(); // zamiast tego nowy pobrany
-
-
+        var downloadedEmployee = await Service.GetById(employee.Id);
+        
         // Assert
-        Assert.Equal(employee, result);
+        Assert.Equal(employee, downloadedEmployee);
     }
 }

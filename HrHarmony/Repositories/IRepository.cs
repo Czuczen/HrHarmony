@@ -56,11 +56,11 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
 
     public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithRelatedAsync(int pageNumber, int pageSize);
 
-    public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection);
+    public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 
-    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection);
+    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 
-    public Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, Func<IQueryable<TEntity>, IQueryable<object>> customProjection);
+    public Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 
     public IEnumerable<TEntityDto> GetAll();
 

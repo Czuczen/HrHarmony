@@ -1,6 +1,7 @@
 ﻿using HrHarmony.Models.Entities.Main;
 using HrHarmony.Services;
 using HrHarmony.Tests.Configuration;
+using HrHarmony.Tests.Infrastructure;
 
 namespace HrHarmony.Tests.Services
 {
@@ -12,29 +13,16 @@ namespace HrHarmony.Tests.Services
         }
 
         [Fact]
-        public async Task Temporary_Test() // service
+        public async Task Temporary_Test() // service method
         {
             // Arrange
-            var employee = new Employee
-            {
-                FullName = "Johny",
-                Email = "Wick",
-                PhoneNumber = "765986156",
-                DateOfBirth = DateTime.Now,
-                MaritalStatusId = 5,
-                AddressId = 1,
-                EducationLevelId = 1, // dodać tworzenie połączonych encji
-                ExperienceId = 1
-            };
+            var employee = SeedData.CreateEmployee(Ctx);
 
             // Act
-            //var createdEmployee = await Service.Create(employee);
-            //var downloadedEmployee = await Service.GetById(createdEmployee.Id);
-            var result = new Employee(); // zamiast tego nowy pobrany
-
+            var downloadedEmployee = new Employee(); // tymczasowo
 
             // Assert
-            Assert.Equal(employee, result);
+            Assert.Equal(employee, downloadedEmployee);
         }
     }
 }

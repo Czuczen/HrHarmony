@@ -5,6 +5,8 @@ using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
+using HrHarmony.Models.Entities.Main;
+using HrHarmony.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -218,14 +220,16 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         };
     }
 
-    public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(
-     int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
+    public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(int pageNumber, int pageSize,
+        Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
     {
         var skip = (pageNumber - 1) * pageSize;
         var totalCount = _ctx.Set<TEntity>().Count();
         var query = _ctx.Set<TEntity>().Skip(skip).Take(pageSize);
 
-        var customResult = customProjection(query);
+        var selectable = new Selectable<TEntity, TEntityDto>(query);
+        var customResult = customProjection(selectable);
+
         var entities = customResult.ToList();
         var mappedEntities = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
@@ -238,14 +242,16 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         };
     }
 
-    public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(
-    int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
+    public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(int pageNumber, int pageSize,
+        Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
     {
         var skip = (pageNumber - 1) * pageSize;
         var totalCount = await _ctx.Set<TEntity>().CountAsync();
         var query = _ctx.Set<TEntity>().Skip(skip).Take(pageSize);
 
-        var customResult = customProjection(query);
+        var selectable = new Selectable<TEntity, TEntityDto>(query);
+        var customResult = customProjection(selectable);
+
         var entities = await customResult.ToListAsync();
         var mappedEntities = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
@@ -260,20 +266,21 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 
     // GetPagedEntitiesWithCustomFieldsAsync  dodać with related????
 
-    public async Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, Func<IQueryable<TEntity>, IQueryable<object>> customProjection)
+    public async Task<TEntityDto> GetEntityWithCustomFields(TPrimaryKey id, 
+        Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
     {
         var query = _ctx.Set<TEntity>().Where(e => e.Id.Equals(id));
-        var customResult = customProjection(query);
+        var selectable = new Selectable<TEntity, TEntityDto>(query);
+
+        var customResult = customProjection(selectable);
         var entity = (await customResult.ToListAsync()).Single();
 
-        return _mapper.Map<TEntityDto>(entity); // da rade zmapować
+        return _mapper.Map<TEntityDto>(entity);
     }
 
-    //public async Task<IEnumerable<TEntity>> GetActiveEntitiesWithValue(int value)
-    //{
-    //    return await GetWhere(PredicateUtils<TEntity>.IsActive
-    //                            .And(PredicateUtils<TEntity>.ByValue(value)));
-    //}
+
+
+
 
     public IEnumerable<TEntityDto> GetAll()
     {

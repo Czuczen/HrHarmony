@@ -19,11 +19,6 @@
             <th>Stawka godzinowa</th>
             <th>Stawka miesięczna</th>
             <th>Wynagrodzenie podstawowe</th>
-            <th>Dodatkowe wynagrodzenie</th>
-            <th>Bonusy</th>
-            <th>Dodatki</th>
-            <th>Składki ZUS</th>
-            <th>Podatek dochodowy</th>
             <th>Akcje</th>
         </tr>
     </thead>
@@ -38,12 +33,6 @@
             <td>@Model.HourlyRate</td>
             <td>@Model.MonthlyRate</td>
             <td>@Model.BasicSalary</td>
-            <td>@Model.AdditionalSalary</td>
-            <td>@Model.Bonuses</td>
-            <td>@Model.Allowances</td>
-            <td>@Model.ZUSContributions</td>
-            <td>@Model.IncomeTax</td>
-
             <td>
                 <a class="btn btn-info btn-sm" asp-controller="EmploymentContract" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
                 <a class="btn btn-danger btn-sm" asp-controller="EmploymentContract" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
