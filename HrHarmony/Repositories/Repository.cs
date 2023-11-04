@@ -153,18 +153,27 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
-    public PaginatedResult<TEntityDto> GetPagedEntities(int? pageNumber, int? pageSize, string? orderBy, 
-        bool? isDescending, string? searchString, string? searchBy)
+    public PaginatedResult<TEntityDto> GetPagedEntities<TIndexViewModel>(int? pageNumber, int? pageSize, string? orderBy, 
+        bool? isDescending, string? searchString)
     {
         var tempPageNumber = pageNumber ?? 1;
         var tempPageSize = pageSize ?? 10;
-        var skip = (tempPageNumber - 1) * tempPageSize;
         var tempIsDescending = isDescending ?? false;
 
         var totalCount = _ctx.Set<TEntity>().Count();
+
+        // Oblicz nową ilość dostępnych stron po zmianie rozmiaru strony
+        var newTotalPages = (int) Math.Ceiling((double) totalCount / tempPageSize);
+
+        // Dostosuj numer strony, jeśli jest poza nowym zakresem stron
+        tempPageNumber = tempPageNumber <= newTotalPages ? tempPageNumber : newTotalPages;
+
+        var skip = (tempPageNumber - 1) * tempPageSize;
+
         var query = _ctx.Set<TEntity>().AsQueryable();
 
-        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey>(query, searchString, searchBy);
+        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey, TIndexViewModel>(query, searchString);
+        var searchedCount = query.Count();
         orderBy = RepositoriesHelper.GetDefaultSortField<TEntityDto, TPrimaryKey>(orderBy);
         query = tempIsDescending
                     ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy))
@@ -179,12 +188,12 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         {
             Items = entities,
             TotalCount = totalCount,
+            SearchedCount = searchedCount,
             PageNumber = tempPageNumber,
             PageSize = tempPageSize,
             OrderBy = orderBy,
             IsDescending = tempIsDescending,
-            SearchString = searchString,
-            SearchBy = searchBy
+            SearchString = searchString
         };
 
         //====================

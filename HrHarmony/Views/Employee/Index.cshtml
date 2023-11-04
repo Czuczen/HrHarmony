@@ -20,8 +20,12 @@
                 </select>
             </div>
             <div class="form-group p-1 bd-highlight">
-                <label for="search">Szukaj:</label>
-                <input type="text" name="SearchString" id="search" class="search-input" placeholder="Szukaj...">
+                <input type="hidden" name="PageNumber" value="@Model.PageNumber">
+                <input type="hidden" name="PageSize" value="@Model.PageSize">
+                <input type="hidden" name="OrderBy" value="@Model.OrderBy">
+                <input type="hidden" name="IsDescending" value="@(Model.IsDescending.ToString())">
+                <input type="text" name="SearchString" id="searchInput" placeholder="Szukaj...">
+                <button id="searchButton" type="submit">Szukaj</button>
             </div>
         </div>
     </form>
@@ -32,18 +36,16 @@
         <thead class="table-dark">
             <tr>
                 <th>
-                    <a class="custom-link" href="?PageNumber=@Model.PageNumber&PageSize=@Model.PageSize&OrderBy=Id&IsDescending=@(Model.OrderBy == "Id" && Model.IsDescending ? "false" : "true")">
+                    <a id="columnHref@("Id")" class="custom-link" data-column-name="Id">
                         ID
                         @(Model.OrderBy == "Id" ? Model.Arrow : "")
                     </a>
-                    <input type="text" id="searchId" class="search-input" data-column="Id" placeholder="Search ID">
                 </th>
                 <th>
-                    <a class="custom-link" href="?PageNumber=@Model.PageNumber&PageSize=@Model.PageSize&OrderBy=FullName&IsDescending=@(Model.OrderBy == "FullName" && Model.IsDescending ? "false" : "true")">
+                    <a id="columnHref@("FullName")" class="custom-link" data-column-name="FullName">
                         Full Name
                         @(Model.OrderBy == "FullName" ? Model.Arrow : "")
                     </a>
-                    <input type="text" id="searchFullName" class="search-input" data-column="FullName" placeholder="Search Full Name">
                 </th>
                 <th>Akcje</th>
             </tr>
@@ -68,44 +70,67 @@
 <div class="row">
     <div class="d-flex bd-highlight mb-1">
         <div class="me-auto p-1 bd-highlight">
-            <span class="text-muted">Wyświetlone rekordy: @(Model.ValidPageSize) z @Model.TotalCount</span>
+            <span class="text-muted">
+                Wyświetlono @(Model.ValidPageSize) 
+                rekordów z wyników wyszukiwania, spośród @Model.SearchedCount 
+                odnalezionych w całkowitej liczbie rekordów: @Model.TotalCount
+            </span>
         </div>
         @for (var i = 1; i <= Model.TotalPages; i++)
         {
-            <a href="?PageNumber=@i&PageSize=@Model.PageSize&OrderBy=@Model.OrderBy&IsDescending=@Model.IsDescending" class="btn m-1 p-r-1 p-l-1 bd-highlight @(Model.PageNumber == i ? "btn-secondary disabled" : "btn-primary")">@i</a>
+            <a id="pageHref@(i)" data-page-number="@i" class="btn m-1 p-r-1 p-l-1 bd-highlight @(Model.PageNumber == i ? "btn-secondary disabled" : "btn-primary")">@i</a>
         }
     </div>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        
-        var timeoutId;
+        const pageNumber = '@(Model.PageNumber)';
+        const pageSize = '@(Model.PageSize)';
+        const orderBy = '@(Model.OrderBy)';
+        const isDescending = '@(Model.IsDescending)'.toLowerCase();
+        const searchValue = '@(Model.SearchString)'.toLowerCase();
 
-        let searchString = "@Model.SearchString";
-        let searchBy = "@Model.SearchBy";
+        $("#searchInput").val(searchValue);
 
-        // Znajdź elementy o identyfikatorach kończących się na określoną wartość
-        var columnSearch = $('[id$="' + searchBy + '"]')[0];
-        if (columnSearch) {
-            $(columnSearch).val(searchString);
-        }
-        
-        $(".search-input").on("keypress", function (event) {
-            if (event.which === 13) {
-                var input = $(this);
-                input.prop("disabled", true);
-                var column = input.data("column");
-                performSearch(column, input.val());
-            }
+        $('a[id^="pageHref"]').click(function () {
+            const searchVal = $("#searchInput").val();
+            const newPageNumber = $(this).data("page-number")
+            const queryString = "?PageNumber=" + newPageNumber + "&PageSize=" + pageSize + "&OrderBy=" + orderBy + "&IsDescending=" + isDescending + "&searchString=" + searchVal;
+            window.location.href = window.location.pathname + queryString;
         });
 
-        function performSearch(column, value) {
-            var searchInput = $("#search");
-            searchInput.prop("disabled", true);
-            var queryString = "?PageNumber=@Model.PageNumber&PageSize=@Model.PageSize&OrderBy=@Model.OrderBy&IsDescending=@Model.IsDescending" + `&SearchString=${value}&SearchBy=${column}`;
+        $('a[id^="columnHref"]').click(function () {
+            const searchVal = $("#searchInput").val();
+            const newOrderBy = $(this).data("column-name")
+            const isDesc = (orderBy === newOrderBy ? !(isDescending === "true") : "false");
+            const queryString = "?PageNumber=" + pageNumber + "&PageSize=" + pageSize + "&OrderBy=" + newOrderBy + "&IsDescending=" + isDesc + "&searchString=" + searchVal;
             window.location.href = window.location.pathname + queryString;
-        }
+        });
+
+        // var timeoutId;
+
+        // // Znajdź elementy o identyfikatorach kończących się na określoną wartość
+        // var columnSearch = $('[id$="' + searchBy + '"]')[0]; // pętla i wstawianie spowrotem do wielu
+        // if (columnSearch) {
+        //     $(columnSearch).val(searchString);
+        // }
+        
+        // $(".search-input").on("keypress", function (event) {
+        //     if (event.which === 13) {
+        //         var input = $(this);
+        //         input.prop("disabled", true);
+        //         var column = input.data("column");
+        //         performSearch(column, input.val());
+        //     }
+        // });
+
+        // function performSearch(column, value) {
+        //     var searchInput = $("#search");
+        //     searchInput.prop("disabled", true);
+        //     var queryString = "?PageNumber=@Model.PageNumber&PageSize=@Model.PageSize&OrderBy=@Model.OrderBy&IsDescending=@Model.IsDescending" + `&SearchString=${value}&SearchBy=${column}`;
+        //     window.location.href = window.location.pathname + queryString;
+        // }
     });
 </script>
 

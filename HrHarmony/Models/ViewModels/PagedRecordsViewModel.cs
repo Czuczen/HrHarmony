@@ -5,13 +5,15 @@ using Newtonsoft.Json.Linq;
 
 namespace HrHarmony.Models.ViewModels
 {
-    public class PagedRecordsViewModel<TEntityIndexViewModel>
+    public class PagedRecordsViewModel<TIndexViewModel>
     {
-        public List<TEntityIndexViewModel> Items { get; set; }
+        public List<TIndexViewModel> Items { get; set; }
 
         public int PageNumber { get; set; }
 
         public int TotalCount { get; set; }
+
+        public int SearchedCount { get; set; }
 
         public int PageSize { get; set; }
 
@@ -21,15 +23,13 @@ namespace HrHarmony.Models.ViewModels
 
         public string? SearchString { get; set; }
 
-        public string? SearchBy { get; set; }
-
 
 
 
 
         public string ValidPageSize => (PageSize > TotalCount ? TotalCount : PageSize > Items.Count ? Items.Count : PageSize).ToString();
 
-        public int TotalPages => (int) Math.Ceiling((double) TotalCount / PageSize);
+        public int TotalPages => (int) Math.Ceiling((double) SearchedCount / PageSize); // lub obliczyć z polem TotalCount
 
         public IEnumerable<int> AvailablePageSizes = new List<int> { 5, 10, 20, 50, 100 };
 
