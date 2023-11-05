@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace HrHarmony.Repositories;
+namespace HrHarmony.Repositories.Selectable;
 
 public class Selectable<TEntity, TSelect> : ISelectable<TEntity, TSelect>
 {

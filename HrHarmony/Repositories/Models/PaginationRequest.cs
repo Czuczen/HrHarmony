@@ -1,4 +1,4 @@
-﻿namespace HrHarmony.Repositories
+﻿namespace HrHarmony.Repositories.Models
 {
     public class PaginationRequest
     {
@@ -17,7 +17,7 @@
         }
 
         public string? OrderBy { get; set; }
-        
+
         private bool? _isDescending;
         public bool IsDescending
         {

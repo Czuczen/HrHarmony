@@ -3,9 +3,9 @@ using HrHarmony.Models.Dto.Create.Dictionary;
 using HrHarmony.Models.Dto.Details.Dictionary;
 using HrHarmony.Models.Dto.Update.Dictionary;
 using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.ContractType;
+using HrHarmony.Repositories.Crud;
 
 namespace HrHarmony.Controllers;
 

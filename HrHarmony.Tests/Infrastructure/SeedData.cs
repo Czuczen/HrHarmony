@@ -2,10 +2,6 @@
 using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Utils;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Net;
 
 namespace HrHarmony.Tests.Infrastructure;
 

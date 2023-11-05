@@ -1,7 +1,6 @@
-﻿using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace HrHarmony.Repositories
+namespace HrHarmony.Repositories.Selectable
 {
     public interface ISelectable<TEntity, TSelect>
     {

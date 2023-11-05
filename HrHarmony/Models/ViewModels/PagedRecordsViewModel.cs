@@ -1,7 +1,4 @@
-﻿using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Repositories;
-using Microsoft.AspNetCore.Html;
-using Newtonsoft.Json.Linq;
+﻿using Microsoft.AspNetCore.Html;
 
 namespace HrHarmony.Models.ViewModels
 {

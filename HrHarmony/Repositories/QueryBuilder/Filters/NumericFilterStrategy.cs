@@ -3,13 +3,13 @@ using LinqKit;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace HrHarmony.Repositories.Filters
+namespace HrHarmony.Repositories.QueryBuilder.Filters
 {
     [RegisterOpenGenericClassInDI(typeof(NumericFilterStrategy<>))]
     public class NumericFilterStrategy<TEntity> : IFilterStrategy<TEntity>
     {
-        public IEnumerable<Type> Types => new List<Type> 
-        { 
+        public IEnumerable<Type> Types => new List<Type>
+        {
             typeof(byte),   typeof(sbyte),      typeof(byte?),      typeof(sbyte?),
             typeof(short),  typeof(ushort),     typeof(short?),     typeof(ushort?),
             typeof(int),    typeof(uint),       typeof(int?),       typeof(uint?),
@@ -32,7 +32,7 @@ namespace HrHarmony.Repositories.Filters
                 var compareExpression = Expression.Equal(parseExpression, searchValueExpression);
                 filters = filters.Or(Expression.Lambda<Func<TEntity, bool>>(compareExpression, param));
             }
-           
+
             return filters;
         }
     }

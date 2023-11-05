@@ -3,7 +3,7 @@ using LinqKit;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace HrHarmony.Repositories.Filters
+namespace HrHarmony.Repositories.QueryBuilder.Filters
 {
     [RegisterOpenGenericClassInDI(typeof(StringFilterStrategy<>))]
     public class StringFilterStrategy<TEntity> : IFilterStrategy<TEntity>
@@ -34,7 +34,7 @@ namespace HrHarmony.Repositories.Filters
             {
                 filters = filters.Or(Expression.Lambda<Func<TEntity, bool>>(containsExpression, param));
             }
-            
+
             return filters;
         }
     }

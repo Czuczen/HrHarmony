@@ -1,10 +1,7 @@
 ﻿using HrHarmony.Models.Dto.Details.Dictionary;
 using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Models.Entities;
 using HrHarmony.Models.Entities.Main;
-using HrHarmony.Repositories;
-using Newtonsoft.Json.Linq;
-using System.Linq.Expressions;
+using HrHarmony.Repositories.Selectable;
 
 namespace HrHarmony.Utils
 {

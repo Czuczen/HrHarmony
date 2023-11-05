@@ -1,10 +1,5 @@
-﻿using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Models.Entities.Main;
-using HrHarmony.Tests.Configuration;
+﻿using HrHarmony.Tests.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection;
 
 namespace HrHarmony.Tests.Infrastructure;
 

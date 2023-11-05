@@ -3,7 +3,7 @@ using LinqKit;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace HrHarmony.Repositories.Filters
+namespace HrHarmony.Repositories.QueryBuilder.Filters
 {
     [RegisterOpenGenericClassInDI(typeof(EnumFilterStrategy<>))]
     public class EnumFilterStrategy<TEntity> : IFilterStrategy<TEntity>

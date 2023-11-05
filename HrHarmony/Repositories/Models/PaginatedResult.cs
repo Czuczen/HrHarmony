@@ -1,4 +1,4 @@
-﻿namespace HrHarmony.Repositories;
+﻿namespace HrHarmony.Repositories.Models;
 
 public class PaginatedResult<TEntityDto>
 {

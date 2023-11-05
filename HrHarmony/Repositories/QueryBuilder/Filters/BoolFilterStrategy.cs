@@ -3,7 +3,7 @@ using LinqKit;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace HrHarmony.Repositories.Filters
+namespace HrHarmony.Repositories.QueryBuilder.Filters
 {
     [RegisterOpenGenericClassInDI(typeof(BoolFilterStrategy<>))]
     public class BoolFilterStrategy<TEntity> : IFilterStrategy<TEntity>
@@ -21,7 +21,7 @@ namespace HrHarmony.Repositories.Filters
                 var boolEqualExpression = Expression.Equal(propertyExpression, boolExpression);
                 filters = filters.Or(Expression.Lambda<Func<TEntity, bool>>(boolEqualExpression, param));
             }
-            
+
             return filters;
         }
     }

@@ -1,10 +1,9 @@
 ﻿using HrHarmony.Attributes;
 using LinqKit;
-using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace HrHarmony.Repositories.Filters
+namespace HrHarmony.Repositories.QueryBuilder.Filters
 {
     [RegisterOpenGenericClassInDI(typeof(DateFilterStrategy<>))]
     public class DateFilterStrategy<TEntity> : IFilterStrategy<TEntity>

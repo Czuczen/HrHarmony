@@ -8,7 +8,7 @@ using HrHarmony.Models.Dto.Update.Main;
 using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Models.ViewModels;
-using HrHarmony.Repositories;
+using HrHarmony.Repositories.Models;
 
 namespace HrHarmony.Configuration.Mapper;
 

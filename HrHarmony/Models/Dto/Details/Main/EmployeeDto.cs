@@ -1,5 +1,4 @@
 ﻿using HrHarmony.Models.Dto.Details.Dictionary;
-using HrHarmony.Models.Entities.Main;
 
 namespace HrHarmony.Models.Dto.Details.Main;
 

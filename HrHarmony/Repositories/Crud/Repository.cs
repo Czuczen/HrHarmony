@@ -5,17 +5,16 @@ using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
-using HrHarmony.Models.Entities.Main;
-using HrHarmony.Repositories.Filters;
-using HrHarmony.Utils;
+using HrHarmony.Repositories.Models;
+using HrHarmony.Repositories.QueryBuilder;
+using HrHarmony.Repositories.Selectable;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Reflection;
 
-namespace HrHarmony.Repositories;
+namespace HrHarmony.Repositories.Crud;
 
 [RegisterOpenGenericClassInDI(typeof(Repository<,,,,>))]
-public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto> : 
+public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto> :
     IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto>
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
@@ -25,17 +24,17 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 {
     private readonly ApplicationDbContext _ctx;
     private readonly IMapper _mapper;
-    private readonly IEnumerable<IFilterStrategy<TEntity>> _filterStrategies;
+    private readonly IPaginatedQueryBuilder<TEntity, TPrimaryKey> _paginatedQueryBuilder;
 
     public Repository(
         ApplicationDbContext context,
         IMapper mapper,
-        IEnumerable<IFilterStrategy<TEntity>> filterStrategies
+        IPaginatedQueryBuilder<TEntity, TPrimaryKey> paginatedQueryBuilder
         )
     {
         _ctx = context;
         _mapper = mapper;
-        _filterStrategies = filterStrategies;
+        _paginatedQueryBuilder = paginatedQueryBuilder;
     }
 
     public TEntityDto GetById(TPrimaryKey id)
@@ -101,7 +100,7 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
     {
         var query = _ctx.Set<TEntity>().AsQueryable();
         query = queryBuilder(query);
-   
+
         return query.Select(entity => _mapper.Map<TEntityDto>(entity));
     }
 
@@ -160,38 +159,25 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
-    public PaginatedResult<TEntityDto> GetPagedEntities<TIndexViewModel>(PaginationRequest req)
-        where TIndexViewModel : class, new()
+    public PaginatedResult<TEntityDto> GetPagedEntities<TViewModel>(PaginationRequest req)
+        where TViewModel : class, new()
     {
-        var pageNumber = req.PageNumber;
-        var pageSize = req.PageSize;
-        var isDescending = req.IsDescending;
+        var pagedQuery = _paginatedQueryBuilder
+            .WithBaseQuery(_ctx.Set<TEntity>().AsQueryable())
+            .WithTotalCount(_ctx.Set<TEntity>().Count())
+            .Build<TViewModel>(req);
 
-        var totalCount = _ctx.Set<TEntity>().Count();
-        var newTotalPages = (int) Math.Ceiling((double) totalCount / pageSize);
-        pageNumber = pageNumber <= newTotalPages ? pageNumber : newTotalPages;
-        var skip = (pageNumber - 1) * pageSize;
-
-        var query = _ctx.Set<TEntity>().AsQueryable();
-        var orderBy = RepositoriesHelper.GetSortField<TIndexViewModel>(req.OrderBy);
-        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey, TIndexViewModel>(query, req.SearchString, _filterStrategies);
-        query = isDescending ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy)) : query.OrderBy(x => EF.Property<TEntity>(x, orderBy));
-
-        var searchedCount = query.Count();
-        query = query.Skip(skip).Take(pageSize);
-
-        var items = query.ToList();
-        var entities = _mapper.Map<IEnumerable<TEntityDto>>(items);
+        var entities = _mapper.Map<IEnumerable<TEntityDto>>(pagedQuery.Query.ToList());
 
         return new PaginatedResult<TEntityDto>
         {
             Items = entities,
-            TotalCount = totalCount,
-            SearchedCount = searchedCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            OrderBy = orderBy,
-            IsDescending = isDescending,
+            TotalCount = pagedQuery.TotalCount,
+            SearchedCount = pagedQuery.SearchedCount,
+            PageNumber = pagedQuery.PageNumber,
+            PageSize = pagedQuery.PageSize,
+            OrderBy = pagedQuery.OrderBy,
+            IsDescending = pagedQuery.IsDescending,
             SearchString = req.SearchString
         };
     }
@@ -301,7 +287,7 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return entity;
     }
 
-    public async Task<TEntityDto> GetEntityWithCustomFieldsAsync(TPrimaryKey id, 
+    public async Task<TEntityDto> GetEntityWithCustomFieldsAsync(TPrimaryKey id,
         Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
     {
         var query = _ctx.Set<TEntity>().Where(e => e.Id.Equals(id));

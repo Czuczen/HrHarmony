@@ -2,9 +2,11 @@
 using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
+using HrHarmony.Repositories.Models;
+using HrHarmony.Repositories.Selectable;
 using System.Linq.Expressions;
 
-namespace HrHarmony.Repositories;
+namespace HrHarmony.Repositories.Crud;
 
 [RegisterOpenGenericInterfaceInDI(typeof(IRepository<,,,,>))]
 public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto> : IPerWebRequestDependency

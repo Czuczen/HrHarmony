@@ -9,11 +9,10 @@ using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Models.ViewModels;
 using HrHarmony.Models.ViewModels.Employee;
-using HrHarmony.Repositories;
-using HrHarmony.Utils;
+using HrHarmony.Repositories.Crud;
+using HrHarmony.Repositories.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.IO;
 
 namespace HrHarmony.Controllers;
 
