@@ -1,0 +1,78 @@
+﻿@using HrHarmony.Models.ViewModels;
+
+@{
+    Model.ControllerName = Context.Request.Path.Value?.Replace("/", "");
+}
+
+<div class="row">
+    <form method="get">
+        <div class="d-flex bd-highlight mb-1">
+            <div class="form-group me-auto p-1 bd-highlight">
+                <select name="PageSize" id="pageSize" onchange="this.form.submit()">
+                    @Model.PageSizeOptions
+                </select>
+            </div>
+            <div class="form-group p-1 bd-highlight">
+                <input type="hidden" name="PageNumber" value="@Model.PageNumber">
+                <input type="hidden" name="PageSize" value="@Model.PageSize">
+                <input type="hidden" name="OrderBy" value="@Model.OrderBy">
+                <input type="hidden" name="IsDescending" value="@(Model.IsDescendingAsString)">
+                <input type="text" name="SearchString" id="searchInput" placeholder="Szukaj...">
+                <button id="searchButton" type="submit">Szukaj</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                @Model.RenderColumns
+            </tr>
+        </thead>
+        <tbody>
+            @Model.RenderRecords
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="d-flex bd-highlight mb-1">
+        <div class="me-auto p-1 bd-highlight">
+            <span class="text-muted">
+                Wyświetlono @(Model.ValidPageSize)
+                rekordów spośród @Model.SearchedCount znalezionych
+                z łącznej liczby @Model.TotalCount
+            </span>
+        </div>
+        @Model.RenderPages
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const pageNumber = '@(Model.PageNumber)';
+        const pageSize = '@(Model.PageSize)';
+        const orderBy = '@(Model.OrderBy)';
+        const isDescending = '@(Model.IsDescending)'.toLowerCase();
+        const searchValue = '@(Model.SearchString)'.toLowerCase();
+
+        $("#searchInput").val(searchValue);
+
+        $('a[id^="pageHref"]').click(function () {
+            const searchVal = $("#searchInput").val();
+            const newPageNumber = $(this).data("page-number")
+            const queryString = "?PageNumber=" + newPageNumber + "&PageSize=" + pageSize + "&OrderBy=" + orderBy + "&IsDescending=" + isDescending + "&searchString=" + searchVal;
+            window.location.href = window.location.pathname + queryString;
+        });
+
+        $('a[id^="columnHref"]').click(function () {
+            const searchVal = $("#searchInput").val();
+            const newOrderBy = $(this).data("column-name")
+            const isDesc = (orderBy === newOrderBy ? !(isDescending === "true") : "false");
+            const queryString = "?PageNumber=" + pageNumber + "&PageSize=" + pageSize + "&OrderBy=" + newOrderBy + "&IsDescending=" + isDesc + "&searchString=" + searchVal;
+            window.location.href = window.location.pathname + queryString;
+        });
+    });
+</script>

@@ -5,23 +5,23 @@ using System.Reflection;
 
 namespace HrHarmony.Repositories.QueryBuilder.Filters
 {
-    [RegisterOpenGenericClassInDI(typeof(DateFilterStrategy<>))]
-    public class DateFilterStrategy<TEntity> : IFilterStrategy<TEntity>
+    [RegisterOpenGenericClassInDI(typeof(DateValueFilterStrategy<>))]
+    public class DateValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>
     {
         public IEnumerable<Type> Types => new List<Type> { typeof(DateTime), typeof(DateTime?) };
 
-        public ExpressionStarter<TEntity> ApplyFilter(ExpressionStarter<TEntity> filters, PropertyInfo property, string searchString)
+        public ExpressionStarter<TEntity> ApplyFilter(ExpressionStarter<TEntity> filters, PropertyInfo property, string value)
         {
             var param = Expression.Parameter(typeof(TEntity), "e");
             var propertyExpression = Expression.Property(param, property.Name);
 
-            if (DateTime.TryParse(searchString, out var searchDate))
+            if (DateTime.TryParse(value, out var searchDate))
             {
                 var dateExpression = Expression.Constant(searchDate.Date, property.PropertyType);
                 var dateEqualExpression = Expression.Equal(propertyExpression, dateExpression);
                 filters = filters.Or(Expression.Lambda<Func<TEntity, bool>>(dateEqualExpression, param));
             }
-            else if (int.TryParse(searchString, out var searchInt))
+            else if (int.TryParse(value, out var searchInt))
             {
                 var dateConditions = new List<Expression>();
 

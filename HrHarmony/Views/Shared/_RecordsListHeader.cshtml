@@ -1,0 +1,6 @@
+﻿@model string
+
+<div class="d-flex justify-content-between align-items-center">
+    <h2 class="mb-4">Lista @Model</h2>
+    <a class="btn btn-primary" asp-controller="@Context.Request.Path.Value?.Replace("/", "")" asp-action="Create">Dodaj Nowy Rekord</a>
+</div>

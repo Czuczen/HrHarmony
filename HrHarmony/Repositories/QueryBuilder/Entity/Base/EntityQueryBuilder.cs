@@ -1,5 +1,7 @@
 ﻿using HrHarmony.Models.Entities;
 using HrHarmony.Repositories.Models;
+using HrHarmony.Repositories.QueryBuilder.Filters;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
@@ -15,9 +17,11 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
         protected string SearchString;
         protected bool IsDescending;
 
+        private readonly IEnumerable<IValueFilterStrategy<TEntity>> _valueFilterStrategies;
 
-        public EntityQueryBuilder()
+        public EntityQueryBuilder(IEnumerable<IValueFilterStrategy<TEntity>> valueFilterStrategies)
         {
+            _valueFilterStrategies = valueFilterStrategies;
         }
 
         public EntityQueryBuilder<TEntity, TPrimaryKey> WithBaseQuery(IQueryable<TEntity> baseQuery)
@@ -51,7 +55,7 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
             return this;
         }
 
-        public EntityQueryBuilder<TEntity, TPrimaryKey> ApplySorting<T>()
+        public EntityQueryBuilder<TEntity, TPrimaryKey> ApplyFieldSorting<T>()
            where T : class, new()
         {
             var properties = typeof(T).GetProperties();
@@ -62,8 +66,9 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
                 if (orderProp == null)
                     OrderBy = properties.First().Name;
             }
+            else
+                OrderBy = properties.First().Name;
 
-            OrderBy = properties.First().Name;
             return this;
         }
 
@@ -74,11 +79,32 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
             return this;
         }
 
+        public EntityQueryBuilder<TEntity, TPrimaryKey> ApplySearchValueFilter<TViewModel>()
+          where TViewModel : class, new()
+        {
+            if (string.IsNullOrWhiteSpace(SearchString)) return this;
+
+            SearchString = SearchString.Trim().ToLower();
+            var dbProperties = typeof(TViewModel).GetProperties()
+                .Where(p => p.Name.ToLower() != "id" && !p.Name.ToLower().Contains("id")
+                    && (p.PropertyType.IsValueType || p.PropertyType == typeof(string)
+                        || Nullable.GetUnderlyingType(p.PropertyType) == typeof(string))
+                    && !p.PropertyType.FullName.StartsWith("HrHarmony"));
+
+            var filters = PredicateBuilder.New<TEntity>(e => false);
+            foreach (var property in dbProperties)
+                _valueFilterStrategies.Single(item => item.Types.Any(type => type == property.PropertyType)).ApplyFilter(filters, property, SearchString);
+
+            Query = Query.Where(filters);
+            return this;
+        }
+
         public abstract PaginatedQuery<TEntity> Build<TViewModel>(PaginationRequest req) where TViewModel : class, new();
 
         public IQueryable<TEntity> Build()
         {
-            ApplySorting<TEntity>();
+            ApplyFieldSorting<TEntity>();
+            ApplySearchValueFilter<TEntity>();
             ApplyOrdering();
 
             return Query;

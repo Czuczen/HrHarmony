@@ -5,8 +5,8 @@ using System.Reflection;
 
 namespace HrHarmony.Repositories.QueryBuilder.Filters
 {
-    [RegisterOpenGenericClassInDI(typeof(NumericFilterStrategy<>))]
-    public class NumericFilterStrategy<TEntity> : IFilterStrategy<TEntity>
+    [RegisterOpenGenericClassInDI(typeof(NumericValueFilterStrategy<>))]
+    public class NumericValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>
     {
         public IEnumerable<Type> Types => new List<Type>
         {
@@ -19,7 +19,7 @@ namespace HrHarmony.Repositories.QueryBuilder.Filters
             typeof(Guid),                       typeof(Guid?)
         };
 
-        public ExpressionStarter<TEntity> ApplyFilter(ExpressionStarter<TEntity> filters, PropertyInfo property, string searchString)
+        public ExpressionStarter<TEntity> ApplyFilter(ExpressionStarter<TEntity> filters, PropertyInfo property, string value)
         {
             var param = Expression.Parameter(typeof(TEntity), "e");
             var propertyExpression = Expression.Property(param, property.Name);
@@ -28,7 +28,7 @@ namespace HrHarmony.Repositories.QueryBuilder.Filters
             if (parseMethod != null)
             {
                 var parseExpression = Expression.Call(parseMethod, Expression.Call(propertyExpression, typeof(object).GetMethod("ToString")));
-                var searchValueExpression = Expression.Constant(Convert.ChangeType(searchString, property.PropertyType), property.PropertyType);
+                var searchValueExpression = Expression.Constant(Convert.ChangeType(value, property.PropertyType), property.PropertyType);
                 var compareExpression = Expression.Equal(parseExpression, searchValueExpression);
                 filters = filters.Or(Expression.Lambda<Func<TEntity, bool>>(compareExpression, param));
             }

@@ -17,10 +17,13 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
 
         public EntityQueryBuilder<TEntity, TPrimaryKey> WithIsDescending(bool isDescending);
 
-        public EntityQueryBuilder<TEntity, TPrimaryKey> ApplySorting<T>()
+        public EntityQueryBuilder<TEntity, TPrimaryKey> ApplyFieldSorting<T>()
            where T : class, new();
 
         public EntityQueryBuilder<TEntity, TPrimaryKey> ApplyOrdering();
+
+        public EntityQueryBuilder<TEntity, TPrimaryKey> ApplySearchValueFilter<TViewModel>()
+            where TViewModel : class, new();
 
         public IQueryable<TEntity> Build();
     }

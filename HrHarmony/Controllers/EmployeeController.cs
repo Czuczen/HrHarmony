@@ -13,6 +13,7 @@ using HrHarmony.Repositories.Crud;
 using HrHarmony.Repositories.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Policy;
 
 namespace HrHarmony.Controllers;
 
@@ -87,7 +88,7 @@ public class EmployeeController : Controller
         mappedEmployee.Leaves = _mapper.Map<IEnumerable<Models.ViewModels.Leave.DetailsViewModel>>(await _leaveRepository.GetWhere("EmployeeId", mappedEmployee.Id));
 
         mappedEmployee.IsMainView = true;
-
+        
         return View(mappedEmployee);
     }
 
