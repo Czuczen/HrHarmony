@@ -12,34 +12,28 @@ namespace HrHarmony.Repositories
 {
     public static class RepositoriesHelper
     {
-        public static string GetSortField<TEntityDto, TPrimaryKey>(string? orderBy)
-            where TEntityDto : class, IEntityDto<TPrimaryKey>, new()
+        public static string GetSortField<TIndexViewModel>(string? orderBy)
+            where TIndexViewModel : class, new()
         {
+            var properties = typeof(TIndexViewModel).GetProperties();
+
             if (!string.IsNullOrWhiteSpace(orderBy))
             {
-                var orderProp = typeof(TEntityDto).GetProperty(orderBy);
+                var orderProp = typeof(TIndexViewModel).GetProperty(orderBy);
                 if (orderProp != null)
                     return orderBy;
+                else
+                    return properties.First().Name;
             }
-            else
-            {
-                var preferredSortFields = new string[] { "name", "fullname", "type", "nr", "date", "description" };
-                var properties = typeof(TEntityDto).GetProperties();
 
-                foreach (var fieldName in preferredSortFields)
-                {
-                    var property = properties.FirstOrDefault(prop => prop.Name.ToLower().Contains(fieldName));
-                    if (property != null)
-                        return property.Name;
-                }
-            }
-            
-            return "Id";
+            return properties.First().Name;
         }
 
         public static IQueryable<TEntity> FilterEntities<TEntity, TPrimaryKey, TIndexViewModel>(
             IQueryable<TEntity> query, string? searchString, IEnumerable<IFilterStrategy<TEntity>> filterStrategies)
             where TEntity : class, IEntity<TPrimaryKey>, new()
+            where TPrimaryKey : struct
+            where TIndexViewModel : class, new()
         {
             if (string.IsNullOrWhiteSpace(searchString)) return query;
 

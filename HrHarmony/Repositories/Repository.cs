@@ -160,25 +160,25 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
-    public PaginatedResult<TEntityDto> GetPagedEntities<TIndexViewModel>(int? pageNumber, int? pageSize, string? orderBy, 
-        bool? isDescending, string? searchString)
+    public PaginatedResult<TEntityDto> GetPagedEntities<TIndexViewModel>(PaginationRequest req)
+        where TIndexViewModel : class, new()
     {
-        var tempPageNumber = pageNumber ?? 1;
-        var tempPageSize = pageSize ?? 10;
-        var tempIsDescending = isDescending ?? false;
+        var pageNumber = req.PageNumber;
+        var pageSize = req.PageSize;
+        var isDescending = req.IsDescending;
 
         var totalCount = _ctx.Set<TEntity>().Count();
-        var newTotalPages = (int) Math.Ceiling((double) totalCount / tempPageSize);
-        tempPageNumber = tempPageNumber <= newTotalPages ? tempPageNumber : newTotalPages;
-        var skip = (tempPageNumber - 1) * tempPageSize;
+        var newTotalPages = (int) Math.Ceiling((double) totalCount / pageSize);
+        pageNumber = pageNumber <= newTotalPages ? pageNumber : newTotalPages;
+        var skip = (pageNumber - 1) * pageSize;
 
         var query = _ctx.Set<TEntity>().AsQueryable();
-        orderBy = RepositoriesHelper.GetSortField<TEntityDto, TPrimaryKey>(orderBy);
-        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey, TIndexViewModel>(query, searchString, _filterStrategies);
-        query = tempIsDescending ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy)) : query.OrderBy(x => EF.Property<TEntity>(x, orderBy));
+        var orderBy = RepositoriesHelper.GetSortField<TIndexViewModel>(req.OrderBy);
+        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey, TIndexViewModel>(query, req.SearchString, _filterStrategies);
+        query = isDescending ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy)) : query.OrderBy(x => EF.Property<TEntity>(x, orderBy));
 
         var searchedCount = query.Count();
-        query = query.Skip(skip).Take(tempPageSize);
+        query = query.Skip(skip).Take(pageSize);
 
         var items = query.ToList();
         var entities = _mapper.Map<IEnumerable<TEntityDto>>(items);
@@ -188,11 +188,11 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
             Items = entities,
             TotalCount = totalCount,
             SearchedCount = searchedCount,
-            PageNumber = tempPageNumber,
-            PageSize = tempPageSize,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
             OrderBy = orderBy,
-            IsDescending = tempIsDescending,
-            SearchString = searchString
+            IsDescending = isDescending,
+            SearchString = req.SearchString
         };
     }
 
