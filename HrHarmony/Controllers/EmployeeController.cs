@@ -59,6 +59,10 @@ public class EmployeeController : Controller
     public async Task<IActionResult> Index(int? pageNumber, int? pageSize, string? orderBy, 
         bool? isDescending, string? searchString)
     {
+
+        var dfg = _employeeRepository.GetWhereWithRelated(item => item.FullName.Contains("a"));
+        var mappedEmployee = _mapper.Map<IEnumerable<DetailsViewModel>>(dfg);
+
         var pagedEntities = _employeeRepository.GetPagedEntities<IndexViewModel>(pageNumber, pageSize, orderBy, isDescending, searchString);
         var mappedEmployees = _mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities);
 

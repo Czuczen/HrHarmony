@@ -6,11 +6,11 @@ using System.Text;
 
 namespace HrHarmony.Controllers
 {
-    public class LogsController : Controller
+    public class LoggesController : Controller
     {
         private readonly IConfiguration _configuration;
 
-        public LogsController(IConfiguration configuration)
+        public LoggesController(IConfiguration configuration)
         {
             _configuration = configuration;
         }

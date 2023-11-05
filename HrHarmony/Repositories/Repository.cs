@@ -6,6 +6,7 @@ using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
 using HrHarmony.Models.Entities.Main;
+using HrHarmony.Repositories.Filters;
 using HrHarmony.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -24,11 +25,17 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
 {
     private readonly ApplicationDbContext _ctx;
     private readonly IMapper _mapper;
+    private readonly IEnumerable<IFilterStrategy<TEntity>> _filterStrategies;
 
-    public Repository(ApplicationDbContext context, IMapper mapper)
+    public Repository(
+        ApplicationDbContext context,
+        IMapper mapper,
+        IEnumerable<IFilterStrategy<TEntity>> filterStrategies
+        )
     {
         _ctx = context;
         _mapper = mapper;
+        _filterStrategies = filterStrategies;
     }
 
     public TEntityDto GetById(TPrimaryKey id)
@@ -161,24 +168,16 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var tempIsDescending = isDescending ?? false;
 
         var totalCount = _ctx.Set<TEntity>().Count();
-
-        // Oblicz nową ilość dostępnych stron po zmianie rozmiaru strony
         var newTotalPages = (int) Math.Ceiling((double) totalCount / tempPageSize);
-
-        // Dostosuj numer strony, jeśli jest poza nowym zakresem stron
         tempPageNumber = tempPageNumber <= newTotalPages ? tempPageNumber : newTotalPages;
-
         var skip = (tempPageNumber - 1) * tempPageSize;
 
         var query = _ctx.Set<TEntity>().AsQueryable();
+        orderBy = RepositoriesHelper.GetSortField<TEntityDto, TPrimaryKey>(orderBy);
+        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey, TIndexViewModel>(query, searchString, _filterStrategies);
+        query = tempIsDescending ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy)) : query.OrderBy(x => EF.Property<TEntity>(x, orderBy));
 
-        query = RepositoriesHelper.FilterEntities<TEntity, TPrimaryKey, TIndexViewModel>(query, searchString);
         var searchedCount = query.Count();
-        orderBy = RepositoriesHelper.GetDefaultSortField<TEntityDto, TPrimaryKey>(orderBy);
-        query = tempIsDescending
-                    ? query.OrderByDescending(x => EF.Property<TEntity>(x, orderBy))
-                    : query.OrderBy(x => EF.Property<TEntity>(x, orderBy));
-
         query = query.Skip(skip).Take(tempPageSize);
 
         var items = query.ToList();
@@ -195,21 +194,6 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
             IsDescending = tempIsDescending,
             SearchString = searchString
         };
-
-        //====================
-        //var skip = (pageNumber - 1) * pageSize;
-        //var totalCount = _ctx.Set<TEntity>().Count();
-
-        //var items = _ctx.Set<TEntity>().Skip(skip).Take(pageSize).ToList();
-        //var entities = _mapper.Map<IEnumerable<TEntityDto>>(items);
-
-        //return new PaginatedResult<TEntityDto>
-        //{
-        //    Items = entities,
-        //    TotalCount = totalCount,
-        //    PageNumber = pageNumber,
-        //    PageSize = pageSize
-        //};
     }
 
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize)
