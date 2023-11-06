@@ -1,5 +1,5 @@
 ﻿<div class="btn-row">
-    <a href="@Url.Action("Index")" class="btn btn-secondary text-left">Wróć</a>
+    @await Html.PartialAsync("~/Views/Shared/Records/_ComeBackButton.cshtml")
 
     <div class="btn text-right">
         <input type="submit" value="Zapisz" class="btn btn-primary" />

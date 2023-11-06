@@ -1,0 +1,15 @@
+﻿/* Strzałka w dół */
+.arrow-down::before {
+    content: "\25BC"; /* Unicode dla strzałki w dół */
+}
+
+/* Strzałka w górę */
+.arrow-up::before {
+    content: "\25B2"; /* Unicode dla strzałki w górę */
+}
+
+a.custom-link {
+    cursor: pointer;
+    text-decoration: none; /* Usunięcie podkreślenia linku */
+    color: white; /* Nadanie koloru tekstu na biały */
+}

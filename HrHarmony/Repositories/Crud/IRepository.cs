@@ -36,32 +36,31 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
 
     public IQueryable<TEntityDto> GetQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
 
-    public IQueryable<TEntityDto> GetQueryWithRelated(Expression<Func<TEntity, bool>> predicate);
-
-    public IQueryable<TEntityDto> GetQueryWithRelated(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
-
     public IEnumerable<TEntityDto> ExecuteQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
 
     public Task<IEnumerable<TEntityDto>> ExecuteQueryAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
-
-    public IEnumerable<TEntityDto> ExecuteQueryWithRelated(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
-
-    public Task<IEnumerable<TEntityDto>> ExecuteQueryWithRelatedAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
 
     public Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id);
 
     public PaginatedResult<TEntityDto> GetPagedEntities<TIndexViewModel>(PaginationRequest req)
         where TIndexViewModel : class, new();
 
-    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync(int pageNumber, int pageSize);
+    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync<TViewModel>(PaginationRequest req)
+       where TViewModel : class, new();
 
-    public PaginatedResult<TEntityDto> GetPagedEntitiesWithRelated(int pageNumber, int pageSize);
+    public PaginatedResult<TEntityDto> GetPagedEntitiesWithRelated<TViewModel>(PaginationRequest req)
+        where TViewModel : class, new();
 
-    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithRelatedAsync(int pageNumber, int pageSize);
+    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithRelatedAsync<TViewModel>(PaginationRequest req)
+        where TViewModel : class, new();
 
-    public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
+    public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields<TViewModel>(PaginationRequest req,
+        Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
+        where TViewModel : class, new();
 
-    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync(int pageNumber, int pageSize, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
+    public Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync<TViewModel>(PaginationRequest req,
+        Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection)
+        where TViewModel : class, new();
 
     public TEntityDto GetEntityWithCustomFields(TPrimaryKey id, Func<Selectable<TEntity, TEntityDto>, IQueryable<TEntityDto>> customProjection);
 

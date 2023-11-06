@@ -19,7 +19,7 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
 
         private readonly IEnumerable<IValueFilterStrategy<TEntity>> _valueFilterStrategies;
 
-        public EntityQueryBuilder(IEnumerable<IValueFilterStrategy<TEntity>> valueFilterStrategies)
+        protected EntityQueryBuilder(IEnumerable<IValueFilterStrategy<TEntity>> valueFilterStrategies)
         {
             _valueFilterStrategies = valueFilterStrategies;
         }
@@ -58,7 +58,7 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
         public EntityQueryBuilder<TEntity, TPrimaryKey> ApplyFieldSorting<T>()
            where T : class, new()
         {
-            var properties = typeof(T).GetProperties();
+            var properties = typeof(T).GetProperties().Where(item => item.Name.ToLower() != "id");
 
             if (!string.IsNullOrWhiteSpace(OrderBy))
             {
@@ -98,6 +98,8 @@ namespace HrHarmony.Repositories.QueryBuilder.Entity.Base
             Query = Query.Where(filters);
             return this;
         }
+
+        public abstract Task<PaginatedQuery<TEntity>> BuildAsync<TViewModel>(PaginationRequest req) where TViewModel : class, new();
 
         public abstract PaginatedQuery<TEntity> Build<TViewModel>(PaginationRequest req) where TViewModel : class, new();
 

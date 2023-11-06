@@ -18,6 +18,22 @@ public static class MapperConfigurationFactory
     {
         return  new MapperConfiguration(cfg =>
         {
+            // Entity => Entity
+            cfg.CreateMap<Absence, Absence>();
+            cfg.CreateMap<Employee, Employee>();
+            cfg.CreateMap<EmploymentContract, EmploymentContract>();
+            cfg.CreateMap<Leave, Leave>();
+            cfg.CreateMap<Salary, Salary>();
+
+            cfg.CreateMap<AbsenceType, AbsenceType>();
+            cfg.CreateMap<Address, Address>();
+            cfg.CreateMap<ContractType, ContractType>();
+            cfg.CreateMap<EducationLevel, EducationLevel>();
+            cfg.CreateMap<Experience, Experience>();
+            cfg.CreateMap<LeaveType, LeaveType>();
+            cfg.CreateMap<MaritalStatus, MaritalStatus>();
+
+
             // Entity => Dto
             cfg.CreateMap<Absence, AbsenceDto>();
             cfg.CreateMap<Employee, EmployeeDto>();

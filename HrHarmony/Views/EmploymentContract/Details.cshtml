@@ -43,5 +43,5 @@
 
 @if (Model.IsMainView)
 {
-    <a href="javascript: history.go(-1)" class="btn btn-secondary text-left">Wróć</a>
+    @await Html.PartialAsync("~/Views/Shared/Records/_ComeBackButton.cshtml")
 }

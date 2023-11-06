@@ -1,0 +1,52 @@
+﻿@{
+    Model.ControllerName = Context.Request.Path.Value?.Replace("/", "");
+}
+
+<link rel="stylesheet" href="~/css/_recordsList.css">
+
+<div class="row">
+    <form method="get">
+        <div class="d-flex bd-highlight mb-1">
+            <div class="form-group me-auto p-1 bd-highlight">
+                <select name="PageSize" id="pageSize" onchange="this.form.submit()">
+                    @Model.RenderPageSizeOptions
+                </select>
+            </div>
+            <div class="form-group p-1 bd-highlight">
+                <input type="hidden" name="PageNumber" value="@Model.PageNumber">
+                <input type="hidden" name="OrderBy" value="@Model.OrderBy">
+                <input type="hidden" name="IsDescending" value="@Model.IsDescendingAsString">
+                <input type="text" name="SearchString" id="searchInput" value="@Model.SearchString" placeholder="Szukaj...">
+                <button id="searchButton" type="submit">Szukaj</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                @Model.RenderColumns
+            </tr>
+        </thead>
+        <tbody>
+            @Model.RenderRecords
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="d-flex bd-highlight mb-1">
+        <div class="me-auto p-1 bd-highlight">
+            <span class="text-muted">
+                Wyświetlono @(Model.ValidPageSize)
+                rekordów spośród @Model.SearchedCount znalezionych
+                z łącznej liczby @Model.TotalCount
+            </span>
+        </div>
+        @Model.RenderPages
+    </div>
+</div>
+
+<script src="~/js/_recordsList.js"></script>

@@ -17,5 +17,5 @@
         @Html.ValidationMessageFor(model => model.LevelName, "", new { @class = "text-danger" })
     </div>
 
-    @await Html.PartialAsync("_FormButtons")
+    @await Html.PartialAsync("~/Views/Shared/Records/_FormButtons.cshtml")
 }

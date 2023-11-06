@@ -36,7 +36,7 @@ namespace HrHarmony.Models.ViewModels
 
         public IEnumerable<int> AvailablePageSizes = new List<int> { 5, 10, 20, 50, 100 };
 
-        public HtmlString PageSizeOptions
+        public HtmlString RenderPageSizeOptions
         {
             get
             {
@@ -112,14 +112,14 @@ namespace HrHarmony.Models.ViewModels
 
                     var idProp = Properties.Single(item => item.Name.ToLower() == "id");
 
-                    ret += "    <td>";
-                    ret += $"        <a class=\"btn btn-success btn-sm\" asp-controller=\"{ControllerName}\" asp-action=\"Details\" asp-route-id=\"{idProp.GetValue(item)}\">Szczegóły</a>";
-                    ret += $"        <a class=\"btn btn-info btn-sm\" asp-controller=\"{ControllerName}\" asp-action=\"Edit\" asp-route-id=\"{idProp.GetValue(item)}\">Edytuj</a>";
-                    ret += $"        <a class=\"btn btn-danger btn-sm\" asp-controller=\"{ControllerName}\" asp-action=\"Delete\" asp-route-id=\"{idProp.GetValue(item)}\">Usuń</a>";
+                    ret += "    <td class=\"justify-content-between align-items-center\">";
+                    ret += $"       <a class=\"btn ms-2 btn-success btn-sm\" href=\"/{ControllerName}/Details/{idProp.GetValue(item)}\">Szczegóły</a>";
+                    ret += $"       <a class=\"btn ms-2 btn-info btn-sm\" href=\"/{ControllerName}/Edit/{idProp.GetValue(item)}\">Edytuj</a>";
+                    ret += $"       <a class=\"btn ms-2 btn-danger btn-sm\" href=\"/{ControllerName}/Delete/{idProp.GetValue(item)}\">Usuń</a>";
                     ret += "    </td>";
                     ret += "</tr>";
                 }
-
+                
                 return new HtmlString(ret);
             }
         }

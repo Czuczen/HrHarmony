@@ -1,5 +1,6 @@
 ﻿using HrHarmony.Models.Dto.Details.Dictionary;
 using HrHarmony.Models.Dto.Details.Main;
+using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Repositories.Selectable;
 
@@ -25,7 +26,23 @@ namespace HrHarmony.Utils
         //        PredicateUtils<TEntity>.ByValue.Compile()(entity, value);
         //}
 
-        public static Func<Selectable<Employee, EmployeeDto>, IQueryable<EmployeeDto>> CustomEmployeeWithRelatedProjection = s => s.Select(item =>
+        public static Func<IQueryable<Employee>, IQueryable<Employee>> CustomEmployeeWithRelatedProjectionQ = q => q.Select(item =>
+           new Employee
+           {
+               Id = item.Id,
+               FullName = item.FullName,
+               Address = new Address
+               {
+                   Street = item.Address.Street,
+                   City = item.Address.City,
+               },
+               Salaries = item.Salaries.Select(salary => new Salary
+               {
+                   AdditionalSalary = salary.AdditionalSalary
+               }).ToList()
+           });
+
+        public static Func<Selectable<Employee, EmployeeDto>, IQueryable<EmployeeDto>> CustomEmployeeWithRelatedProjectionF = s => s.Select(item =>
             new EmployeeDto
             {
                 Id = item.Id,

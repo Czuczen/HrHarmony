@@ -20,19 +20,3 @@ html {
 body {
   margin-bottom: 60px;
 }
-
-/* Strza³ka w dó³ */
-.arrow-down::before {
-    content: "\25BC"; /* Unicode dla strza³ki w dó³ */
-}
-
-/* Strza³ka w górê */
-.arrow-up::before {
-    content: "\25B2"; /* Unicode dla strza³ki w górê */
-}
-
-a.custom-link {
-    cursor: pointer;
-    text-decoration: none; /* Usuniêcie podkreœlenia linku */
-    color: white; /* Nadanie koloru tekstu na bia³y */
-}

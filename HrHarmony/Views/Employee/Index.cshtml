@@ -6,8 +6,8 @@
     ViewData["Title"] = "Pracownicy";
 }
 
-@await Html.PartialAsync("_RecordsListHeader", "pracowników")
-@await Html.PartialAsync("_RecordsList")
+@await Html.PartialAsync("~/Views/Shared/Records/_RecordsListHeader.cshtml", "pracowników")
+@await Html.PartialAsync("~/Views/Shared/Records/_RecordsList.cshtml")
 
 @* 
 <div class="container mt-5">

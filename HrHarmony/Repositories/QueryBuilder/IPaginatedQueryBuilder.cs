@@ -14,6 +14,9 @@ namespace HrHarmony.Repositories.QueryBuilder
 
         public PaginatedQueryBuilder<TEntity, TPrimaryKey> WithPageSize(int pageSize);
 
+        public Task<PaginatedQuery<TEntity>> BuildAsync<TViewModel>(PaginationRequest req)
+            where TViewModel : class, new();
+
         public PaginatedQuery<TEntity> Build<TViewModel>(PaginationRequest req)
             where TViewModel : class, new();
     }

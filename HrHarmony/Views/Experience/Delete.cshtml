@@ -10,5 +10,5 @@
 <form asp-controller="Experience" asp-action="Delete" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" value="@Model.Id" />
-    @await Html.PartialAsync("_DeleteFormButtons")
+    @await Html.PartialAsync("~/Views/Shared/Records/_DeleteFormButtons.cshtml")
 </form>

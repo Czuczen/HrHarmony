@@ -26,7 +26,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.PhoneNumber)
-        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @type = "number", @step = "0" })
+        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
     </div>
 
@@ -60,5 +60,5 @@
         @Html.ValidationMessageFor(model => model.ExperienceId, "", new { @class = "text-danger" })
     </div>
 
-    @await Html.PartialAsync("_FormButtons")
+    @await Html.PartialAsync("~/Views/Shared/Records/_FormButtons.cshtml")
 }

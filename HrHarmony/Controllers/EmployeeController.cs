@@ -11,6 +11,7 @@ using HrHarmony.Models.ViewModels;
 using HrHarmony.Models.ViewModels.Employee;
 using HrHarmony.Repositories.Crud;
 using HrHarmony.Repositories.Models;
+using HrHarmony.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Policy;
@@ -58,7 +59,13 @@ public class EmployeeController : Controller
 
     public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var pagedEntities = _employeeRepository.GetPagedEntities<IndexViewModel>(paginationRequest);
+
+        //var pagedEntities = await _employeeRepository.GetPagedEntitiesAsync<IndexViewModel>(paginationRequest);
+
+        //var pagedEntities = await _employeeRepository.GetPagedEntitiesWithRelatedAsync<IndexViewModel>(paginationRequest);
+
+        var pagedEntities = await _employeeRepository.GetPagedEntitiesWithCustomFieldsAsync<IndexViewModel>(paginationRequest, PredicateUtils.CustomEmployeeWithRelatedProjectionF);
+
         var mappedEmployees = _mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities);
 
         return View(mappedEmployees);
