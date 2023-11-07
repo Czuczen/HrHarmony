@@ -1,5 +1,5 @@
-﻿using HrHarmony.Models.Entities.Main;
-using HrHarmony.Repositories.EntityRepository;
+﻿using HrHarmony.Data.Repositories.Entity;
+using HrHarmony.Models.Entities.Main;
 using HrHarmony.Tests.Configuration;
 using HrHarmony.Tests.Infrastructure;
 

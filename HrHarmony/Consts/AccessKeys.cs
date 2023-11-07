@@ -1,7 +1,6 @@
-﻿namespace HrHarmony.Consts
+﻿namespace HrHarmony.Consts;
+
+public static class AccessKeys
 {
-    public static class AccessKeys
-    {
-        public const string LogsAccessKey = "Q85AKdeSQ8Wsz1c7";
-    }
+    public const string LogsAccessKey = "Q85AKdeSQ8Wsz1c7";
 }

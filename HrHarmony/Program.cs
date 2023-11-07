@@ -1,6 +1,6 @@
-using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Dependencies;
-using HrHarmony.Configuration.Logging;
+using HrHarmony.Data.Database;
+using HrHarmony.Logging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
-// Rejestracja zaleønoúci wed≥ug konwencji
+// Rejestracja zale≈ºno≈õci wed≈Çug konwencji
 builder.Services.RegisterDependenciesByConvention();
 
 // Add services to the container.

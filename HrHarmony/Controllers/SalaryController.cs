@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HrHarmony.Data.Repositories.Crud;
 using HrHarmony.Models.Dto.Details.Main;
 using HrHarmony.Models.Dto.Update.Main;
 using HrHarmony.Models.Entities.Main;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.Salary;
 using HrHarmony.Models.Dto.Create.Main;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using HrHarmony.Repositories.Crud;
 
 namespace HrHarmony.Controllers;
 

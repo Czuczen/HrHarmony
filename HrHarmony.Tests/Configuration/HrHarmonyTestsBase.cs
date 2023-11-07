@@ -1,4 +1,4 @@
-﻿using HrHarmony.Configuration.Database;
+﻿using HrHarmony.Data.Database;
 using HrHarmony.Tests.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

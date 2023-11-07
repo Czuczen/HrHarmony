@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HrHarmony.Data.Repositories.Crud;
 using HrHarmony.Models.Dto.Create.Main;
 using HrHarmony.Models.Dto.Details.Main;
 using HrHarmony.Models.Dto.Update.Main;
@@ -10,7 +11,6 @@ using HrHarmony.Models.Dto.Details.Dictionary;
 using HrHarmony.Models.Dto.Update.Dictionary;
 using HrHarmony.Models.Dto.Create.Dictionary;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using HrHarmony.Repositories.Crud;
 
 namespace HrHarmony.Controllers;
 

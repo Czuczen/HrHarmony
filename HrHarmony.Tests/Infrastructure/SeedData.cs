@@ -1,4 +1,4 @@
-﻿using HrHarmony.Configuration.Database;
+﻿using HrHarmony.Data.Database;
 using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Utils;
