@@ -2,7 +2,7 @@
 using HrHarmony.Models.Dto.Details.Main;
 using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
-using HrHarmony.Repositories.Selectable;
+using HrHarmony.Repositories.AccessLimiters.Selectable;
 
 namespace HrHarmony.Utils
 {

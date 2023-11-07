@@ -14,7 +14,8 @@ using HrHarmony.Repositories.Models;
 using HrHarmony.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Policy;
+using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Controllers;
 
@@ -63,6 +64,20 @@ public class EmployeeController : Controller
         //var pagedEntities = await _employeeRepository.GetPagedEntitiesAsync<IndexViewModel>(paginationRequest);
 
         //var pagedEntities = await _employeeRepository.GetPagedEntitiesWithRelatedAsync<IndexViewModel>(paginationRequest);
+
+        //var asdasd = await _employeeRepository.GetEntityWithCustomFieldsAsync(3069, PredicateUtils.CustomEmployeeWithRelatedProjectionF);
+
+
+        var expre1 = _employeeRepository.GetSyncQuery(syncQ => syncQ.Skip(2).Where(a => a.Id > 3000));
+        var sddf1 = expre1.ToList();
+
+
+        var expre = _employeeRepository.GetQuery(entity => entity.Id > 3000);
+        var sddf = expre.CountAsync();
+
+        var sdf = _employeeRepository.GetQuery(query => query);
+        var hhh = sdf.ToListAsync();
+        var fff = sdf.CountAsync();
 
         var pagedEntities = await _employeeRepository.GetPagedEntitiesWithCustomFieldsAsync<IndexViewModel>(paginationRequest, PredicateUtils.CustomEmployeeWithRelatedProjectionF);
 

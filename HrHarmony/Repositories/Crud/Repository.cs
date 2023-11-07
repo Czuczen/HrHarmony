@@ -5,11 +5,13 @@ using HrHarmony.Configuration.Database;
 using HrHarmony.Configuration.Exceptions;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
+using HrHarmony.Repositories.AccessLimiters.Selectable;
+using HrHarmony.Repositories.AccessLimiters.SyncQuery;
 using HrHarmony.Repositories.Models;
 using HrHarmony.Repositories.QueryBuilder;
-using HrHarmony.Repositories.Selectable;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HrHarmony.Repositories.Crud;
 
@@ -91,17 +93,24 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         return await query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
-    public IQueryable<TEntityDto> GetQuery(Expression<Func<TEntity, bool>> predicate)
+    // Wewnątrz repozytorium masz dostęp do bazy danych (poprzez ApplicationDbContext) i możesz wykonywać operacje na IQueryable<TEntity>, które są związane z bazą danych. Dlatego możesz wykonywać operacje asynchroniczne, takie jak CountAsync czy ToListAsync, na tych zapytaniach.
+    // Kiedy opuścisz repozytorium i zwrócisz IQueryable<TEntityDto> (czyli wynik projektowania), zapytanie przestaje być związane z bazą danych i staje się projekcją danych. Nie można już na nim wykonywać operacji asynchronicznych, ponieważ Entity Framework Core nie obsługuje asynchronicznych operacji na projekcjach (projekcje nie implementują IDbAsyncQueryProvider).
+    // Tylko operacje synchroniczne. Specjane ograniczenie poprzez ISyncQueryExecuter
+    public ISyncQueryExecuter<TEntityDto> GetQuery(Expression<Func<TEntity, bool>> predicate)
     {
-        return _ctx.Set<TEntity>().Where(predicate).Select(entity => _mapper.Map<TEntityDto>(entity));
+        var query = _ctx.Set<TEntity>().Where(predicate);
+        return new SyncQueryExecuter<TEntityDto>(query.Select(entity => _mapper.Map<TEntityDto>(entity)));
     }
 
-    public IQueryable<TEntityDto> GetQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
+    // Wewnątrz repozytorium masz dostęp do bazy danych (poprzez ApplicationDbContext) i możesz wykonywać operacje na IQueryable<TEntity>, które są związane z bazą danych. Dlatego możesz wykonywać operacje asynchroniczne, takie jak CountAsync czy ToListAsync, na tych zapytaniach.
+    // Kiedy opuścisz repozytorium i zwrócisz IQueryable<TEntityDto> (czyli wynik projektowania), zapytanie przestaje być związane z bazą danych i staje się projekcją danych. Nie można już na nim wykonywać operacji asynchronicznych, ponieważ Entity Framework Core nie obsługuje asynchronicznych operacji na projekcjach (projekcje nie implementują IDbAsyncQueryProvider).
+    // Tylko operacje synchroniczne. Specjalne ograniczenie poprzez ISyncQueryExecuter.
+    public ISyncQueryExecuter<TEntityDto> GetQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)
     {
         var query = _ctx.Set<TEntity>().AsQueryable();
         query = queryBuilder(query);
 
-        return query.Select(entity => _mapper.Map<TEntityDto>(entity));
+        return new SyncQueryExecuter<TEntityDto>(query.Select(entity => _mapper.Map<TEntityDto>(entity)));
     }
 
     public IEnumerable<TEntityDto> ExecuteQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder)

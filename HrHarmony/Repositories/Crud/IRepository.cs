@@ -2,14 +2,15 @@
 using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
 using HrHarmony.Models.Dto;
 using HrHarmony.Models.Entities;
+using HrHarmony.Repositories.AccessLimiters.Selectable;
+using HrHarmony.Repositories.AccessLimiters.SyncQuery;
 using HrHarmony.Repositories.Models;
-using HrHarmony.Repositories.Selectable;
 using System.Linq.Expressions;
 
 namespace HrHarmony.Repositories.Crud;
 
 [RegisterOpenGenericInterfaceInDI(typeof(IRepository<,,,,>))]
-public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto> : IPerWebRequestDependency
+public interface IRepository<TEntity, TPrimaryKey, TEntityDto, in TUpdateDto, in TCreateDto> : IPerWebRequestDependency
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
     where TEntityDto : class, IEntityDto<TPrimaryKey>, new()
@@ -32,9 +33,9 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCrea
 
     public Task<IEnumerable<TEntityDto>> GetWhereWithRelatedAsync(Expression<Func<TEntity, bool>> predicate);
 
-    public IQueryable<TEntityDto> GetQuery(Expression<Func<TEntity, bool>> predicate);
+    public ISyncQueryExecuter<TEntityDto> GetQuery(Expression<Func<TEntity, bool>> predicate);
 
-    public IQueryable<TEntityDto> GetQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
+    public ISyncQueryExecuter<TEntityDto> GetQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
 
     public IEnumerable<TEntityDto> ExecuteQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
 
