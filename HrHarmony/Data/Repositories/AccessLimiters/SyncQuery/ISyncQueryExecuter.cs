@@ -1,4 +1,4 @@
-﻿namespace HrHarmony.Data.AccessLimiters.SyncQuery;
+﻿namespace HrHarmony.Data.Repositories.AccessLimiters.SyncQuery;
 
 public interface ISyncQueryExecuter<TEntityDto>
 {

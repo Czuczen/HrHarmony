@@ -3,7 +3,7 @@ using System.Reflection;
 using HrHarmony.Attributes;
 using LinqKit;
 
-namespace HrHarmony.Data.QueryBuilder.ValueFilters;
+namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
 [RegisterOpenGenericClassInDI(typeof(NumericValueFilterStrategy<>))]
 public class NumericValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>

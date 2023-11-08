@@ -9,11 +9,13 @@ using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Models.ViewModels;
 using HrHarmony.Models.ViewModels.Employee;
-using HrHarmony.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using HrHarmony.Data.Repositories.Crud;
 using HrHarmony.Models.Shared;
+using HrHarmony.Data.Repositories.Dto;
+using Microsoft.EntityFrameworkCore;
+using HrHarmony.Consts;
+using HrHarmony.Data.Repositories.Entity;
 
 namespace HrHarmony.Controllers;
 
@@ -21,154 +23,140 @@ public class EmployeeController : Controller
 {
     private readonly ILogger<EmployeeController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepository<Absence, int, AbsenceDto, AbsenceUpdateDto, AbsenceCreateDto> _absenceRepository;
     private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;
-    private readonly IRepository<MaritalStatus, int, MaritalStatusDto, MaritalStatusUpdateDto, MaritalStatusCreateDto> _maritalStatusRepository;
-    private readonly IRepository<Address, int, AddressDto, AddressUpdateDto, AddressCreateDto> _addressRepository;
-    private readonly IRepository<EducationLevel, int, EducationLevelDto, EducationLevelUpdateDto, EducationLevelCreateDto> _educationLevelRepository;
-    private readonly IRepository<Experience, int, ExperienceDto, ExperienceUpdateDto, ExperienceCreateDto> _experienceRepository;
-    private readonly IRepository<EmploymentContract, int, EmploymentContractDto, EmploymentContractUpdateDto, EmploymentContractCreateDto> _employmentContractRepository;
-    private readonly IRepository<Leave, int, LeaveDto, LeaveUpdateDto, LeaveCreateDto> _leaveRepository;
-    
+    private readonly IRepository<Employee, int> _repository;
+
     public EmployeeController(
-        IRepository<Absence, int, AbsenceDto, AbsenceUpdateDto, AbsenceCreateDto> absenceRepository,
         IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> employeeRepository,
-        IRepository<MaritalStatus, int, MaritalStatusDto, MaritalStatusUpdateDto, MaritalStatusCreateDto> maritalStatusRepository,
-        IRepository<Address, int, AddressDto, AddressUpdateDto, AddressCreateDto> addressRepository,
-        IRepository<EducationLevel, int, EducationLevelDto, EducationLevelUpdateDto, EducationLevelCreateDto> educationLevelRepository,
-        IRepository<Experience, int, ExperienceDto, ExperienceUpdateDto, ExperienceCreateDto> experienceRepository,
-        IRepository<EmploymentContract, int, EmploymentContractDto, EmploymentContractUpdateDto, EmploymentContractCreateDto> employmentContractRepository,
-        IRepository<Leave, int, LeaveDto, LeaveUpdateDto, LeaveCreateDto> leaveRepository,
+        IRepository<Employee, int> repository,
         ILogger<EmployeeController> logger,
         IMapper mapper
     )
     {
+        _employeeRepository = employeeRepository;
+        _repository = repository;
         _logger = logger;
         _mapper = mapper;
-
-        _absenceRepository = absenceRepository;
-        _employeeRepository = employeeRepository;
-        _maritalStatusRepository = maritalStatusRepository;
-        _addressRepository = addressRepository;
-        _educationLevelRepository = educationLevelRepository;
-        _experienceRepository = experienceRepository;
-        _employmentContractRepository = employmentContractRepository;
-        _leaveRepository = leaveRepository;
     }
 
     public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
+        var pagedEntities = await _employeeRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
 
-        //var pagedEntities = await _employeeRepository.GetPagedEntitiesAsync<IndexViewModel>(paginationRequest);
+        var pagedRecords = new PagedRecordsViewModel<IndexViewModel>
+        {
+            Items = pagedEntities.Items.ToList(),
+            TotalCount = pagedEntities.TotalCount,
+            SearchedCount = pagedEntities.SearchedCount,
+            PageNumber = pagedEntities.PageNumber,
+            PageSize = pagedEntities.PageSize,
+            OrderBy = pagedEntities.OrderBy,
+            IsDescending = pagedEntities.IsDescending,
+            SearchString = pagedEntities.SearchString
+        };
 
-        //var pagedEntities = await _employeeRepository.GetPagedEntitiesWithRelatedAsync<IndexViewModel>(paginationRequest);
-
-        //var asdasd = await _employeeRepository.GetEntityWithCustomFieldsAsync(3069, PredicateUtils.CustomEmployeeWithRelatedProjectionF);
-
-
-        var pagedEntities = await _employeeRepository.GetPagedEntitiesWithCustomFieldsAsync<IndexViewModel>(paginationRequest, PredicateUtils.CustomEmployeeWithRelatedProjectionF);
-
-        var mappedEmployees = _mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities);
-
-        return View(mappedEmployees);
-
-        // ===========
-        //var employees = await _employeeRepository.GetAllAsync();
-        //var mappedEmployees = _mapper.Map<IEnumerable<IndexViewModel>>(employees);
-
-        //return View(mappedEmployees);
+        return View(pagedRecords);
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var employee = await _employeeRepository.GetByIdAsync(id);
-        if (employee == null)
+        var entity = await _employeeRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedEmployee = _mapper.Map<DetailsViewModel>(employee);
+        entity.IsMainView = true;
 
-        mappedEmployee.MaritalStatus = await _maritalStatusRepository.GetByIdAsync(mappedEmployee.MaritalStatusId);
-        mappedEmployee.Address = await _addressRepository.GetByIdAsync(mappedEmployee.AddressId);
-        mappedEmployee.EducationLevel = await _educationLevelRepository.GetByIdAsync(mappedEmployee.EducationLevelId);
-        mappedEmployee.Experience = await _experienceRepository.GetByIdAsync(mappedEmployee.ExperienceId);
-
-        mappedEmployee.Absences = _mapper.Map<IEnumerable<Models.ViewModels.Absence.DetailsViewModel>>(await _absenceRepository.GetWhere("EmployeeId", mappedEmployee.Id));
-        mappedEmployee.Contracts = _mapper.Map<IEnumerable<Models.ViewModels.EmploymentContract.DetailsViewModel>>(await _employmentContractRepository.GetWhere("EmployeeId", mappedEmployee.Id));
-        mappedEmployee.Leaves = _mapper.Map<IEnumerable<Models.ViewModels.Leave.DetailsViewModel>>(await _leaveRepository.GetWhere("EmployeeId", mappedEmployee.Id));
-
-        mappedEmployee.IsMainView = true;
-        
-        return View(mappedEmployee);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        var employeeViewModel = new CreateViewModel();
+        var maritalStatussesQ = _employeeRepository.GetQuery<MaritalStatus, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.MaritalStatus, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.StatusName } } ));
 
-        var allMaritalStatuses = await _maritalStatusRepository.GetAllAsync();
-        employeeViewModel.MaritalStatuses = allMaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
+        var addressesQ = _employeeRepository.GetQuery<Address, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Address, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.Street + " " + e.PostalCode + " " + e.City } } ));
 
-        var allAddresses = await _addressRepository.GetAllAsync();
-        employeeViewModel.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
+        var educationLevelsQ = _employeeRepository.GetQuery<EducationLevel, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.EducationLevel, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.LevelName } } ));
 
-        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
-        employeeViewModel.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
+        var experiancesQ = _employeeRepository.GetQuery<Experience, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Experience, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.ExperienceDescription } } ));
 
-        var allExperiances = await _experienceRepository.GetAllAsync();
-        employeeViewModel.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
+        var results = await maritalStatussesQ.Concat(addressesQ).Concat(educationLevelsQ).Concat(experiancesQ).ToListAsync();
 
-        return View(employeeViewModel);
+        var createViewModel = new CreateViewModel 
+        {
+            MaritalStatuses = results.Where(c => c.EntityName == EntitiesNames.MaritalStatus).Select(e => e.Item),
+            Addresses = results.Where(c => c.EntityName == EntitiesNames.Address).Select(e => e.Item),
+            EducationLevels = results.Where(c => c.EntityName == EntitiesNames.EducationLevel).Select(e => e.Item),
+            Experiences = results.Where(c => c.EntityName == EntitiesNames.Experience).Select(e => e.Item)
+        };
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(EmployeeCreateDto employee)
+    public async Task<IActionResult> Create(EmployeeCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _employeeRepository.CreateAsync(employee);
+            await _employeeRepository.CreateAsync(entity);
                 
             return RedirectToAction("Index");
         }
 
-        var mappedEmployee = _mapper.Map<CreateViewModel>(employee);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        var allMaritalStatuses = await _maritalStatusRepository.GetAllAsync();
-        mappedEmployee.MaritalStatuses = allMaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
+        var maritalStatussesQ = _employeeRepository.GetQuery<MaritalStatus, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.MaritalStatus, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.StatusName } }));
 
-        var allAddresses = await _addressRepository.GetAllAsync();
-        mappedEmployee.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
+        var addressesQ = _employeeRepository.GetQuery<Address, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Address, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.Street + " " + e.PostalCode + " " + e.City } }));
 
-        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
-        mappedEmployee.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
+        var educationLevelsQ = _employeeRepository.GetQuery<EducationLevel, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.EducationLevel, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.LevelName } }));
 
-        var allExperiances = await _experienceRepository.GetAllAsync();
-        mappedEmployee.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
+        var experiancesQ = _employeeRepository.GetQuery<Experience, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Experience, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.ExperienceDescription } }));
 
-        return View(mappedEmployee);
+        var results = await maritalStatussesQ.Concat(addressesQ).Concat(educationLevelsQ).Concat(experiancesQ).ToListAsync();
+
+        createViewModel.MaritalStatuses = results.Where(c => c.EntityName == EntitiesNames.MaritalStatus).Select(e => e.Item);
+        createViewModel.Addresses = results.Where(c => c.EntityName == EntitiesNames.Address).Select(e => e.Item);
+        createViewModel.EducationLevels = results.Where(c => c.EntityName == EntitiesNames.EducationLevel).Select(e => e.Item);
+        createViewModel.Experiences = results.Where(c => c.EntityName == EntitiesNames.Experience).Select(e => e.Item);
+
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var employee = await _employeeRepository.GetByIdAsync(id);
-        if (employee == null)
+        var entity = await _employeeRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedEmployee = _mapper.Map<UpdateViewModel>(employee);
+        var maritalStatussesQ = _employeeRepository.GetQuery<MaritalStatus, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.MaritalStatus, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.StatusName } }));
 
-        var allmaritalStatuses = await _maritalStatusRepository.GetAllAsync();
-        mappedEmployee.MaritalStatuses = allmaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
+        var addressesQ = _employeeRepository.GetQuery<Address, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Address, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.Street + " " + e.PostalCode + " " + e.City } }));
 
-        var allAddresses = await _addressRepository.GetAllAsync();
-        mappedEmployee.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
+        var educationLevelsQ = _employeeRepository.GetQuery<EducationLevel, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.EducationLevel, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.LevelName } }));
 
-        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
-        mappedEmployee.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
+        var experiancesQ = _employeeRepository.GetQuery<Experience, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Experience, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.ExperienceDescription } }));
 
-        var allExperiances = await _experienceRepository.GetAllAsync();
-        mappedEmployee.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
+        var results = await maritalStatussesQ.Concat(addressesQ).Concat(educationLevelsQ).Concat(experiancesQ).ToListAsync();
 
-        return View(mappedEmployee);
+        entity.MaritalStatuses = results.Where(c => c.EntityName == EntitiesNames.MaritalStatus).Select(e => e.Item);
+        entity.Addresses = results.Where(c => c.EntityName == EntitiesNames.Address).Select(e => e.Item);
+        entity.EducationLevels = results.Where(c => c.EntityName == EntitiesNames.EducationLevel).Select(e => e.Item);
+        entity.Experiences = results.Where(c => c.EntityName == EntitiesNames.Experience).Select(e => e.Item);
+
+        return View(entity);
     }
 
     [HttpPost]
@@ -181,33 +169,37 @@ public class EmployeeController : Controller
             return RedirectToAction("Index");
         }
 
-        var mappedEmployee = _mapper.Map<UpdateViewModel>(employee);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(employee);
 
-        var allmaritalStatuses = await _maritalStatusRepository.GetAllAsync();
-        mappedEmployee.MaritalStatuses = allmaritalStatuses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.StatusName });
+        var maritalStatussesQ = _employeeRepository.GetQuery<MaritalStatus, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.MaritalStatus, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.StatusName } }));
 
-        var allAddresses = await _addressRepository.GetAllAsync();
-        mappedEmployee.Addresses = allAddresses.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Street + " " + item.PostalCode + " " + item.City });
+        var addressesQ = _employeeRepository.GetQuery<Address, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Address, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.Street + " " + e.PostalCode + " " + e.City } }));
 
-        var allEducationLevels = await _educationLevelRepository.GetAllAsync();
-        mappedEmployee.EducationLevels = allEducationLevels.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.LevelName });
+        var educationLevelsQ = _employeeRepository.GetQuery<EducationLevel, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.EducationLevel, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.LevelName } }));
 
-        var allExperiances = await _experienceRepository.GetAllAsync();
-        mappedEmployee.Experiences = allExperiances.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.ExperienceDescription });
+        var experiancesQ = _employeeRepository.GetQuery<Experience, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Experience, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.ExperienceDescription } }));
 
+        var results = await maritalStatussesQ.Concat(addressesQ).Concat(educationLevelsQ).Concat(experiancesQ).ToListAsync();
 
-        return View(mappedEmployee);
+        updateViewModel.MaritalStatuses = results.Where(c => c.EntityName == EntitiesNames.MaritalStatus).Select(e => e.Item);
+        updateViewModel.Addresses = results.Where(c => c.EntityName == EntitiesNames.Address).Select(e => e.Item);
+        updateViewModel.EducationLevels = results.Where(c => c.EntityName == EntitiesNames.EducationLevel).Select(e => e.Item);
+        updateViewModel.Experiences = results.Where(c => c.EntityName == EntitiesNames.Experience).Select(e => e.Item);
+
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var employee = await _employeeRepository.GetByIdAsync(id);
-        if (employee == null)
+        var entity = await _employeeRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedEmployee = _mapper.Map<DeleteViewModel>(employee);
-
-        return View(mappedEmployee);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]

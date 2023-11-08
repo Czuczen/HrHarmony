@@ -1,4 +1,4 @@
-﻿using HrHarmony.Data.AccessLimiters.Selectable;
+﻿using HrHarmony.Data.Repositories.AccessLimiters.Selectable;
 using HrHarmony.Models.Dto.Details.Dictionary;
 using HrHarmony.Models.Dto.Details.Main;
 using HrHarmony.Models.Entities.Dictionary;

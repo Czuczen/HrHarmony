@@ -1,11 +1,11 @@
-﻿using HrHarmony.Data.QueryBuilder.Pagination;
-using HrHarmony.Data.QueryBuilder.ValueFilters;
+﻿using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
+using HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 using HrHarmony.Models.Entities;
 using HrHarmony.Models.Shared;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 
-namespace HrHarmony.Data.QueryBuilder.Entity;
+namespace HrHarmony.Data.Repositories.QueryBuilder.Entity;
 
 public abstract class EntityQueryBuilder<TEntity, TPrimaryKey>
     where TEntity : class, IEntity<TPrimaryKey>, new()

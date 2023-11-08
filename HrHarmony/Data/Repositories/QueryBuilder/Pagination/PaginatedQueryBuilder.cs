@@ -1,15 +1,15 @@
 ﻿using HrHarmony.Attributes;
-using HrHarmony.Data.QueryBuilder.Entity;
-using HrHarmony.Data.QueryBuilder.ValueFilters;
+using HrHarmony.Data.Repositories.QueryBuilder.Entity;
+using HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 using HrHarmony.Models.Entities;
 using HrHarmony.Models.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace HrHarmony.Data.QueryBuilder.Pagination;
+namespace HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 
 [RegisterOpenGenericClassInDI(typeof(PaginatedQueryBuilder<,>))]
-public class PaginatedQueryBuilder<TEntity, TPrimaryKey> : 
-    EntityQueryBuilder<TEntity, TPrimaryKey>, 
+public class PaginatedQueryBuilder<TEntity, TPrimaryKey> :
+    EntityQueryBuilder<TEntity, TPrimaryKey>,
     IPaginatedQueryBuilder<TEntity, TPrimaryKey>
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
@@ -17,7 +17,7 @@ public class PaginatedQueryBuilder<TEntity, TPrimaryKey> :
     private int _pageNumber;
     private int _pageSize;
 
-    public PaginatedQueryBuilder(IEnumerable<IValueFilterStrategy<TEntity>> valueFilterStrategies) 
+    public PaginatedQueryBuilder(IEnumerable<IValueFilterStrategy<TEntity>> valueFilterStrategies)
         : base(valueFilterStrategies)
     {
     }
@@ -69,7 +69,7 @@ public class PaginatedQueryBuilder<TEntity, TPrimaryKey> :
         };
     }
 
-    public override PaginatedQuery<TEntity> Build<TViewModel>(PaginationRequest req) 
+    public override PaginatedQuery<TEntity> Build<TViewModel>(PaginationRequest req)
         where TViewModel : class
     {
         WithTotalCount(BaseQuery.Count());
@@ -84,13 +84,13 @@ public class PaginatedQueryBuilder<TEntity, TPrimaryKey> :
         ApplyOrdering();
 
         var searchedCount = Query.Count();
-        var newTotalPages = (int)Math.Ceiling((double) searchedCount / _pageSize);
+        var newTotalPages = (int)Math.Ceiling((double)searchedCount / _pageSize);
         _pageNumber = _pageNumber <= newTotalPages ? _pageNumber : newTotalPages;
         var skip = (_pageNumber - 1) * _pageSize;
 
         Query = Query.Skip(skip).Take(_pageSize);
 
-        return new PaginatedQuery<TEntity> 
+        return new PaginatedQuery<TEntity>
         {
             TotalCount = TotalCount,
             PageNumber = _pageNumber,

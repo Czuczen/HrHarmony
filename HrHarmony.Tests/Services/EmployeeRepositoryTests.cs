@@ -1,4 +1,4 @@
-﻿using HrHarmony.Data.Repositories.Entity;
+﻿using HrHarmony.Data.Repositories.DataBase;
 using HrHarmony.Models.Entities.Main;
 using HrHarmony.Tests.Configuration;
 using HrHarmony.Tests.Infrastructure;

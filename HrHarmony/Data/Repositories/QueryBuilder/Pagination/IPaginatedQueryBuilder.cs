@@ -1,9 +1,9 @@
 ﻿using HrHarmony.Attributes;
-using HrHarmony.Data.QueryBuilder.Entity;
+using HrHarmony.Data.Repositories.QueryBuilder.Entity;
 using HrHarmony.Models.Entities;
 using HrHarmony.Models.Shared;
 
-namespace HrHarmony.Data.QueryBuilder.Pagination;
+namespace HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 
 [RegisterOpenGenericInterfaceInDI(typeof(IPaginatedQueryBuilder<,>))]
 public interface IPaginatedQueryBuilder<TEntity, TPrimaryKey> : IEntityQueryBuilder<TEntity, TPrimaryKey>

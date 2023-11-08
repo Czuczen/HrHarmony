@@ -3,7 +3,7 @@ using HrHarmony.Attributes;
 using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
 using LinqKit;
 
-namespace HrHarmony.Data.QueryBuilder.ValueFilters;
+namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
 [RegisterOpenGenericInterfaceInDI(typeof(IValueFilterStrategy<>))]
 public interface IValueFilterStrategy<TEntity> : ITransientDependency

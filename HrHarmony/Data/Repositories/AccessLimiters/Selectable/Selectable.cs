@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace HrHarmony.Data.AccessLimiters.Selectable;
+namespace HrHarmony.Data.Repositories.AccessLimiters.Selectable;
 
 public class Selectable<TEntity, TSelect> : ISelectable<TEntity, TSelect>
 {

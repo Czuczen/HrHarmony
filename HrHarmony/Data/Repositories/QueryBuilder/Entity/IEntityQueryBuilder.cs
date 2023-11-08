@@ -1,7 +1,7 @@
 ﻿using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
 using HrHarmony.Models.Entities;
 
-namespace HrHarmony.Data.QueryBuilder.Entity;
+namespace HrHarmony.Data.Repositories.QueryBuilder.Entity;
 
 public interface IEntityQueryBuilder<TEntity, TPrimaryKey> : ITransientDependency
     where TEntity : class, IEntity<TPrimaryKey>, new()

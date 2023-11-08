@@ -1,6 +1,4 @@
-﻿using HrHarmony.Models.Dto.Details.Dictionary;
-
-namespace HrHarmony.Models.ViewModels.Employee;
+﻿namespace HrHarmony.Models.ViewModels.Employee;
 
 public class DetailsViewModel : MainDetails
 {
@@ -15,16 +13,16 @@ public class DetailsViewModel : MainDetails
     public DateTime DateOfBirth { get; set; }
 
     public int MaritalStatusId { get; set; }
-    public MaritalStatusDto MaritalStatus { get; set; }
+    public MaritalStatus.IndexViewModel MaritalStatus { get; set; }
 
     public int AddressId { get; set; }
-    public AddressDto Address { get; set; }
+    public Address.IndexViewModel Address { get; set; }
 
     public int EducationLevelId { get; set; }
-    public EducationLevelDto EducationLevel { get; set; }
+    public EducationLevel.IndexViewModel EducationLevel { get; set; }
 
     public int ExperienceId { get; set; }
-    public ExperienceDto Experience { get; set; }
+    public Experience.IndexViewModel Experience { get; set; }
 
     public IEnumerable<EmploymentContract.DetailsViewModel> Contracts { get; set; }
     public IEnumerable<Leave.DetailsViewModel> Leaves { get; set; }

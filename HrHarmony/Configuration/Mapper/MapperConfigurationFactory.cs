@@ -93,6 +93,7 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<AbsenceUpdateDto, Models.ViewModels.Absence.UpdateViewModel>();
             cfg.CreateMap<AbsenceDto, Models.ViewModels.Absence.DeleteViewModel>();
 
+
             // Employee view models
             cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.IndexViewModel>();
             cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.DetailsViewModel>();
@@ -100,6 +101,30 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.UpdateViewModel>();
             cfg.CreateMap<EmployeeUpdateDto, Models.ViewModels.Employee.UpdateViewModel>();
             cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.DeleteViewModel>();
+
+            // ======================
+
+            cfg.CreateMap<Employee, Models.ViewModels.Employee.IndexViewModel>();
+            cfg.CreateMap<Employee, Models.ViewModels.Employee.DetailsViewModel>();
+            cfg.CreateMap<Employee, Models.ViewModels.Employee.UpdateViewModel>();
+            cfg.CreateMap<Employee, Models.ViewModels.Employee.DeleteViewModel>();
+
+            cfg.CreateMap<EmploymentContract, Models.ViewModels.EmploymentContract.DetailsViewModel>();
+            cfg.CreateMap<Leave, Models.ViewModels.Leave.DetailsViewModel>();
+            cfg.CreateMap<Absence, Models.ViewModels.Absence.DetailsViewModel>();
+            cfg.CreateMap<Salary, Models.ViewModels.Salary.DetailsViewModel>();
+
+
+            
+            cfg.CreateMap<MaritalStatus, Models.ViewModels.MaritalStatus.IndexViewModel>();
+            cfg.CreateMap<Address, Models.ViewModels.Address.IndexViewModel>();
+            cfg.CreateMap<EducationLevel, Models.ViewModels.EducationLevel.IndexViewModel>();
+            cfg.CreateMap<Experience, Models.ViewModels.Experience.IndexViewModel>();
+
+            
+            
+            // ========================
+
 
             // EmploymentContract view models
             cfg.CreateMap<EmploymentContractDto, Models.ViewModels.EmploymentContract.IndexViewModel>();

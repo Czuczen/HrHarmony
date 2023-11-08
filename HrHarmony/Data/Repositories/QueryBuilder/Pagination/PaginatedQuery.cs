@@ -1,9 +1,9 @@
-﻿namespace HrHarmony.Data.QueryBuilder.Pagination;
+﻿namespace HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 
 public class PaginatedQuery<TEntity>
 {
     public int TotalCount { get; set; }
-        
+
     public int PageNumber { get; set; }
 
     public int PageSize { get; set; }
