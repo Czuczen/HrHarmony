@@ -222,17 +222,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var pagedQuery = _paginatedQueryBuilder.WithBaseQuery(_ctx.Set<TEntity>().AsQueryable()).Build<TViewModel>(req);
         var entities = _mapper.Map<IEnumerable<TEntityDto>>(pagedQuery.Query.ToList());
 
-        return new PaginatedResult<TEntityDto>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        var result = _mapper.Map<PaginatedResult<TEntityDto>>(pagedQuery);
+        result.Items = entities;
+
+        return result;
     }
 
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesAsync<TViewModel>(PaginationRequest req)
@@ -241,17 +234,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var pagedQuery = await _paginatedQueryBuilder.WithBaseQuery(_ctx.Set<TEntity>().AsQueryable()).BuildAsync<TViewModel>(req);
         var entities = _mapper.Map<IEnumerable<TEntityDto>>(await pagedQuery.Query.ToListAsync());
 
-        return new PaginatedResult<TEntityDto>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        var result = _mapper.Map<PaginatedResult<TEntityDto>>(pagedQuery);
+        result.Items = entities;
+
+        return result;
     }
 
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithRelated<TViewModel>(PaginationRequest req)
@@ -260,17 +246,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var pagedQuery = _paginatedQueryBuilder.WithBaseQuery(_ctx.Set<TEntity>().AsQueryable()).Build<TViewModel>(req);
         var entities = pagedQuery.Query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToList();
 
-        return new PaginatedResult<TEntityDto>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        var result = _mapper.Map<PaginatedResult<TEntityDto>>(pagedQuery);
+        result.Items = entities;
+
+        return result;
     }
 
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithRelatedAsync<TViewModel>(PaginationRequest req)
@@ -279,17 +258,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var pagedQuery = await _paginatedQueryBuilder.WithBaseQuery(_ctx.Set<TEntity>().AsQueryable()).BuildAsync<TViewModel>(req);
         var entities = await pagedQuery.Query.ProjectTo<TEntityDto>(_mapper.ConfigurationProvider).ToListAsync();
 
-        return new PaginatedResult<TEntityDto>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        var result = _mapper.Map<PaginatedResult<TEntityDto>>(pagedQuery);
+        result.Items = entities;
+
+        return result;
     }
 
     public PaginatedResult<TEntityDto> GetPagedEntitiesWithCustomFields<TViewModel>(PaginationRequest req,
@@ -301,19 +273,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var selectable = new Selectable<TEntity, TEntityDto>(pagedQuery.Query);
         var customResult = customProjection(selectable);
 
-        var entities = customResult.ToList();
+        var result = _mapper.Map<PaginatedResult<TEntityDto>>(pagedQuery);
+        result.Items = customResult.ToList();
 
-        return new PaginatedResult<TEntityDto>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        return result;
     }
 
     public async Task<PaginatedResult<TEntityDto>> GetPagedEntitiesWithCustomFieldsAsync<TViewModel>(PaginationRequest req,
@@ -325,19 +288,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var selectable = new Selectable<TEntity, TEntityDto>(pagedQuery.Query);
         var customResult = customProjection(selectable);
 
-        var entities = await customResult.ToListAsync();
+        var result = _mapper.Map<PaginatedResult<TEntityDto>>(pagedQuery);
+        result.Items = await customResult.ToListAsync();
 
-        return new PaginatedResult<TEntityDto>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        return result;
     }
 
     public PaginatedResult<TReturn> GetPagedEntitiesAsCustomObject<TReturn>(PaginationRequest req)
@@ -346,19 +300,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var pagedQuery = _paginatedQueryBuilder.WithBaseQuery(_ctx.Set<TEntity>().AsQueryable()).Build<TReturn>(req);
         var customResult = pagedQuery.Query.Select(e => _mapper.Map<TReturn>(e));
 
-        var entities = customResult.ToList();
+        var result = _mapper.Map<PaginatedResult<TReturn>>(pagedQuery);
+        result.Items = customResult.ToList();
 
-        return new PaginatedResult<TReturn>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        return result;
     }
 
     public async Task<PaginatedResult<TReturn>> GetPagedEntitiesAsCustomObjectAsync<TReturn>(PaginationRequest req)
@@ -367,19 +312,10 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         var pagedQuery = await _paginatedQueryBuilder.WithBaseQuery(_ctx.Set<TEntity>().AsQueryable()).BuildAsync<TReturn>(req);
         var customResult = pagedQuery.Query.Select(e => _mapper.Map<TReturn>(e));
         
-        var entities = await customResult.ToListAsync();
+        var result = _mapper.Map<PaginatedResult<TReturn>>(pagedQuery);
+        result.Items = await customResult.ToListAsync();
 
-        return new PaginatedResult<TReturn>
-        {
-            Items = entities,
-            TotalCount = pagedQuery.TotalCount,
-            SearchedCount = pagedQuery.SearchedCount,
-            PageNumber = pagedQuery.PageNumber,
-            PageSize = pagedQuery.PageSize,
-            OrderBy = pagedQuery.OrderBy,
-            IsDescending = pagedQuery.IsDescending,
-            SearchString = req.SearchString
-        };
+        return result;
     }
 
     public IEnumerable<TEntityDto> GetAll()

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HrHarmony.Models.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace HrHarmony.Models.ViewModels.Employee;
 
-public class UpdateViewModel
+public class UpdateViewModel : IEmployeeSelectListFields
 {
     [Required(ErrorMessage = "Pole jest wymagane!")]
     [Display(Name = "Imię i nazwisko")]

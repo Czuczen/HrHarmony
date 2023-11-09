@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 using HrHarmony.Models.Dto.Create.Dictionary;
 using HrHarmony.Models.Dto.Create.Main;
 using HrHarmony.Models.Dto.Details.Dictionary;
@@ -121,7 +122,8 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<EducationLevel, Models.ViewModels.EducationLevel.IndexViewModel>();
             cfg.CreateMap<Experience, Models.ViewModels.Experience.IndexViewModel>();
 
-            
+            cfg.CreateMap<PaginatedResult<Models.ViewModels.Employee.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.Employee.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<Employee>, PaginatedResult<Models.ViewModels.Employee.IndexViewModel>>();
             
             // ========================
 
