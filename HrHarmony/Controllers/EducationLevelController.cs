@@ -6,102 +6,96 @@ using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.EducationLevel;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 
 public class EducationLevelController : Controller
 {
-    private readonly ILogger<EducationLevelController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<EducationLevel, int, EducationLevelDto, EducationLevelUpdateDto, EducationLevelCreateDto> _educationLevelRepository;
+    private readonly IMapper _mapper;
 
     public EducationLevelController(
         IRepository<EducationLevel, int, EducationLevelDto, EducationLevelUpdateDto, EducationLevelCreateDto> educationLevelRepository,
-        ILogger<EducationLevelController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _educationLevelRepository = educationLevelRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var educationLevels = await _educationLevelRepository.GetAllAsync();
-        var mappedEducationLevels = _mapper.Map<IEnumerable<IndexViewModel>>(educationLevels);
-
-        return View(mappedEducationLevels);
+        var pagedEntities = await _educationLevelRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var educationLevel = await _educationLevelRepository.GetByIdAsync(id);
-        if (educationLevel == null)
+        var entity = await _educationLevelRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedEducationLevel = _mapper.Map<DetailsViewModel>(educationLevel);
-        mappedEducationLevel.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedEducationLevel);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        return View();
+        var createViewModel = new CreateViewModel();
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(EducationLevelCreateDto educationLevel)
+    public async Task<IActionResult> Create(EducationLevelCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _educationLevelRepository.CreateAsync(educationLevel);
+            await _educationLevelRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedEducationLevel = _mapper.Map<CreateViewModel>(educationLevel);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        return View(mappedEducationLevel);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var educationLevel = await _educationLevelRepository.GetByIdAsync(id);
-        if (educationLevel == null)
+        var updateViewModel = await _educationLevelRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedEducationLevel = _mapper.Map<UpdateViewModel>(educationLevel);
-
-        return View(mappedEducationLevel);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(EducationLevelUpdateDto educationLevel)
+    public async Task<IActionResult> Edit(EducationLevelUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _educationLevelRepository.UpdateAsync(educationLevel);
+            await _educationLevelRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedEducationLevel = _mapper.Map<UpdateViewModel>(educationLevel);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedEducationLevel);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var educationLevel = await _educationLevelRepository.GetByIdAsync(id);
-        if (educationLevel == null)
+        var entity = await _educationLevelRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedEducationLevel = _mapper.Map<DeleteViewModel>(educationLevel);
-
-        return View(mappedEducationLevel);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]

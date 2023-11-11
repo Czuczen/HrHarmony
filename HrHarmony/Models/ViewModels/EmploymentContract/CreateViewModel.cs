@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HrHarmony.Models.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace HrHarmony.Models.ViewModels.EmploymentContract;
 
-public class CreateViewModel
+public class CreateViewModel : IEmploymentContractOptionFields
 {
     [Display(Name = "Numer umowy")]
     public string ContractNumber { get; set; }

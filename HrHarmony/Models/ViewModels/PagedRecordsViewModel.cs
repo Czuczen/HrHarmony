@@ -111,7 +111,7 @@ public class PagedRecordsViewModel<TIndexViewModel>
 
                 var idProp = Properties.Single(item => item.Name.ToLower() == "id");
 
-                ret += "    <td class=\"justify-content-between align-items-center\">";
+                ret += "    <td class=\"d-flex\">";
                 ret += $"       <a class=\"btn ms-2 btn-success btn-sm\" href=\"/{ControllerName}/Details/{idProp.GetValue(item)}\">Szczegóły</a>";
                 ret += $"       <a class=\"btn ms-2 btn-info btn-sm\" href=\"/{ControllerName}/Edit/{idProp.GetValue(item)}\">Edytuj</a>";
                 ret += $"       <a class=\"btn ms-2 btn-danger btn-sm\" href=\"/{ControllerName}/Delete/{idProp.GetValue(item)}\">Usuń</a>";

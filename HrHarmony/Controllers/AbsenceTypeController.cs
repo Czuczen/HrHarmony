@@ -6,102 +6,96 @@ using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.AbsenceType;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 
 public class AbsenceTypeController : Controller
 {
-    private readonly ILogger<AbsenceTypeController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<AbsenceType, int, AbsenceTypeDto, AbsenceTypeUpdateDto, AbsenceTypeCreateDto> _absenceTypeRepository;
+    private readonly IMapper _mapper;
 
     public AbsenceTypeController(
         IRepository<AbsenceType, int, AbsenceTypeDto, AbsenceTypeUpdateDto, AbsenceTypeCreateDto> absenceTypeRepository,
-        ILogger<AbsenceTypeController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _absenceTypeRepository = absenceTypeRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var absenceTypes = await _absenceTypeRepository.GetAllAsync();
-        var mappedAbsenceTypes = _mapper.Map<IEnumerable<IndexViewModel>>(absenceTypes);
-
-        return View(mappedAbsenceTypes);
+        var pagedEntities = await _absenceTypeRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var absenceType = await _absenceTypeRepository.GetByIdAsync(id);
-        if (absenceType == null)
+        var entity = await _absenceTypeRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedAbsenceType = _mapper.Map<DetailsViewModel>(absenceType);
-        mappedAbsenceType.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedAbsenceType);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        return View();
+        var createViewModel = new CreateViewModel();
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(AbsenceTypeCreateDto absenceType)
+    public async Task<IActionResult> Create(AbsenceTypeCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _absenceTypeRepository.CreateAsync(absenceType);
+            await _absenceTypeRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedAbsenceType = _mapper.Map<CreateViewModel>(absenceType);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        return View(mappedAbsenceType);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var absenceType = await _absenceTypeRepository.GetByIdAsync(id);
-        if (absenceType == null)
+        var updateViewModel = await _absenceTypeRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedAbsenceType = _mapper.Map<UpdateViewModel>(absenceType);
-
-        return View(mappedAbsenceType);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(AbsenceTypeUpdateDto absenceType)
+    public async Task<IActionResult> Edit(AbsenceTypeUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _absenceTypeRepository.UpdateAsync(absenceType);
+            await _absenceTypeRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedAbsenceType = _mapper.Map<UpdateViewModel>(absenceType);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedAbsenceType);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var absenceType = await _absenceTypeRepository.GetByIdAsync(id);
-        if (absenceType == null)
+        var entity = await _absenceTypeRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedAbsenceType = _mapper.Map<DeleteViewModel>(absenceType);
-
-        return View(mappedAbsenceType);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]

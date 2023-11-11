@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HrHarmony.Models.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace HrHarmony.Models.ViewModels.Absence;
 
-public class UpdateViewModel
+public class UpdateViewModel : IAbsenceOptionFields
 {
     [Required(ErrorMessage = "Pole jest wymagane!")]
     [Display(Name = "Typ absencji")]

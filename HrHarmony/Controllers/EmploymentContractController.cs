@@ -6,143 +6,106 @@ using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.EmploymentContract;
 using HrHarmony.Models.Dto.Update.Main;
 using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Models.Dto.Details.Dictionary;
-using HrHarmony.Models.Dto.Update.Dictionary;
-using HrHarmony.Models.Dto.Create.Dictionary;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Consts;
+using HrHarmony.Models.Interfaces;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Controllers;
 
 public class EmploymentContractController : Controller
 {
-    private readonly ILogger<EmploymentContractController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<EmploymentContract, int, EmploymentContractDto, EmploymentContractUpdateDto, EmploymentContractCreateDto> _employmentContractRepository;
-    private readonly IRepository<ContractType, int, ContractTypeDto, ContractTypeUpdateDto, ContractTypeCreateDto> _contractTypeRepository;
-    private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;
+    private readonly IMapper _mapper;
 
     public EmploymentContractController(
         IRepository<EmploymentContract, int, EmploymentContractDto, EmploymentContractUpdateDto, EmploymentContractCreateDto> employmentContractRepository,
-        IRepository<ContractType, int, ContractTypeDto, ContractTypeUpdateDto, ContractTypeCreateDto> contractTypeRepository,
-        IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> employeeRepository,
-        ILogger<EmploymentContractController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _employmentContractRepository = employmentContractRepository;
-        _contractTypeRepository = contractTypeRepository;
-        _employeeRepository = employeeRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var employmentContracts = await _employmentContractRepository.GetAllAsync();
-        var mappedEmploymentContracts = _mapper.Map<IEnumerable<IndexViewModel>>(employmentContracts);
-
-        return View(mappedEmploymentContracts);
+        var pagedEntities = await _employmentContractRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var employmentContract = await _employmentContractRepository.GetByIdAsync(id);
-        if (employmentContract == null)
+        var entity = await _employmentContractRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedEmploymentContract = _mapper.Map<DetailsViewModel>(employmentContract);
+        entity.IsMainView = true;
 
-        mappedEmploymentContract.ContractType = await _contractTypeRepository.GetByIdAsync(mappedEmploymentContract.ContractTypeId);
-        mappedEmploymentContract.Employee = await _employeeRepository.GetByIdAsync(mappedEmploymentContract.EmployeeId);
-
-        mappedEmploymentContract.IsMainView = true;
-
-        return View(mappedEmploymentContract);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        var employmentContractViewModel = new CreateViewModel();
+        var createViewModel = new CreateViewModel();
+        await LoadSelectOptions(createViewModel);
 
-        var allContractTypes = await _contractTypeRepository.GetAllAsync();
-        employmentContractViewModel.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
-
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        employmentContractViewModel.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(employmentContractViewModel);
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(EmploymentContractCreateDto employmentContract)
+    public async Task<IActionResult> Create(EmploymentContractCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _employmentContractRepository.CreateAsync(employmentContract);
+            await _employmentContractRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedEmploymentContract = _mapper.Map<CreateViewModel>(employmentContract);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
+        await LoadSelectOptions(createViewModel);
 
-        var allContractTypes = await _contractTypeRepository.GetAllAsync();
-        mappedEmploymentContract.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
-
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        mappedEmploymentContract.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(mappedEmploymentContract);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var employmentContract = await _employmentContractRepository.GetByIdAsync(id);
-        if (employmentContract == null)
+        var updateViewModel = await _employmentContractRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedEmploymentContract = _mapper.Map<UpdateViewModel>(employmentContract);
+        await LoadSelectOptions(updateViewModel);
 
-        var allContractTypes = await _contractTypeRepository.GetAllAsync();
-        mappedEmploymentContract.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
-
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        mappedEmploymentContract.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(mappedEmploymentContract);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(EmploymentContractUpdateDto employmentContract)
+    public async Task<IActionResult> Edit(EmploymentContractUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _employmentContractRepository.UpdateAsync(employmentContract);
+            await _employmentContractRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedEmploymentContract = _mapper.Map<UpdateViewModel>(employmentContract);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
+        await LoadSelectOptions(updateViewModel);
 
-        var allContractTypes = await _contractTypeRepository.GetAllAsync();
-        mappedEmploymentContract.ContractTypes = allContractTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
-
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        mappedEmploymentContract.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(mappedEmploymentContract);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var employmentContract = await _employmentContractRepository.GetByIdAsync(id);
-        if (employmentContract == null)
+        var entity = await _employmentContractRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedEmploymentContract = _mapper.Map<DeleteViewModel>(employmentContract);
-
-        return View(mappedEmploymentContract);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]
@@ -152,5 +115,19 @@ public class EmploymentContractController : Controller
         await _employmentContractRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
+    }
+
+    private async Task LoadSelectOptions(IEmploymentContractOptionFields entity)
+    {
+        var contractTypesQ = _employmentContractRepository.GetQuery<ContractType, CustomEntity<SelectListItem>>(q =>
+         q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.ContractType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
+        
+        var employeesQ = _employmentContractRepository.GetQuery<Employee, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } }));
+
+        var results = await contractTypesQ.Concat(employeesQ).ToListAsync();
+
+        entity.ContractTypes = results.Where(c => c.EntityName == EntitiesNames.ContractType).Select(e => e.Item);
+        entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);
     }
 }

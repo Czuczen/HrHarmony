@@ -5,58 +5,63 @@
     ViewData["Title"] = "Szczegóły pracownika";
 }
 
-<h2 class="text-center">Szczegóły pracownika</h2>
+@if (Layout != null)
+{
+    <h2 class="text-center">Szczegóły pracownika</h2>
+}
 
-<table class="table table-bordered table-hover">
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Imię i Nazwisko</th>
+                <th>Email</th>
+                <th>Numer Telefonu</th>
+                <th>Data Urodzenia</th>
+                <th>Stan Cywilny</th>
+                <th>Adres</th>
+                <th>Poziom Edukacji</th>
+                <th>Doświadczenie</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.FullName</td>
+                <td>@Model.Email</td>
+                <td>@Model.PhoneNumber</td>
+                <td>@Model.DateOfBirth.ToShortDateString()</td>
+                <td>@Model.MaritalStatus?.StatusName</td>
+                <td>@(Model.Address?.Street + " " + Model.Address?.PostalCode + " " + Model.Address?.City)</td>
+                <td>@Model.EducationLevel?.LevelName</td>
+                <td>@Model..Experience?.ExperienceDescription</td>
 
-    <thead class="table-dark">
-        <tr>
-            <th>Imię i Nazwisko</th>
-            <th>Email</th>
-            <th>Numer Telefonu</th>
-            <th>Data Urodzenia</th>
-            <th>Stan Cywilny</th>
-            <th>Adres</th>
-            <th>Poziom Edukacji</th>
-            <th>Doświadczenie</th>
-            <th>Akcje</th>
-        </tr>
-    </thead>
+                <td class="d-flex">
+                    <a class="btn btn-info btn-sm ms-2" asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                    <a class="btn btn-danger btn-sm ms-2" asp-controller="Employee" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-    <tbody>
-        <tr>
-            <td>@Model.FullName</td>
-            <td>@Model.Email</td>
-            <td>@Model.PhoneNumber</td>
-            <td>@Model.DateOfBirth.ToShortDateString()</td>
-            <td>@Model.MaritalStatus?.StatusName</td>
-            <td>@(Model.Address?.Street + " " + Model.Address?.PostalCode + " " + Model.Address?.City)</td>
-            <td>@Model.EducationLevel?.LevelName</td>
-            <td>@Model.Experience?.ExperienceDescription</td>
-
-            <td>
-                <a class="btn btn-info btn-sm" asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
-                <a class="btn btn-danger btn-sm" asp-controller="Employee" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-@if (Model.IsMainView)
+@if (Layout != null)
 {
     @await Html.PartialAsync("~/Views/Shared/Records/_ComeBackButton.cshtml")
 }
 
-<div class="text-center">
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Umowy</button>
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Urlopy</button>
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Absencje</button>
+<div class="text-center mt-3 d-flex bd-highlight">
+    <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseContracts" aria-expanded="false" aria-controls="multiCollapseContracts">Umowy</button>
+    <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseLeaves" aria-expanded="false" aria-controls="multiCollapseLeaves">Urlopy</button>
+    <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseAbsences" aria-expanded="false" aria-controls="multiCollapseAbsences">Absencje</button>
+    <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseSalaries" aria-expanded="false" aria-controls="multiCollapseSalaries">Wynagrodzenia</button>
 </div>
 
 <div class="row">
     <div class="col">
-        <div class="collapse" id="multiCollapseExample1">
+        <div class="collapse" id="multiCollapseContracts">
             <div class="card card-body">
+                <h2 class="text-center">Szczegóły umów pracownika</h2>
                 @foreach (var contract in Model.Contracts)
                 {
                     @await Html.PartialAsync("~/Views/EmploymentContract/Details.cshtml", contract)
@@ -65,8 +70,9 @@
         </div>
     </div>
     <div class="col">
-        <div class="collapse" id="multiCollapseExample2">
+        <div class="collapse" id="multiCollapseLeaves">
             <div class="card card-body">
+                <h2 class="text-center">Szczegóły urlopów</h2>
                 @foreach (var leave in Model.Leaves)
                 {
                     @await Html.PartialAsync("~/Views/Leave/Details.cshtml", leave)
@@ -75,11 +81,23 @@
         </div>
     </div>
     <div class="col">
-        <div class="collapse" id="multiCollapseExample3">
+        <div class="collapse" id="multiCollapseAbsences">
             <div class="card card-body">
+                <h2 class="text-center">Szczegóły absencyj</h2>
                 @foreach (var absence in Model.Absences)
                 {
                     @await Html.PartialAsync("~/Views/Absence/Details.cshtml", absence)
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="collapse" id="multiCollapseSalaries">
+            <div class="card card-body">
+                <h2 class="text-center">Szczegóły wynagrodzeń</h2>
+                @foreach (var absence in Model.Salaries)
+                {
+                    @await Html.PartialAsync("~/Views/Salary/Details.cshtml", absence)
                 }
             </div>
         </div>

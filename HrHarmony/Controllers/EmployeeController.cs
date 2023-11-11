@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using HrHarmony.Models.Dto.Create.Dictionary;
 using HrHarmony.Models.Dto.Create.Main;
-using HrHarmony.Models.Dto.Details.Dictionary;
 using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Models.Dto.Update.Dictionary;
 using HrHarmony.Models.Dto.Update.Main;
 using HrHarmony.Models.Entities.Dictionary;
 using HrHarmony.Models.Entities.Main;
@@ -15,16 +12,14 @@ using HrHarmony.Models.Shared;
 using HrHarmony.Data.Repositories.Dto;
 using Microsoft.EntityFrameworkCore;
 using HrHarmony.Consts;
-using HrHarmony.Data.Repositories.Entity;
-using HrHarmony.Models.Entities;
 using HrHarmony.Models.Interfaces;
 
 namespace HrHarmony.Controllers;
 
 public class EmployeeController : Controller
 {
-    private readonly IMapper _mapper;
     private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;
+    private readonly IMapper _mapper;
 
     public EmployeeController(
         IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> employeeRepository,
@@ -90,15 +85,15 @@ public class EmployeeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(EmployeeUpdateDto employee)
+    public async Task<IActionResult> Edit(EmployeeUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _employeeRepository.UpdateAsync(employee);
+            await _employeeRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var updateViewModel = _mapper.Map<UpdateViewModel>(employee);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
         await LoadSelectOptions(updateViewModel);
 
         return View(updateViewModel);
@@ -122,7 +117,7 @@ public class EmployeeController : Controller
         return RedirectToAction("Index");
     }
 
-    private async Task LoadSelectOptions(IEmployeeSelectListFields entity)
+    private async Task LoadSelectOptions(IEmployeeOptionFields entity)
     {
         var maritalStatussesQ = _employeeRepository.GetQuery<MaritalStatus, CustomEntity<SelectListItem>>(q =>
          q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.MaritalStatus, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.StatusName } }));

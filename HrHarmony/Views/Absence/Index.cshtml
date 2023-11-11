@@ -1,11 +1,15 @@
 ﻿@using HrHarmony.Models.ViewModels.Absence;
-@model IEnumerable<IndexViewModel>
+@using HrHarmony.Models.ViewModels;
+@model PagedRecordsViewModel<IndexViewModel>
 
 @{
     ViewData["Title"] = "Absencje";
 }
 
-<div class="container mt-5">
+@await Html.PartialAsync("~/Views/Shared/Records/_RecordsListHeader.cshtml", "absencji")
+@await Html.PartialAsync("~/Views/Shared/Records/_RecordsList.cshtml")
+
+@* <div class="container mt-5">
  
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-4">Lista absencji</h1>
@@ -36,3 +40,4 @@
         </tbody>
     </table>
 </div>
+ *@

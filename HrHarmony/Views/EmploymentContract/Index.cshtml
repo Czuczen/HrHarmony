@@ -1,10 +1,15 @@
 ﻿@using HrHarmony.Models.ViewModels.EmploymentContract;
-@model IEnumerable<IndexViewModel>
+@using HrHarmony.Models.ViewModels;
+@model PagedRecordsViewModel<IndexViewModel>
 
 @{
     ViewData["Title"] = "Umowy pracowników";
 }
 
+@await Html.PartialAsync("~/Views/Shared/Records/_RecordsListHeader.cshtml", "umów pracowników")
+@await Html.PartialAsync("~/Views/Shared/Records/_RecordsList.cshtml")
+
+@* 
 <div class="container mt-5">
  
     <div class="d-flex justify-content-between align-items-center">
@@ -36,3 +41,4 @@
         </tbody>
     </table>
 </div>
+ *@

@@ -6,102 +6,96 @@ using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.MaritalStatus;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 
 public class MaritalStatusController : Controller
 {
-    private readonly ILogger<MaritalStatusController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<MaritalStatus, int, MaritalStatusDto, MaritalStatusUpdateDto, MaritalStatusCreateDto> _maritalStatusRepository;
+    private readonly IMapper _mapper;
 
     public MaritalStatusController(
         IRepository<MaritalStatus, int, MaritalStatusDto, MaritalStatusUpdateDto, MaritalStatusCreateDto> maritalStatusRepository,
-        ILogger<MaritalStatusController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _maritalStatusRepository = maritalStatusRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var maritalStatuses = await _maritalStatusRepository.GetAllAsync();
-        var mappedMaritalStatuses = _mapper.Map<IEnumerable<IndexViewModel>>(maritalStatuses);
-
-        return View(mappedMaritalStatuses);
+        var pagedEntities = await _maritalStatusRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var maritalStatus = await _maritalStatusRepository.GetByIdAsync(id);
-        if (maritalStatus == null)
+        var entity = await _maritalStatusRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedMaritalStatus = _mapper.Map<DetailsViewModel>(maritalStatus);
-        mappedMaritalStatus.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedMaritalStatus);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        return View();
+        var createViewModel = new CreateViewModel();
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(MaritalStatusCreateDto maritalStatus)
+    public async Task<IActionResult> Create(MaritalStatusCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _maritalStatusRepository.CreateAsync(maritalStatus);
+            await _maritalStatusRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedMaritalStatus = _mapper.Map<CreateViewModel>(maritalStatus);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        return View(mappedMaritalStatus);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var maritalStatus = await _maritalStatusRepository.GetByIdAsync(id);
-        if (maritalStatus == null)
+        var updateViewModel = await _maritalStatusRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedMaritalStatus = _mapper.Map<UpdateViewModel>(maritalStatus);
-
-        return View(mappedMaritalStatus);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(MaritalStatusUpdateDto maritalStatus)
+    public async Task<IActionResult> Edit(MaritalStatusUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _maritalStatusRepository.UpdateAsync(maritalStatus);
+            await _maritalStatusRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedMaritalStatus = _mapper.Map<UpdateViewModel>(maritalStatus);
-        
-        return View(mappedMaritalStatus);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
+
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var maritalStatus = await _maritalStatusRepository.GetByIdAsync(id);
-        if (maritalStatus == null)
+        var entity = await _maritalStatusRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedMaritalStatus = _mapper.Map<DeleteViewModel>(maritalStatus);
-
-        return View(mappedMaritalStatus);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]

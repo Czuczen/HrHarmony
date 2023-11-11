@@ -6,102 +6,96 @@ using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.LeaveType;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 
 public class LeaveTypeController : Controller
 {
-    private readonly ILogger<LeaveTypeController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<LeaveType, int, LeaveTypeDto, LeaveTypeUpdateDto, LeaveTypeCreateDto> _leaveTypeRepository;
+    private readonly IMapper _mapper;
 
     public LeaveTypeController(
         IRepository<LeaveType, int, LeaveTypeDto, LeaveTypeUpdateDto, LeaveTypeCreateDto> leaveTypeRepository,
-        ILogger<LeaveTypeController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _leaveTypeRepository = leaveTypeRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var leaveTypes = await _leaveTypeRepository.GetAllAsync();
-        var mappedLeaveTypes = _mapper.Map<IEnumerable<IndexViewModel>>(leaveTypes);
-
-        return View(mappedLeaveTypes);
+        var pagedEntities = await _leaveTypeRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
-        if (leaveType == null)
+        var entity = await _leaveTypeRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedLeaveType = _mapper.Map<DetailsViewModel>(leaveType);
-        mappedLeaveType.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedLeaveType);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        return View();
+        var createViewModel = new CreateViewModel();
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(LeaveTypeCreateDto leaveType)
+    public async Task<IActionResult> Create(LeaveTypeCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _leaveTypeRepository.CreateAsync(leaveType);
+            await _leaveTypeRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedLeaveType = _mapper.Map<CreateViewModel>(leaveType);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        return View(mappedLeaveType);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
-        if (leaveType == null)
+        var updateViewModel = await _leaveTypeRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedLeaveType = _mapper.Map<UpdateViewModel>(leaveType);
-
-        return View(mappedLeaveType);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(LeaveTypeUpdateDto leaveType)
+    public async Task<IActionResult> Edit(LeaveTypeUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _leaveTypeRepository.UpdateAsync(leaveType);
+            await _leaveTypeRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedLeaveType = _mapper.Map<UpdateViewModel>(leaveType);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedLeaveType);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
-        if (leaveType == null)
+        var entity = await _leaveTypeRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedLeaveType = _mapper.Map<DeleteViewModel>(leaveType);
-
-        return View(mappedLeaveType);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]
@@ -112,5 +106,4 @@ public class LeaveTypeController : Controller
 
         return RedirectToAction("Index");
     }
-
 }

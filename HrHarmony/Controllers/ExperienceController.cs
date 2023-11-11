@@ -6,102 +6,96 @@ using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.Experience;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 
 public class ExperienceController : Controller
 {
-    private readonly ILogger<ExperienceController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<Experience, int, ExperienceDto, ExperienceUpdateDto, ExperienceCreateDto> _experienceRepository;
+    private readonly IMapper _mapper;
 
     public ExperienceController(
         IRepository<Experience, int, ExperienceDto, ExperienceUpdateDto, ExperienceCreateDto> experienceRepository,
-        ILogger<ExperienceController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _experienceRepository = experienceRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var experiences = await _experienceRepository.GetAllAsync();
-        var mappedExperiences = _mapper.Map<IEnumerable<IndexViewModel>>(experiences);
-
-        return View(mappedExperiences);
+        var pagedEntities = await _experienceRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var experience = await _experienceRepository.GetByIdAsync(id);
-        if (experience == null)
+        var entity = await _experienceRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedExperience = _mapper.Map<DetailsViewModel>(experience);
-        mappedExperience.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedExperience);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        return View();
+        var createViewModel = new CreateViewModel();
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ExperienceCreateDto experience)
+    public async Task<IActionResult> Create(ExperienceCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _experienceRepository.CreateAsync(experience);
+            await _experienceRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedExperience = _mapper.Map<CreateViewModel>(experience);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        return View(mappedExperience);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var experience = await _experienceRepository.GetByIdAsync(id);
-        if (experience == null)
+        var updateViewModel = await _experienceRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedExperience = _mapper.Map<UpdateViewModel>(experience);
-
-        return View(mappedExperience);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(ExperienceUpdateDto experience)
+    public async Task<IActionResult> Edit(ExperienceUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _experienceRepository.UpdateAsync(experience);
+            await _experienceRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedExperience = _mapper.Map<UpdateViewModel>(experience);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedExperience);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var experience = await _experienceRepository.GetByIdAsync(id);
-        if (experience == null)
+        var entity = await _experienceRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedExperience = _mapper.Map<DeleteViewModel>(experience);
-
-        return View(mappedExperience);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]

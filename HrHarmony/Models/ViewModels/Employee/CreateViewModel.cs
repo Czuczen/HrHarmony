@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HrHarmony.Models.ViewModels.Employee;
 
-public class CreateViewModel : IEmployeeSelectListFields
+public class CreateViewModel : IEmployeeOptionFields
 {
     [Required(ErrorMessage = "Pole jest wymagane!")]
     [Display(Name = "Imię i nazwisko")]

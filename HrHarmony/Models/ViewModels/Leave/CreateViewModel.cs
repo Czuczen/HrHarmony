@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HrHarmony.Models.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace HrHarmony.Models.ViewModels.Leave;
 
-public class CreateViewModel
+public class CreateViewModel : ILeaveOptionFields
 {
     [Required(ErrorMessage = "Pole jest wymagane!")]
     [Display(Name = "Data rozpoczęcia")]

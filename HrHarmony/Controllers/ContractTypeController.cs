@@ -6,102 +6,96 @@ using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.ContractType;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 
 public class ContractTypeController : Controller
 {
-    private readonly ILogger<ContractTypeController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<ContractType, int, ContractTypeDto, ContractTypeUpdateDto, ContractTypeCreateDto> _contractTypeRepository;
+    private readonly IMapper _mapper;
 
     public ContractTypeController(
         IRepository<ContractType, int, ContractTypeDto, ContractTypeUpdateDto, ContractTypeCreateDto> contractTypeRepository,
-        ILogger<ContractTypeController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _contractTypeRepository = contractTypeRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var contractTypes = await _contractTypeRepository.GetAllAsync();
-        var mappedContractTypes = _mapper.Map<IEnumerable<IndexViewModel>>(contractTypes);
-
-        return View(mappedContractTypes);
+        var pagedEntities = await _contractTypeRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var contractType = await _contractTypeRepository.GetByIdAsync(id);
-        if (contractType == null)
+        var entity = await _contractTypeRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedContractType = _mapper.Map<DetailsViewModel>(contractType);
-        mappedContractType.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedContractType);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        return View();
+        var createViewModel = new CreateViewModel();
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ContractTypeCreateDto contractType)
+    public async Task<IActionResult> Create(ContractTypeCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _contractTypeRepository.CreateAsync(contractType);
+            await _contractTypeRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedContractType = _mapper.Map<CreateViewModel>(contractType);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        return View(mappedContractType);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var contractType = await _contractTypeRepository.GetByIdAsync(id);
-        if (contractType == null)
+        var updateViewModel = await _contractTypeRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedContractType = _mapper.Map<UpdateViewModel>(contractType);
-
-        return View(mappedContractType);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(ContractTypeUpdateDto contractType)
+    public async Task<IActionResult> Edit(ContractTypeUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _contractTypeRepository.UpdateAsync(contractType);
+            await _contractTypeRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedContractType = _mapper.Map<UpdateViewModel>(contractType);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedContractType);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var contractType = await _contractTypeRepository.GetByIdAsync(id);
-        if (contractType == null)
+        var entity = await _contractTypeRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedContractType = _mapper.Map<DeleteViewModel>(contractType);
-
-        return View(mappedContractType);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]

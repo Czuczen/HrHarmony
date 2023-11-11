@@ -7,8 +7,8 @@ public class DetailsViewModel : MainDetails
     public DateTime AbsenceDate { get; set; }
 
     public int AbsenceTypeId { get; set; }
-    public Dto.Details.Dictionary.AbsenceTypeDto AbsenceType { get; set; }
+    public AbsenceType.IndexViewModel AbsenceType { get; set; }
 
     public int EmployeeId { get; set; }
-    public Dto.Details.Main.EmployeeDto Employee { get; set; }
+    public Employee.IndexViewModel Employee { get; set; }
 }

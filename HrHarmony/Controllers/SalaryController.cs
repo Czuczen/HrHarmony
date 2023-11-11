@@ -7,114 +7,101 @@ using HrHarmony.Models.ViewModels.Salary;
 using HrHarmony.Models.Dto.Create.Main;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Consts;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using HrHarmony.Models.Interfaces.SelectOptions;
 
 namespace HrHarmony.Controllers;
 
 public class SalaryController : Controller
 {
-    private readonly ILogger<SalaryController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<Salary, int, SalaryDto, SalaryUpdateDto, SalaryCreateDto> _salaryRepository;
-    private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;
+    private readonly IMapper _mapper;
 
     public SalaryController(
         IRepository<Salary, int, SalaryDto, SalaryUpdateDto, SalaryCreateDto> salaryRepository,
-        IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> employeeRepository,
-        ILogger<SalaryController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _salaryRepository = salaryRepository;
-        _employeeRepository = employeeRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var salaries = await _salaryRepository.GetAllAsync();
-        var mappedSalaries = _mapper.Map<IEnumerable<IndexViewModel>>(salaries);
-
-        return View(mappedSalaries);
+        var pagedEntities = await _salaryRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var salary = await _salaryRepository.GetByIdAsync(id);
-        if (salary == null)
+        var entity = await _salaryRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedSalary = _mapper.Map<DetailsViewModel>(salary);
-        mappedSalary.Employee = await _employeeRepository.GetByIdAsync(mappedSalary.EmployeeId);
-        mappedSalary.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedSalary);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        var salaryViewModel = new CreateViewModel();
+        var createViewModel = new CreateViewModel();
+        await LoadSelectOptions(createViewModel);
 
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        salaryViewModel.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(salaryViewModel);
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(SalaryCreateDto salary)
+    public async Task<IActionResult> Create(SalaryCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _salaryRepository.CreateAsync(salary);
+            await _salaryRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedSalary = _mapper.Map<CreateViewModel>(salary);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
+        await LoadSelectOptions(createViewModel);
 
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        mappedSalary.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(mappedSalary);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var salary = await _salaryRepository.GetByIdAsync(id);
-        if (salary == null)
+        var updateViewModel = await _salaryRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedSalary = _mapper.Map<UpdateViewModel>(salary);
-
-        return View(mappedSalary);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(SalaryUpdateDto salary)
+    public async Task<IActionResult> Edit(SalaryUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _salaryRepository.UpdateAsync(salary);
+            await _salaryRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedSalary = _mapper.Map<UpdateViewModel>(salary);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedSalary);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var salary = await _salaryRepository.GetByIdAsync(id);
-        if (salary == null)
+        var entity = await _salaryRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedSalary = _mapper.Map<DeleteViewModel>(salary);
-
-        return View(mappedSalary);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]
@@ -124,5 +111,15 @@ public class SalaryController : Controller
         await _salaryRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
+    }
+
+    private async Task LoadSelectOptions(IEmployeeOptions entity)
+    {
+        var employeesQ = _salaryRepository.GetQuery<Employee, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } }));
+
+        var results = await employeesQ.ToListAsync();
+
+        entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Address).Select(e => e.Item);
     }
 }

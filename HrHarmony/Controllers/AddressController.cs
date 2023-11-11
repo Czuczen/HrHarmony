@@ -6,102 +6,96 @@ using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.Address;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 
 public class AddressController : Controller
 {
-    private readonly ILogger<AddressController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<Address, int, AddressDto, AddressUpdateDto, AddressCreateDto> _addressRepository;
+    private readonly IMapper _mapper;
 
     public AddressController(
         IRepository<Address, int, AddressDto, AddressUpdateDto, AddressCreateDto> addressRepository,
-        ILogger<AddressController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _addressRepository = addressRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var addresses = await _addressRepository.GetAllAsync();
-        var mappedAddresses = _mapper.Map<IEnumerable<IndexViewModel>>(addresses);
-
-        return View(mappedAddresses);
+        var pagedEntities = await _addressRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var address = await _addressRepository.GetByIdAsync(id);
-        if (address == null)
+        var entity = await _addressRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedAddress = _mapper.Map<DetailsViewModel>(address);
-        mappedAddress.IsMainView = true;
+        entity.IsMainView = true;
 
-        return View(mappedAddress);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        return View();
+        var createViewModel = new CreateViewModel();
+
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(AddressCreateDto address)
+    public async Task<IActionResult> Create(AddressCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _addressRepository.CreateAsync(address);
+            await _addressRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedAddress = _mapper.Map<CreateViewModel>(address);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
 
-        return View(mappedAddress);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var address = await _addressRepository.GetByIdAsync(id);
-        if (address == null)
+        var updateViewModel = await _addressRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedAddress = _mapper.Map<UpdateViewModel>(address);
-
-        return View(mappedAddress);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(AddressUpdateDto address)
+    public async Task<IActionResult> Edit(AddressUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _addressRepository.UpdateAsync(address);
+            await _addressRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedAddress = _mapper.Map<UpdateViewModel>(address);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedAddress);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var address = await _addressRepository.GetByIdAsync(id);
-        if (address == null)
+        var entity = await _addressRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedAddress = _mapper.Map<DeleteViewModel>(address);
-
-        return View(mappedAddress);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]

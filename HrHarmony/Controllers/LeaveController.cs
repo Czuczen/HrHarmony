@@ -6,131 +6,103 @@ using HrHarmony.Models.Entities.Main;
 using Microsoft.AspNetCore.Mvc;
 using HrHarmony.Models.ViewModels.Leave;
 using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Models.Dto.Details.Dictionary;
-using HrHarmony.Models.Dto.Update.Dictionary;
-using HrHarmony.Models.Dto.Create.Dictionary;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using HrHarmony.Data.Repositories.Dto;
+using HrHarmony.Models.Shared;
+using HrHarmony.Models.ViewModels;
+using HrHarmony.Consts;
+using HrHarmony.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Controllers;
 
 public class LeaveController : Controller
 {
-    private readonly ILogger<LeaveController> _logger;
-    private readonly IMapper _mapper;
     private readonly IRepository<Leave, int, LeaveDto, LeaveUpdateDto, LeaveCreateDto> _leaveRepository;
-    private readonly IRepository<LeaveType, int, LeaveTypeDto, LeaveTypeUpdateDto, LeaveTypeCreateDto> _leaveTypeRepository;
-    private readonly IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> _employeeRepository;
+    private readonly IMapper _mapper;
 
     public LeaveController(
         IRepository<Leave, int, LeaveDto, LeaveUpdateDto, LeaveCreateDto> leaveRepository,
-        IRepository<LeaveType, int, LeaveTypeDto, LeaveTypeUpdateDto, LeaveTypeCreateDto> leaveTypeRepository,
-        IRepository<Employee, int, EmployeeDto, EmployeeUpdateDto, EmployeeCreateDto> employeeRepository,
-        ILogger<LeaveController> logger,
         IMapper mapper
     )
     {
-        _logger = logger;
-        _mapper = mapper;
         _leaveRepository = leaveRepository;
-        _leaveTypeRepository = leaveTypeRepository;
-        _employeeRepository = employeeRepository;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(PaginationRequest paginationRequest)
     {
-        var leaves = await _leaveRepository.GetAllAsync();
-        var mappedLeaves = _mapper.Map<IEnumerable<IndexViewModel>>(leaves);
-
-        return View(mappedLeaves);
+        var pagedEntities = await _leaveRepository.GetPagedEntitiesAsCustomObjectAsync<IndexViewModel>(paginationRequest);
+        return View(_mapper.Map<PagedRecordsViewModel<IndexViewModel>>(pagedEntities));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var leave = await _leaveRepository.GetByIdAsync(id);
-        if (leave == null)
+        var entity = await _leaveRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedLeave = _mapper.Map<DetailsViewModel>(leave);
+        entity.IsMainView = true;
 
-        mappedLeave.LeaveType = await _leaveTypeRepository.GetByIdAsync(mappedLeave.LeaveTypeId);
-        mappedLeave.Employee = await _employeeRepository.GetByIdAsync(mappedLeave.EmployeeId);
-
-        mappedLeave.IsMainView = true;
-
-        return View(mappedLeave);
+        return View(entity);
     }
 
     public async Task<IActionResult> Create()
     {
-        var leaveViewModel = new CreateViewModel();
+        var createViewModel = new CreateViewModel();
+        await LoadSelectOptions(createViewModel);
 
-        var allLeaveTypes = await _leaveTypeRepository.GetAllAsync();
-        leaveViewModel.LeaveTypes = allLeaveTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
-
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        leaveViewModel.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(leaveViewModel);
+        return View(createViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(LeaveCreateDto leave)
+    public async Task<IActionResult> Create(LeaveCreateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _leaveRepository.CreateAsync(leave);
+            await _leaveRepository.CreateAsync(entity);
 
             return RedirectToAction("Index");
         }
 
-        var mappedLeave = _mapper.Map<CreateViewModel>(leave);
+        var createViewModel = _mapper.Map<CreateViewModel>(entity);
+        await LoadSelectOptions(createViewModel);
 
-        var allLeaveTypes = await _leaveTypeRepository.GetAllAsync();
-        mappedLeave.LeaveTypes = allLeaveTypes.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.TypeName });
-
-        var allEmployees = await _employeeRepository.GetAllAsync();
-        mappedLeave.Employees = allEmployees.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.FullName });
-
-        return View(mappedLeave);
+        return View(createViewModel);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var leave = await _leaveRepository.GetByIdAsync(id);
-        if (leave == null)
+        var updateViewModel = await _leaveRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
+        if (updateViewModel == null)
             return NotFound();
 
-        var mappedLeave = _mapper.Map<UpdateViewModel>(leave);
-
-        return View(mappedLeave);
+        return View(updateViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(LeaveUpdateDto leave)
+    public async Task<IActionResult> Edit(LeaveUpdateDto entity)
     {
         if (ModelState.IsValid)
         {
-            await _leaveRepository.UpdateAsync(leave);
+            await _leaveRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
 
-        var mappedLeave = _mapper.Map<UpdateViewModel>(leave);
+        var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
-        return View(mappedLeave);
+        return View(updateViewModel);
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var leave = await _leaveRepository.GetByIdAsync(id);
-        if (leave == null)
+        var entity = await _leaveRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
+        if (entity == null)
             return NotFound();
 
-        var mappedLeave = _mapper.Map<DeleteViewModel>(leave);
-
-        return View(mappedLeave);
+        return View(entity);
     }
 
     [HttpPost, ActionName("Delete")]
@@ -140,5 +112,19 @@ public class LeaveController : Controller
         await _leaveRepository.DeleteAsync(id);
 
         return RedirectToAction("Index");
+    }
+
+    private async Task LoadSelectOptions(ILeaveOptionFields entity)
+    {
+        var leaveTypesQ = _leaveRepository.GetQuery<LeaveType, CustomEntity<SelectListItem>>(q =>
+           q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.LeaveType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
+
+        var employeesQ = _leaveRepository.GetQuery<Employee, CustomEntity<SelectListItem>>(q =>
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } }));
+
+        var results = await leaveTypesQ.Concat(employeesQ).ToListAsync();
+
+        entity.LeaveTypes = results.Where(c => c.EntityName == EntitiesNames.LeaveType).Select(e => e.Item);
+        entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);
     }
 }

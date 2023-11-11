@@ -1,7 +1,4 @@
-﻿using HrHarmony.Models.Dto.Details.Dictionary;
-using HrHarmony.Models.Dto.Details.Main;
-
-namespace HrHarmony.Models.ViewModels.EmploymentContract;
+﻿namespace HrHarmony.Models.ViewModels.EmploymentContract;
 
 public class DetailsViewModel : MainDetails
 {
@@ -12,11 +9,11 @@ public class DetailsViewModel : MainDetails
     public DateTime? EndDate { get; set; }
 
     public int ContractTypeId { get; set; }
-    public ContractTypeDto ContractType { get; set; }
+    public ContractType.IndexViewModel ContractType { get; set; }
 
     public int EmployeeId { get; set; }
 
-    public EmployeeDto Employee { get; set; }
+    public Employee.IndexViewModel Employee { get; set; }
 
     public decimal HourlyRate { get; set; }
     public decimal MonthlyRate { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HrHarmony.Attributes;
+using HrHarmony.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Models.ViewModels.Absence;
 
-public class CreateViewModel
+public class CreateViewModel : IAbsenceOptionFields
 {
     // od dnia dzisiejszego??
     [Display(Name = "Data absencji")]
