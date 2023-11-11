@@ -5,7 +5,7 @@ using LinqKit;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
-[RegisterOpenGenericClassInDI(typeof(BoolValueFilterStrategy<>))]
+[RegisterOpenGenericClassInDi(typeof(BoolValueFilterStrategy<>))]
 public class BoolValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>
 {
     public IEnumerable<Type> Types => new List<Type> { typeof(bool), typeof(bool?) };

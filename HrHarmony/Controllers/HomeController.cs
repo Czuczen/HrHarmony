@@ -1,6 +1,6 @@
-﻿using HrHarmony.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using HrHarmony.Data.Models.ViewModels;
 
 namespace HrHarmony.Controllers;
 

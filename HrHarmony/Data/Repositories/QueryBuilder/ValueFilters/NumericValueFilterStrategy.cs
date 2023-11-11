@@ -5,18 +5,17 @@ using LinqKit;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
-[RegisterOpenGenericClassInDI(typeof(NumericValueFilterStrategy<>))]
+[RegisterOpenGenericClassInDi(typeof(NumericValueFilterStrategy<>))]
 public class NumericValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>
 {
+    // jeśli jakiś typ wymaga innej obsługi dodać jako osobną strategie
     public IEnumerable<Type> Types => new List<Type>
     {
-        typeof(byte),   typeof(sbyte),      typeof(byte?),      typeof(sbyte?),
-        typeof(short),  typeof(ushort),     typeof(short?),     typeof(ushort?),
-        typeof(int),    typeof(uint),       typeof(int?),       typeof(uint?),
-        typeof(long),   typeof(ulong),      typeof(long?),      typeof(ulong?),
-        typeof(float),  typeof(double),     typeof(float?),     typeof(double?),
-        typeof(decimal),                    typeof(decimal?),
-        typeof(Guid),                       typeof(Guid?)
+        typeof(byte),   typeof(sbyte),  typeof(byte?),  typeof(sbyte?),
+        typeof(short),  typeof(ushort), typeof(short?), typeof(ushort?),
+        typeof(float),                  typeof(float?),
+        typeof(double),                 typeof(double?),
+        typeof(Guid),                   typeof(Guid?)
     };
 
     public ExpressionStarter<TEntity> ApplyFilter(ExpressionStarter<TEntity> filters, PropertyInfo property, string value)

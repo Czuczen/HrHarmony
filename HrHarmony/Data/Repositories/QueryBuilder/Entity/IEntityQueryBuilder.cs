@@ -1,5 +1,5 @@
 ﻿using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
-using HrHarmony.Models.Entities;
+using HrHarmony.Data.Models.Entities;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.Entity;
 

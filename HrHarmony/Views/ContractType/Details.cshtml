@@ -1,4 +1,4 @@
-﻿@using HrHarmony.Models.ViewModels.ContractType;
+﻿@using HrHarmony.Data.Models.ViewModels.ContractType;
 @model DetailsViewModel
 
 @{
@@ -34,22 +34,21 @@
 @if (Layout != null)
 {
     @await Html.PartialAsync("~/Views/Shared/Records/_ComeBackButton.cshtml")
-}
 
-<div class="text-center mt-3">
-    <button class="btn btn-primary m-1 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseContracts" aria-expanded="false" aria-controls="multiCollapseContracts">Umowy</button>
-</div>
-
-<div class="row">
-    <div class="col">
-        <div class="collapse" id="multiCollapseContracts">
-            <div class="card card-body">
-                <h2 class="text-center">Szczegóły umów</h2>
-                @foreach (var contract in Model.Contracts)
-                {
-                    @await Html.PartialAsync("~/Views/EmploymentContract/Details.cshtml", contract)
-                }
+    <div class="text-center mt-3">
+        <button class="btn btn-primary m-1 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseContracts" aria-expanded="false" aria-controls="multiCollapseContracts">Umowy</button>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="collapse" id="multiCollapseContracts">
+                <div class="card card-body">
+                    <h2 class="text-center">Szczegóły umów</h2>
+                    @foreach (var contract in Model.Contracts)
+                    {
+                        @await Html.PartialAsync("~/Views/EmploymentContract/Details.cshtml", contract)
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
+}

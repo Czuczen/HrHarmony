@@ -1,8 +1,8 @@
-﻿using HrHarmony.Data.Repositories.AccessLimiters.Selectable;
-using HrHarmony.Models.Dto.Details.Dictionary;
-using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Models.Entities.Main;
+﻿using HrHarmony.Data.Models.Dto.Details.Dictionary;
+using HrHarmony.Data.Models.Dto.Details.Main;
+using HrHarmony.Data.Models.Entities.Dictionary;
+using HrHarmony.Data.Models.Entities.Main;
+using HrHarmony.Data.Repositories.AccessLimiters.Selectable;
 
 namespace HrHarmony.Utils;
 

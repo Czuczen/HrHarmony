@@ -22,7 +22,7 @@ public class SeedDataInitializer : HrHarmonyTestsBase<object>
         
         foreach (var prop in dbSets)
         {
-            var objects = (IEnumerable<object>) prop.GetValue(Ctx);
+            var objects = (IEnumerable<object>) prop.GetValue(Ctx)!;
             Ctx.RemoveRange(objects);
         }
 

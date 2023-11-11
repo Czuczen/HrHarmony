@@ -2,7 +2,7 @@
 
 namespace HrHarmony.Attributes;
 
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public class MinimumCurrentDateAttribute : ValidationAttribute
 {
     public override bool IsValid(object? value)

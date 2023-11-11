@@ -5,7 +5,7 @@ using LinqKit;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
-[RegisterOpenGenericClassInDI(typeof(EnumValueFilterStrategy<>))]
+[RegisterOpenGenericClassInDi(typeof(EnumValueFilterStrategy<>))]
 public class EnumValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>
 {
     public IEnumerable<Type> Types => new List<Type> { typeof(Enum) };

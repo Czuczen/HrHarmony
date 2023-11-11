@@ -2,7 +2,7 @@
 
 public class SyncQueryExecuter<TEntityDto> : ISyncQueryExecuter<TEntityDto>
 {
-    private IQueryable<TEntityDto> _query;
+    private readonly IQueryable<TEntityDto> _query;
 
     public SyncQueryExecuter(IQueryable<TEntityDto> query)
     {
@@ -11,7 +11,7 @@ public class SyncQueryExecuter<TEntityDto> : ISyncQueryExecuter<TEntityDto>
 
     public List<TEntityDto> ToList() => _query.ToList();
 
-    public List<TEntityDto> ToList(Func<TEntityDto, bool> predicate) => _query.Where(predicate).ToList();
+    public List<TEntityDto> ToList(Func<TEntityDto, bool> predicate) => _query.AsEnumerable().Where(predicate).ToList();
 
     public int Count() => _query.Count();
 
@@ -65,17 +65,17 @@ public class SyncQueryExecuter<TEntityDto> : ISyncQueryExecuter<TEntityDto>
 
     public bool Contains(TEntityDto item, IEqualityComparer<TEntityDto> comparer) => _query.Contains(item, comparer);
 
-    public IEnumerable<TEntityDto> Where(Func<TEntityDto, bool> predicate) => _query.Where(predicate);
+    public IEnumerable<TEntityDto> Where(Func<TEntityDto, bool> predicate) => _query.AsEnumerable().Where(predicate);
 
     public List<TEntityDto> Reverse() => _query.Reverse().ToList();
 
     public List<TEntityDto> Distinct() => _query.Distinct().ToList();
 
-    public List<TEntityDto> OrderBy(Func<TEntityDto, object> keySelector) => _query.OrderBy(keySelector).ToList();
+    public List<TEntityDto> OrderBy(Func<TEntityDto, object> keySelector) => _query.AsEnumerable().OrderBy(keySelector).ToList();
 
-    public List<TEntityDto> OrderByDescending(Func<TEntityDto, object> keySelector) => _query.OrderByDescending(keySelector).ToList();
+    public List<TEntityDto> OrderByDescending(Func<TEntityDto, object> keySelector) => _query.AsEnumerable().OrderByDescending(keySelector).ToList();
 
-    public List<IGrouping<TKey, TEntityDto>> GroupBy<TKey>(Func<TEntityDto, TKey> keySelector) => _query.GroupBy(keySelector).ToList();
+    public List<IGrouping<TKey, TEntityDto>> GroupBy<TKey>(Func<TEntityDto, TKey> keySelector) => _query.AsEnumerable().GroupBy(keySelector).ToList();
 
     // ==================================================
     // Dodaj inne synchroniczne operacje według potrzeb

@@ -1,5 +1,5 @@
-﻿using HrHarmony.Data.Repositories.Entity;
-using HrHarmony.Models.Entities.Main;
+﻿using HrHarmony.Data.Models.Entities.Main;
+using HrHarmony.Data.Repositories.Entity;
 
 namespace HrHarmony.Services;
 

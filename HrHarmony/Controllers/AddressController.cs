@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using HrHarmony.Models.Dto.Create.Dictionary;
-using HrHarmony.Models.Dto.Details.Dictionary;
-using HrHarmony.Models.Dto.Update.Dictionary;
-using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc;
-using HrHarmony.Models.ViewModels.Address;
 using HrHarmony.Data.Repositories.Dto;
-using HrHarmony.Models.Shared;
-using HrHarmony.Models.ViewModels;
+using HrHarmony.Data.Models.Shared;
+using HrHarmony.Data.Models.ViewModels;
+using HrHarmony.Data.Models.Entities.Dictionary;
+using HrHarmony.Data.Models.ViewModels.Address;
+using HrHarmony.Data.Models.Dto.Create.Dictionary;
+using HrHarmony.Data.Models.Dto.Details.Dictionary;
+using HrHarmony.Data.Models.Dto.Update.Dictionary;
 
 namespace HrHarmony.Controllers;
 
@@ -33,16 +33,10 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var entity = await _addressRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
-        if (entity == null)
-            return NotFound();
-
-        entity.IsMainView = true;
-
-        return View(entity);
+        return View(await _addressRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         var createViewModel = new CreateViewModel();
 
@@ -67,11 +61,7 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var updateViewModel = await _addressRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
-        if (updateViewModel == null)
-            return NotFound();
-
-        return View(updateViewModel);
+        return View(await _addressRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id));
     }
 
     [HttpPost]
@@ -91,11 +81,7 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var entity = await _addressRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
-        if (entity == null)
-            return NotFound();
-
-        return View(entity);
+        return View(await _addressRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id));
     }
 
     [HttpPost, ActionName("Delete")]

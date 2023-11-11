@@ -1,11 +1,11 @@
 ﻿namespace HrHarmony.Attributes;
 
-[AttributeUsage(AttributeTargets.Interface, Inherited = false, AllowMultiple = false)]
-public class RegisterOpenGenericInterfaceInDIAttribute : Attribute
+[AttributeUsage(AttributeTargets.Interface)]
+public class RegisterOpenGenericInterfaceInDiAttribute : Attribute
 {
     public Type InterfaceType { get; }
 
-    public RegisterOpenGenericInterfaceInDIAttribute(Type interfaceType)
+    public RegisterOpenGenericInterfaceInDiAttribute(Type interfaceType)
     {
         InterfaceType = interfaceType;
     }

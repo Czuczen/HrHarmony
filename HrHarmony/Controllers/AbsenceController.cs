@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
-using HrHarmony.Models.Dto.Create.Main;
-using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Models.Dto.Update.Main;
-using HrHarmony.Models.Entities.Main;
 using Microsoft.AspNetCore.Mvc;
-using HrHarmony.Models.ViewModels.Absence;
-using HrHarmony.Models.Entities.Dictionary;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using HrHarmony.Data.Repositories.Dto;
 using HrHarmony.Consts;
-using HrHarmony.Models.Interfaces;
-using HrHarmony.Models.Shared;
-using HrHarmony.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using HrHarmony.Data.Models.Interfaces;
+using HrHarmony.Data.Models.Shared;
+using HrHarmony.Data.Models.ViewModels;
+using HrHarmony.Data.Models.Entities.Dictionary;
+using HrHarmony.Data.Models.Entities.Main;
+using HrHarmony.Data.Models.ViewModels.Absence;
+using HrHarmony.Data.Models.Dto.Create.Main;
+using HrHarmony.Data.Models.Dto.Details.Main;
+using HrHarmony.Data.Models.Dto.Update.Main;
 
 namespace HrHarmony.Controllers;
 
@@ -38,13 +38,7 @@ public class AbsenceController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var entity = await _absenceRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id);
-        if (entity == null)
-            return NotFound();
-
-        entity.IsMainView = true;
-
-        return View(entity);
+        return View(await _absenceRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public async Task<IActionResult> Create()
@@ -75,9 +69,6 @@ public class AbsenceController : Controller
     public async Task<IActionResult> Edit(int id)
     {
         var updateViewModel = await _absenceRepository.GetByIdAsCustomObjectAsync<UpdateViewModel>(id);
-        if (updateViewModel == null)
-            return NotFound();
-
         await LoadSelectOptions(updateViewModel);
 
         return View(updateViewModel);
@@ -101,11 +92,7 @@ public class AbsenceController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var entity = await _absenceRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id);
-        if (entity == null)
-            return NotFound();
-
-        return View(entity);
+        return View(await _absenceRepository.GetByIdAsCustomObjectAsync<DeleteViewModel>(id));
     }
 
     [HttpPost, ActionName("Delete")]

@@ -1,15 +1,27 @@
 ﻿using AutoMapper;
+using HrHarmony.Data.Models.Dto.Create.Dictionary;
+using HrHarmony.Data.Models.Dto.Create.Main;
+using HrHarmony.Data.Models.Dto.Details.Dictionary;
+using HrHarmony.Data.Models.Dto.Details.Main;
+using HrHarmony.Data.Models.Dto.Update.Dictionary;
+using HrHarmony.Data.Models.Dto.Update.Main;
+using HrHarmony.Data.Models.Entities.Dictionary;
+using HrHarmony.Data.Models.Entities.Main;
+using HrHarmony.Data.Models.Shared;
+using HrHarmony.Data.Models.ViewModels;
+using HrHarmony.Data.Models.ViewModels.Absence;
+using HrHarmony.Data.Models.ViewModels.AbsenceType;
+using HrHarmony.Data.Models.ViewModels.Address;
+using HrHarmony.Data.Models.ViewModels.ContractType;
+using HrHarmony.Data.Models.ViewModels.EducationLevel;
+using HrHarmony.Data.Models.ViewModels.Employee;
+using HrHarmony.Data.Models.ViewModels.EmploymentContract;
+using HrHarmony.Data.Models.ViewModels.Experience;
+using HrHarmony.Data.Models.ViewModels.Leave;
+using HrHarmony.Data.Models.ViewModels.LeaveType;
+using HrHarmony.Data.Models.ViewModels.MaritalStatus;
+using HrHarmony.Data.Models.ViewModels.Salary;
 using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
-using HrHarmony.Models.Dto.Create.Dictionary;
-using HrHarmony.Models.Dto.Create.Main;
-using HrHarmony.Models.Dto.Details.Dictionary;
-using HrHarmony.Models.Dto.Details.Main;
-using HrHarmony.Models.Dto.Update.Dictionary;
-using HrHarmony.Models.Dto.Update.Main;
-using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Models.Entities.Main;
-using HrHarmony.Models.Shared;
-using HrHarmony.Models.ViewModels;
 
 namespace HrHarmony.Configuration.Mapper;
 
@@ -87,221 +99,221 @@ public static class MapperConfigurationFactory
 
 
             // Absence view models
-            cfg.CreateMap<AbsenceDto, Models.ViewModels.Absence.IndexViewModel>();
-            cfg.CreateMap<AbsenceDto, Models.ViewModels.Absence.DetailsViewModel>();
-            cfg.CreateMap<AbsenceCreateDto, Models.ViewModels.Absence.CreateViewModel>();
-            cfg.CreateMap<AbsenceDto, Models.ViewModels.Absence.UpdateViewModel>();
-            cfg.CreateMap<AbsenceUpdateDto, Models.ViewModels.Absence.UpdateViewModel>();
-            cfg.CreateMap<AbsenceDto, Models.ViewModels.Absence.DeleteViewModel>();
+            cfg.CreateMap<AbsenceDto, Data.Models.ViewModels.Absence.IndexViewModel>();
+            cfg.CreateMap<AbsenceDto, Data.Models.ViewModels.Absence.DetailsViewModel>();
+            cfg.CreateMap<AbsenceCreateDto, Data.Models.ViewModels.Absence.CreateViewModel>();
+            cfg.CreateMap<AbsenceDto, Data.Models.ViewModels.Absence.UpdateViewModel>();
+            cfg.CreateMap<AbsenceUpdateDto, Data.Models.ViewModels.Absence.UpdateViewModel>();
+            cfg.CreateMap<AbsenceDto, Data.Models.ViewModels.Absence.DeleteViewModel>();
 
-            cfg.CreateMap<Absence, Models.ViewModels.Absence.IndexViewModel>();
-            cfg.CreateMap<Absence, Models.ViewModels.Absence.DetailsViewModel>();
-            cfg.CreateMap<Absence, Models.ViewModels.Absence.UpdateViewModel>();
-            cfg.CreateMap<Absence, Models.ViewModels.Absence.DeleteViewModel>();
+            cfg.CreateMap<Absence, Data.Models.ViewModels.Absence.IndexViewModel>();
+            cfg.CreateMap<Absence, Data.Models.ViewModels.Absence.DetailsViewModel>();
+            cfg.CreateMap<Absence, Data.Models.ViewModels.Absence.UpdateViewModel>();
+            cfg.CreateMap<Absence, Data.Models.ViewModels.Absence.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<AbsenceDto>, PagedRecordsViewModel<Models.ViewModels.Absence.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.Absence.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.Absence.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<Absence>, PaginatedResult<Models.ViewModels.Absence.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<AbsenceDto>, PagedRecordsViewModel<Data.Models.ViewModels.Absence.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Absence.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Absence.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<Absence>, PaginatedResult<Data.Models.ViewModels.Absence.IndexViewModel>>();
 
 
             // Employee view models
-            cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.IndexViewModel>();
-            cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.DetailsViewModel>();
-            cfg.CreateMap<EmployeeCreateDto, Models.ViewModels.Employee.CreateViewModel>();
-            cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.UpdateViewModel>();
-            cfg.CreateMap<EmployeeUpdateDto, Models.ViewModels.Employee.UpdateViewModel>();
-            cfg.CreateMap<EmployeeDto, Models.ViewModels.Employee.DeleteViewModel>();
+            cfg.CreateMap<EmployeeDto, Data.Models.ViewModels.Employee.IndexViewModel>();
+            cfg.CreateMap<EmployeeDto, Data.Models.ViewModels.Employee.DetailsViewModel>();
+            cfg.CreateMap<EmployeeCreateDto, Data.Models.ViewModels.Employee.CreateViewModel>();
+            cfg.CreateMap<EmployeeDto, Data.Models.ViewModels.Employee.UpdateViewModel>();
+            cfg.CreateMap<EmployeeUpdateDto, Data.Models.ViewModels.Employee.UpdateViewModel>();
+            cfg.CreateMap<EmployeeDto, Data.Models.ViewModels.Employee.DeleteViewModel>();
 
-            cfg.CreateMap<Employee, Models.ViewModels.Employee.IndexViewModel>();
-            cfg.CreateMap<Employee, Models.ViewModels.Employee.DetailsViewModel>();
-            cfg.CreateMap<Employee, Models.ViewModels.Employee.UpdateViewModel>();
-            cfg.CreateMap<Employee, Models.ViewModels.Employee.DeleteViewModel>();
+            cfg.CreateMap<Employee, Data.Models.ViewModels.Employee.IndexViewModel>();
+            cfg.CreateMap<Employee, Data.Models.ViewModels.Employee.DetailsViewModel>();
+            cfg.CreateMap<Employee, Data.Models.ViewModels.Employee.UpdateViewModel>();
+            cfg.CreateMap<Employee, Data.Models.ViewModels.Employee.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<EmployeeDto>, PagedRecordsViewModel<Models.ViewModels.Employee.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.Employee.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.Employee.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<Employee>, PaginatedResult<Models.ViewModels.Employee.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<EmployeeDto>, PagedRecordsViewModel<Data.Models.ViewModels.Employee.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Employee.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Employee.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<Employee>, PaginatedResult<Data.Models.ViewModels.Employee.IndexViewModel>>();
 
     
             // EmploymentContract view models
-            cfg.CreateMap<EmploymentContractDto, Models.ViewModels.EmploymentContract.IndexViewModel>();
-            cfg.CreateMap<EmploymentContractDto, Models.ViewModels.EmploymentContract.DetailsViewModel>();
-            cfg.CreateMap<EmploymentContractCreateDto, Models.ViewModels.EmploymentContract.CreateViewModel>();
-            cfg.CreateMap<EmploymentContractDto, Models.ViewModels.EmploymentContract.UpdateViewModel>();
-            cfg.CreateMap<EmploymentContractUpdateDto, Models.ViewModels.EmploymentContract.UpdateViewModel>();
-            cfg.CreateMap<EmploymentContractDto, Models.ViewModels.EmploymentContract.DeleteViewModel>();
+            cfg.CreateMap<EmploymentContractDto, Data.Models.ViewModels.EmploymentContract.IndexViewModel>();
+            cfg.CreateMap<EmploymentContractDto, Data.Models.ViewModels.EmploymentContract.DetailsViewModel>();
+            cfg.CreateMap<EmploymentContractCreateDto, Data.Models.ViewModels.EmploymentContract.CreateViewModel>();
+            cfg.CreateMap<EmploymentContractDto, Data.Models.ViewModels.EmploymentContract.UpdateViewModel>();
+            cfg.CreateMap<EmploymentContractUpdateDto, Data.Models.ViewModels.EmploymentContract.UpdateViewModel>();
+            cfg.CreateMap<EmploymentContractDto, Data.Models.ViewModels.EmploymentContract.DeleteViewModel>();
 
-            cfg.CreateMap<EmploymentContract, Models.ViewModels.EmploymentContract.IndexViewModel>();
-            cfg.CreateMap<EmploymentContract, Models.ViewModels.EmploymentContract.DetailsViewModel>();
-            cfg.CreateMap<EmploymentContract, Models.ViewModels.EmploymentContract.UpdateViewModel>();
-            cfg.CreateMap<EmploymentContract, Models.ViewModels.EmploymentContract.DeleteViewModel>();
+            cfg.CreateMap<EmploymentContract, Data.Models.ViewModels.EmploymentContract.IndexViewModel>();
+            cfg.CreateMap<EmploymentContract, Data.Models.ViewModels.EmploymentContract.DetailsViewModel>();
+            cfg.CreateMap<EmploymentContract, Data.Models.ViewModels.EmploymentContract.UpdateViewModel>();
+            cfg.CreateMap<EmploymentContract, Data.Models.ViewModels.EmploymentContract.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<EmploymentContractDto>, PagedRecordsViewModel<Models.ViewModels.EmploymentContract.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.EmploymentContract.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.EmploymentContract.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<EmploymentContract>, PaginatedResult<Models.ViewModels.EmploymentContract.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<EmploymentContractDto>, PagedRecordsViewModel<Data.Models.ViewModels.EmploymentContract.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.EmploymentContract.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.EmploymentContract.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<EmploymentContract>, PaginatedResult<Data.Models.ViewModels.EmploymentContract.IndexViewModel>>();
 
 
             // Leave view models
-            cfg.CreateMap<LeaveDto, Models.ViewModels.Leave.IndexViewModel>();
-            cfg.CreateMap<LeaveDto, Models.ViewModels.Leave.DetailsViewModel>();
-            cfg.CreateMap<LeaveCreateDto, Models.ViewModels.Leave.CreateViewModel>();
-            cfg.CreateMap<LeaveDto, Models.ViewModels.Leave.UpdateViewModel>();
-            cfg.CreateMap<LeaveUpdateDto, Models.ViewModels.Leave.UpdateViewModel>();
-            cfg.CreateMap<LeaveDto, Models.ViewModels.Leave.DeleteViewModel>();
+            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.IndexViewModel>();
+            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.DetailsViewModel>();
+            cfg.CreateMap<LeaveCreateDto, Data.Models.ViewModels.Leave.CreateViewModel>();
+            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.UpdateViewModel>();
+            cfg.CreateMap<LeaveUpdateDto, Data.Models.ViewModels.Leave.UpdateViewModel>();
+            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.DeleteViewModel>();
 
-            cfg.CreateMap<Leave, Models.ViewModels.Leave.IndexViewModel>();
-            cfg.CreateMap<Leave, Models.ViewModels.Leave.DetailsViewModel>();
-            cfg.CreateMap<Leave, Models.ViewModels.Leave.UpdateViewModel>();
-            cfg.CreateMap<Leave, Models.ViewModels.Leave.DeleteViewModel>();
+            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.IndexViewModel>();
+            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.DetailsViewModel>();
+            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.UpdateViewModel>();
+            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<LeaveDto>, PagedRecordsViewModel<Models.ViewModels.Leave.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.Leave.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.Leave.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<Leave>, PaginatedResult<Models.ViewModels.Leave.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<LeaveDto>, PagedRecordsViewModel<Data.Models.ViewModels.Leave.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Leave.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Leave.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<Leave>, PaginatedResult<Data.Models.ViewModels.Leave.IndexViewModel>>();
 
 
             // Salary view models
-            cfg.CreateMap<SalaryDto, Models.ViewModels.Salary.IndexViewModel>();
-            cfg.CreateMap<SalaryDto, Models.ViewModels.Salary.DetailsViewModel>();
-            cfg.CreateMap<SalaryCreateDto, Models.ViewModels.Salary.CreateViewModel>();
-            cfg.CreateMap<SalaryDto, Models.ViewModels.Salary.UpdateViewModel>();
-            cfg.CreateMap<SalaryUpdateDto, Models.ViewModels.Salary.UpdateViewModel>();
-            cfg.CreateMap<SalaryDto, Models.ViewModels.Salary.DeleteViewModel>();
+            cfg.CreateMap<SalaryDto, Data.Models.ViewModels.Salary.IndexViewModel>();
+            cfg.CreateMap<SalaryDto, Data.Models.ViewModels.Salary.DetailsViewModel>();
+            cfg.CreateMap<SalaryCreateDto, Data.Models.ViewModels.Salary.CreateViewModel>();
+            cfg.CreateMap<SalaryDto, Data.Models.ViewModels.Salary.UpdateViewModel>();
+            cfg.CreateMap<SalaryUpdateDto, Data.Models.ViewModels.Salary.UpdateViewModel>();
+            cfg.CreateMap<SalaryDto, Data.Models.ViewModels.Salary.DeleteViewModel>();
 
-            cfg.CreateMap<Salary, Models.ViewModels.Salary.IndexViewModel>();
-            cfg.CreateMap<Salary, Models.ViewModels.Salary.DetailsViewModel>();
-            cfg.CreateMap<Salary, Models.ViewModels.Salary.UpdateViewModel>();
-            cfg.CreateMap<Salary, Models.ViewModels.Salary.DeleteViewModel>();
+            cfg.CreateMap<Salary, Data.Models.ViewModels.Salary.IndexViewModel>();
+            cfg.CreateMap<Salary, Data.Models.ViewModels.Salary.DetailsViewModel>();
+            cfg.CreateMap<Salary, Data.Models.ViewModels.Salary.UpdateViewModel>();
+            cfg.CreateMap<Salary, Data.Models.ViewModels.Salary.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<SalaryDto>, PagedRecordsViewModel<Models.ViewModels.Salary.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.Salary.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.Salary.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<Salary>, PaginatedResult<Models.ViewModels.Salary.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<SalaryDto>, PagedRecordsViewModel<Data.Models.ViewModels.Salary.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Salary.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Salary.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<Salary>, PaginatedResult<Data.Models.ViewModels.Salary.IndexViewModel>>();
 
 
 
 
             // AbsenceType view models
-            cfg.CreateMap<AbsenceTypeDto, Models.ViewModels.AbsenceType.IndexViewModel>();
-            cfg.CreateMap<AbsenceTypeDto, Models.ViewModels.AbsenceType.DetailsViewModel>();
-            cfg.CreateMap<AbsenceTypeCreateDto, Models.ViewModels.AbsenceType.CreateViewModel>();
-            cfg.CreateMap<AbsenceTypeDto, Models.ViewModels.AbsenceType.UpdateViewModel>();
-            cfg.CreateMap<AbsenceTypeUpdateDto, Models.ViewModels.AbsenceType.UpdateViewModel>();
-            cfg.CreateMap<AbsenceTypeDto, Models.ViewModels.AbsenceType.DeleteViewModel>();
+            cfg.CreateMap<AbsenceTypeDto, Data.Models.ViewModels.AbsenceType.IndexViewModel>();
+            cfg.CreateMap<AbsenceTypeDto, Data.Models.ViewModels.AbsenceType.DetailsViewModel>();
+            cfg.CreateMap<AbsenceTypeCreateDto, Data.Models.ViewModels.AbsenceType.CreateViewModel>();
+            cfg.CreateMap<AbsenceTypeDto, Data.Models.ViewModels.AbsenceType.UpdateViewModel>();
+            cfg.CreateMap<AbsenceTypeUpdateDto, Data.Models.ViewModels.AbsenceType.UpdateViewModel>();
+            cfg.CreateMap<AbsenceTypeDto, Data.Models.ViewModels.AbsenceType.DeleteViewModel>();
 
-            cfg.CreateMap<AbsenceType, Models.ViewModels.AbsenceType.IndexViewModel>();
-            cfg.CreateMap<AbsenceType, Models.ViewModels.AbsenceType.DetailsViewModel>();
-            cfg.CreateMap<AbsenceType, Models.ViewModels.AbsenceType.UpdateViewModel>();
-            cfg.CreateMap<AbsenceType, Models.ViewModels.AbsenceType.DeleteViewModel>();
+            cfg.CreateMap<AbsenceType, Data.Models.ViewModels.AbsenceType.IndexViewModel>();
+            cfg.CreateMap<AbsenceType, Data.Models.ViewModels.AbsenceType.DetailsViewModel>();
+            cfg.CreateMap<AbsenceType, Data.Models.ViewModels.AbsenceType.UpdateViewModel>();
+            cfg.CreateMap<AbsenceType, Data.Models.ViewModels.AbsenceType.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<AbsenceTypeDto>, PagedRecordsViewModel<Models.ViewModels.AbsenceType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.AbsenceType.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.AbsenceType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<AbsenceType>, PaginatedResult<Models.ViewModels.AbsenceType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<AbsenceTypeDto>, PagedRecordsViewModel<Data.Models.ViewModels.AbsenceType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.AbsenceType.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.AbsenceType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<AbsenceType>, PaginatedResult<Data.Models.ViewModels.AbsenceType.IndexViewModel>>();
 
 
             // Address view models
-            cfg.CreateMap<AddressDto, Models.ViewModels.Address.IndexViewModel>();
-            cfg.CreateMap<AddressDto, Models.ViewModels.Address.DetailsViewModel>();
-            cfg.CreateMap<AddressCreateDto, Models.ViewModels.Address.CreateViewModel>();
-            cfg.CreateMap<AddressDto, Models.ViewModels.Address.UpdateViewModel>();
-            cfg.CreateMap<AddressUpdateDto, Models.ViewModels.Address.UpdateViewModel>();
-            cfg.CreateMap<AddressDto, Models.ViewModels.Address.DeleteViewModel>();
+            cfg.CreateMap<AddressDto, Data.Models.ViewModels.Address.IndexViewModel>();
+            cfg.CreateMap<AddressDto, Data.Models.ViewModels.Address.DetailsViewModel>();
+            cfg.CreateMap<AddressCreateDto, Data.Models.ViewModels.Address.CreateViewModel>();
+            cfg.CreateMap<AddressDto, Data.Models.ViewModels.Address.UpdateViewModel>();
+            cfg.CreateMap<AddressUpdateDto, Data.Models.ViewModels.Address.UpdateViewModel>();
+            cfg.CreateMap<AddressDto, Data.Models.ViewModels.Address.DeleteViewModel>();
 
-            cfg.CreateMap<Address, Models.ViewModels.Address.IndexViewModel>();
-            cfg.CreateMap<Address, Models.ViewModels.Address.DetailsViewModel>();
-            cfg.CreateMap<Address, Models.ViewModels.Address.UpdateViewModel>();
-            cfg.CreateMap<Address, Models.ViewModels.Address.DeleteViewModel>();
+            cfg.CreateMap<Address, Data.Models.ViewModels.Address.IndexViewModel>();
+            cfg.CreateMap<Address, Data.Models.ViewModels.Address.DetailsViewModel>();
+            cfg.CreateMap<Address, Data.Models.ViewModels.Address.UpdateViewModel>();
+            cfg.CreateMap<Address, Data.Models.ViewModels.Address.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<AddressDto>, PagedRecordsViewModel<Models.ViewModels.Address.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.Address.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.Address.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<Address>, PaginatedResult<Models.ViewModels.Address.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<AddressDto>, PagedRecordsViewModel<Data.Models.ViewModels.Address.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Address.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Address.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<Address>, PaginatedResult<Data.Models.ViewModels.Address.IndexViewModel>>();
 
 
             // ContractType view models
-            cfg.CreateMap<ContractTypeDto, Models.ViewModels.ContractType.IndexViewModel>();
-            cfg.CreateMap<ContractTypeDto, Models.ViewModels.ContractType.DetailsViewModel>();
-            cfg.CreateMap<ContractTypeCreateDto, Models.ViewModels.ContractType.CreateViewModel>();
-            cfg.CreateMap<ContractTypeDto, Models.ViewModels.ContractType.UpdateViewModel>();
-            cfg.CreateMap<ContractTypeUpdateDto, Models.ViewModels.ContractType.UpdateViewModel>();
-            cfg.CreateMap<ContractTypeDto, Models.ViewModels.ContractType.DeleteViewModel>();
+            cfg.CreateMap<ContractTypeDto, Data.Models.ViewModels.ContractType.IndexViewModel>();
+            cfg.CreateMap<ContractTypeDto, Data.Models.ViewModels.ContractType.DetailsViewModel>();
+            cfg.CreateMap<ContractTypeCreateDto, Data.Models.ViewModels.ContractType.CreateViewModel>();
+            cfg.CreateMap<ContractTypeDto, Data.Models.ViewModels.ContractType.UpdateViewModel>();
+            cfg.CreateMap<ContractTypeUpdateDto, Data.Models.ViewModels.ContractType.UpdateViewModel>();
+            cfg.CreateMap<ContractTypeDto, Data.Models.ViewModels.ContractType.DeleteViewModel>();
 
-            cfg.CreateMap<ContractType, Models.ViewModels.ContractType.IndexViewModel>();
-            cfg.CreateMap<ContractType, Models.ViewModels.ContractType.DetailsViewModel>();
-            cfg.CreateMap<ContractType, Models.ViewModels.ContractType.UpdateViewModel>();
-            cfg.CreateMap<ContractType, Models.ViewModels.ContractType.DeleteViewModel>();
+            cfg.CreateMap<ContractType, Data.Models.ViewModels.ContractType.IndexViewModel>();
+            cfg.CreateMap<ContractType, Data.Models.ViewModels.ContractType.DetailsViewModel>();
+            cfg.CreateMap<ContractType, Data.Models.ViewModels.ContractType.UpdateViewModel>();
+            cfg.CreateMap<ContractType, Data.Models.ViewModels.ContractType.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<ContractTypeDto>, PagedRecordsViewModel<Models.ViewModels.ContractType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.ContractType.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.ContractType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<ContractType>, PaginatedResult<Models.ViewModels.ContractType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<ContractTypeDto>, PagedRecordsViewModel<Data.Models.ViewModels.ContractType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.ContractType.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.ContractType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<ContractType>, PaginatedResult<Data.Models.ViewModels.ContractType.IndexViewModel>>();
 
 
             // EducationLevel view models
-            cfg.CreateMap<EducationLevelDto, Models.ViewModels.EducationLevel.IndexViewModel>();
-            cfg.CreateMap<EducationLevelDto, Models.ViewModels.EducationLevel.DetailsViewModel>();
-            cfg.CreateMap<EducationLevelCreateDto, Models.ViewModels.EducationLevel.CreateViewModel>();
-            cfg.CreateMap<EducationLevelDto, Models.ViewModels.EducationLevel.UpdateViewModel>();
-            cfg.CreateMap<EducationLevelUpdateDto, Models.ViewModels.EducationLevel.UpdateViewModel>();
-            cfg.CreateMap<EducationLevelDto, Models.ViewModels.EducationLevel.DeleteViewModel>();
+            cfg.CreateMap<EducationLevelDto, Data.Models.ViewModels.EducationLevel.IndexViewModel>();
+            cfg.CreateMap<EducationLevelDto, Data.Models.ViewModels.EducationLevel.DetailsViewModel>();
+            cfg.CreateMap<EducationLevelCreateDto, Data.Models.ViewModels.EducationLevel.CreateViewModel>();
+            cfg.CreateMap<EducationLevelDto, Data.Models.ViewModels.EducationLevel.UpdateViewModel>();
+            cfg.CreateMap<EducationLevelUpdateDto, Data.Models.ViewModels.EducationLevel.UpdateViewModel>();
+            cfg.CreateMap<EducationLevelDto, Data.Models.ViewModels.EducationLevel.DeleteViewModel>();
 
-            cfg.CreateMap<EducationLevel, Models.ViewModels.EducationLevel.IndexViewModel>();
-            cfg.CreateMap<EducationLevel, Models.ViewModels.EducationLevel.DetailsViewModel>();
-            cfg.CreateMap<EducationLevel, Models.ViewModels.EducationLevel.UpdateViewModel>();
-            cfg.CreateMap<EducationLevel, Models.ViewModels.EducationLevel.DeleteViewModel>();
+            cfg.CreateMap<EducationLevel, Data.Models.ViewModels.EducationLevel.IndexViewModel>();
+            cfg.CreateMap<EducationLevel, Data.Models.ViewModels.EducationLevel.DetailsViewModel>();
+            cfg.CreateMap<EducationLevel, Data.Models.ViewModels.EducationLevel.UpdateViewModel>();
+            cfg.CreateMap<EducationLevel, Data.Models.ViewModels.EducationLevel.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<EducationLevelDto>, PagedRecordsViewModel<Models.ViewModels.EducationLevel.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.EducationLevel.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.EducationLevel.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<EducationLevel>, PaginatedResult<Models.ViewModels.EducationLevel.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<EducationLevelDto>, PagedRecordsViewModel<Data.Models.ViewModels.EducationLevel.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.EducationLevel.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.EducationLevel.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<EducationLevel>, PaginatedResult<Data.Models.ViewModels.EducationLevel.IndexViewModel>>();
 
 
             // Experience view models
-            cfg.CreateMap<ExperienceDto, Models.ViewModels.Experience.IndexViewModel>();
-            cfg.CreateMap<ExperienceDto, Models.ViewModels.Experience.DetailsViewModel>();
-            cfg.CreateMap<ExperienceCreateDto, Models.ViewModels.Experience.CreateViewModel>();
-            cfg.CreateMap<ExperienceDto, Models.ViewModels.Experience.UpdateViewModel>();
-            cfg.CreateMap<ExperienceUpdateDto, Models.ViewModels.Experience.UpdateViewModel>();
-            cfg.CreateMap<ExperienceDto, Models.ViewModels.Experience.DeleteViewModel>();
+            cfg.CreateMap<ExperienceDto, Data.Models.ViewModels.Experience.IndexViewModel>();
+            cfg.CreateMap<ExperienceDto, Data.Models.ViewModels.Experience.DetailsViewModel>();
+            cfg.CreateMap<ExperienceCreateDto, Data.Models.ViewModels.Experience.CreateViewModel>();
+            cfg.CreateMap<ExperienceDto, Data.Models.ViewModels.Experience.UpdateViewModel>();
+            cfg.CreateMap<ExperienceUpdateDto, Data.Models.ViewModels.Experience.UpdateViewModel>();
+            cfg.CreateMap<ExperienceDto, Data.Models.ViewModels.Experience.DeleteViewModel>();
 
-            cfg.CreateMap<Experience, Models.ViewModels.Experience.IndexViewModel>();
-            cfg.CreateMap<Experience, Models.ViewModels.Experience.DetailsViewModel>();
-            cfg.CreateMap<Experience, Models.ViewModels.Experience.UpdateViewModel>();
-            cfg.CreateMap<Experience, Models.ViewModels.Experience.DeleteViewModel>();
+            cfg.CreateMap<Experience, Data.Models.ViewModels.Experience.IndexViewModel>();
+            cfg.CreateMap<Experience, Data.Models.ViewModels.Experience.DetailsViewModel>();
+            cfg.CreateMap<Experience, Data.Models.ViewModels.Experience.UpdateViewModel>();
+            cfg.CreateMap<Experience, Data.Models.ViewModels.Experience.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<ExperienceDto>, PagedRecordsViewModel<Models.ViewModels.Experience.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.Experience.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.Experience.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<Experience>, PaginatedResult<Models.ViewModels.Experience.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<ExperienceDto>, PagedRecordsViewModel<Data.Models.ViewModels.Experience.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Experience.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Experience.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<Experience>, PaginatedResult<Data.Models.ViewModels.Experience.IndexViewModel>>();
 
 
             // LeaveType view models
-            cfg.CreateMap<LeaveTypeDto, Models.ViewModels.LeaveType.IndexViewModel>();
-            cfg.CreateMap<LeaveTypeDto, Models.ViewModels.LeaveType.DetailsViewModel>();
-            cfg.CreateMap<LeaveTypeCreateDto, Models.ViewModels.LeaveType.CreateViewModel>();
-            cfg.CreateMap<LeaveTypeDto, Models.ViewModels.LeaveType.UpdateViewModel>();
-            cfg.CreateMap<LeaveTypeUpdateDto, Models.ViewModels.LeaveType.UpdateViewModel>();
-            cfg.CreateMap<LeaveTypeDto, Models.ViewModels.LeaveType.DeleteViewModel>();
+            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.IndexViewModel>();
+            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.DetailsViewModel>();
+            cfg.CreateMap<LeaveTypeCreateDto, Data.Models.ViewModels.LeaveType.CreateViewModel>();
+            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.UpdateViewModel>();
+            cfg.CreateMap<LeaveTypeUpdateDto, Data.Models.ViewModels.LeaveType.UpdateViewModel>();
+            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.DeleteViewModel>();
 
-            cfg.CreateMap<LeaveType, Models.ViewModels.LeaveType.IndexViewModel>();
-            cfg.CreateMap<LeaveType, Models.ViewModels.LeaveType.DetailsViewModel>();
-            cfg.CreateMap<LeaveType, Models.ViewModels.LeaveType.UpdateViewModel>();
-            cfg.CreateMap<LeaveType, Models.ViewModels.LeaveType.DeleteViewModel>();
+            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.IndexViewModel>();
+            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.DetailsViewModel>();
+            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.UpdateViewModel>();
+            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<LeaveTypeDto>, PagedRecordsViewModel<Models.ViewModels.LeaveType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.LeaveType.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.LeaveType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<LeaveType>, PaginatedResult<Models.ViewModels.LeaveType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<LeaveTypeDto>, PagedRecordsViewModel<Data.Models.ViewModels.LeaveType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.LeaveType.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.LeaveType.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<LeaveType>, PaginatedResult<Data.Models.ViewModels.LeaveType.IndexViewModel>>();
 
 
             // MaritalStatus view models
-            cfg.CreateMap<MaritalStatusDto, Models.ViewModels.MaritalStatus.IndexViewModel>();
-            cfg.CreateMap<MaritalStatusDto, Models.ViewModels.MaritalStatus.DetailsViewModel>();
-            cfg.CreateMap<MaritalStatusCreateDto, Models.ViewModels.MaritalStatus.CreateViewModel>();
-            cfg.CreateMap<MaritalStatusDto, Models.ViewModels.MaritalStatus.UpdateViewModel>();
-            cfg.CreateMap<MaritalStatusUpdateDto, Models.ViewModels.MaritalStatus.UpdateViewModel>();
-            cfg.CreateMap<MaritalStatusDto, Models.ViewModels.MaritalStatus.DeleteViewModel>();
+            cfg.CreateMap<MaritalStatusDto, Data.Models.ViewModels.MaritalStatus.IndexViewModel>();
+            cfg.CreateMap<MaritalStatusDto, Data.Models.ViewModels.MaritalStatus.DetailsViewModel>();
+            cfg.CreateMap<MaritalStatusCreateDto, Data.Models.ViewModels.MaritalStatus.CreateViewModel>();
+            cfg.CreateMap<MaritalStatusDto, Data.Models.ViewModels.MaritalStatus.UpdateViewModel>();
+            cfg.CreateMap<MaritalStatusUpdateDto, Data.Models.ViewModels.MaritalStatus.UpdateViewModel>();
+            cfg.CreateMap<MaritalStatusDto, Data.Models.ViewModels.MaritalStatus.DeleteViewModel>();
 
-            cfg.CreateMap<MaritalStatus, Models.ViewModels.MaritalStatus.IndexViewModel>();
-            cfg.CreateMap<MaritalStatus, Models.ViewModels.MaritalStatus.DetailsViewModel>();
-            cfg.CreateMap<MaritalStatus, Models.ViewModels.MaritalStatus.UpdateViewModel>();
-            cfg.CreateMap<MaritalStatus, Models.ViewModels.MaritalStatus.DeleteViewModel>();
+            cfg.CreateMap<MaritalStatus, Data.Models.ViewModels.MaritalStatus.IndexViewModel>();
+            cfg.CreateMap<MaritalStatus, Data.Models.ViewModels.MaritalStatus.DetailsViewModel>();
+            cfg.CreateMap<MaritalStatus, Data.Models.ViewModels.MaritalStatus.UpdateViewModel>();
+            cfg.CreateMap<MaritalStatus, Data.Models.ViewModels.MaritalStatus.DeleteViewModel>();
 
-            cfg.CreateMap<PaginatedResult<MaritalStatusDto>, PagedRecordsViewModel<Models.ViewModels.MaritalStatus.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Models.ViewModels.MaritalStatus.IndexViewModel>, PagedRecordsViewModel<Models.ViewModels.MaritalStatus.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<MaritalStatus>, PaginatedResult<Models.ViewModels.MaritalStatus.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<MaritalStatusDto>, PagedRecordsViewModel<Data.Models.ViewModels.MaritalStatus.IndexViewModel>>();
+            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.MaritalStatus.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.MaritalStatus.IndexViewModel>>();
+            cfg.CreateMap<PaginatedQuery<MaritalStatus>, PaginatedResult<Data.Models.ViewModels.MaritalStatus.IndexViewModel>>();
         });
     }
 }

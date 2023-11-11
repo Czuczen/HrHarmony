@@ -1,13 +1,13 @@
 ﻿using HrHarmony.Attributes;
 using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
+using HrHarmony.Data.Models.Entities;
+using HrHarmony.Data.Models.Shared;
 using HrHarmony.Data.Repositories.AccessLimiters.Selectable;
-using HrHarmony.Models.Entities;
-using HrHarmony.Models.Shared;
 using System.Linq.Expressions;
 
 namespace HrHarmony.Data.Repositories.Entity;
 
-[RegisterOpenGenericInterfaceInDI(typeof(IRepository<,>))]
+[RegisterOpenGenericInterfaceInDi(typeof(IRepository<,>))]
 public interface IRepository<TEntity, TPrimaryKey> : IPerWebRequestDependency
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct

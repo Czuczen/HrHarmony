@@ -1,5 +1,5 @@
-﻿using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Models.Entities.Main;
+﻿using HrHarmony.Data.Models.Entities.Dictionary;
+using HrHarmony.Data.Models.Entities.Main;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Data.Database;

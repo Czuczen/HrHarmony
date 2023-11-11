@@ -1,11 +1,11 @@
 ﻿namespace HrHarmony.Attributes;
 
-[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-sealed class RegisterOpenGenericClassInDIAttribute : Attribute
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+public class RegisterOpenGenericClassInDiAttribute : Attribute
 {
     public Type ImplementationType { get; }
 
-    public RegisterOpenGenericClassInDIAttribute(Type implementationType)
+    public RegisterOpenGenericClassInDiAttribute(Type implementationType)
     {
         ImplementationType = implementationType;
     }

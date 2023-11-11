@@ -1,13 +1,13 @@
 ﻿using HrHarmony.Data.Database;
-using HrHarmony.Models.Entities.Dictionary;
-using HrHarmony.Models.Entities.Main;
+using HrHarmony.Data.Models.Entities.Dictionary;
+using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Utils;
 
 namespace HrHarmony.Tests.Infrastructure;
 
 public static class SeedData
 {
-    private static readonly Random _random = new();
+    private static readonly Random Random = new();
 
     public static void Initialize(ApplicationDbContext context)
     {
@@ -33,7 +33,7 @@ public static class SeedData
 
     public static MaritalStatus CreateMaritalStatus(ApplicationDbContext context)
     {
-        var stringLength = _random.Next(3, 21);
+        var stringLength = Random.Next(3, 21);
         var maritalStatus = new MaritalStatus
         {
             StatusName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
@@ -47,18 +47,18 @@ public static class SeedData
 
     public static void CreateMaritalStatuses(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateMaritalStatus(context);
     }
 
     public static Address CreateAddress(ApplicationDbContext context)
     {
-        var streetLength = _random.Next(3, 21);
-        var cityLength = _random.Next(3, 21);
+        var streetLength = Random.Next(3, 21);
+        var cityLength = Random.Next(3, 21);
 
-        var firstPart = _random.Next(10, 100);
-        var secondPart = _random.Next(100, 1000);
+        var firstPart = Random.Next(10, 100);
+        var secondPart = Random.Next(100, 1000);
 
         var address = new Address
         {
@@ -75,14 +75,14 @@ public static class SeedData
 
     public static void CreateAddresses(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateAddress(context);
     }
 
     public static EducationLevel CreateEducationLevel(ApplicationDbContext context)
     {
-        var stringLength = _random.Next(3, 21);
+        var stringLength = Random.Next(3, 21);
         var educationLevel = new EducationLevel
         {
             LevelName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
@@ -96,14 +96,14 @@ public static class SeedData
 
     public static void CreateEducationLevels(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateEducationLevel(context);
     }
 
     public static Experience CreateExperience(ApplicationDbContext context)
     {
-        var stringLength = _random.Next(3, 21);
+        var stringLength = Random.Next(3, 21);
         var experience = new Experience
         {
             ExperienceDescription = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
@@ -117,7 +117,7 @@ public static class SeedData
 
     public static void CreateExperiences(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateExperience(context);
     }
@@ -126,7 +126,7 @@ public static class SeedData
 
     public static ContractType CreateContractType(ApplicationDbContext context)
     {
-        var stringLength = _random.Next(3, 21);
+        var stringLength = Random.Next(3, 21);
         var contractType = new ContractType
         {
             TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
@@ -140,14 +140,14 @@ public static class SeedData
 
     public static void CreateContractTypes(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateContractType(context);
     }
 
     public static LeaveType CreateLeaveType(ApplicationDbContext context)
     {
-        var stringLength = _random.Next(3, 21);
+        var stringLength = Random.Next(3, 21);
         var leaveType = new LeaveType
         {
             TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
@@ -161,14 +161,14 @@ public static class SeedData
 
     public static void CreateLeaveTypes(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateLeaveType(context);
     }
 
     public static AbsenceType CreateAbsenceType(ApplicationDbContext context)
     {
-        var stringLength = _random.Next(3, 21);
+        var stringLength = Random.Next(3, 21);
         var absenceType = new AbsenceType
         {
             TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
@@ -182,7 +182,7 @@ public static class SeedData
 
     public static void CreateAbsenceTypes(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateAbsenceType(context);
     }
@@ -196,19 +196,19 @@ public static class SeedData
         var educationLevelIds = context.EducationLevels.Select(a => a.Id).ToList();
         var experienceIds = context.Experiences.Select(a => a.Id).ToList();
 
-        var fullNameLength = _random.Next(3, 21);
-        var emailLength = _random.Next(3, 11);
+        var fullNameLength = Random.Next(3, 21);
+        var emailLength = Random.Next(3, 11);
 
         var employee = new Employee
         {
             FullName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(fullNameLength)),
             Email = StringUtils.GenerateRandomString(emailLength).ToLower() + "@example.com",
-            PhoneNumber = "+48" + _random.Next(10000000, 99999999),
-            DateOfBirth = DateTime.Now.AddYears(-30).AddDays(_random.Next(365 * 30)),
-            MaritalStatusId = maritalStatusIds[_random.Next(0, maritalStatusIds.Count)],
-            AddressId = addressIds[_random.Next(0, addressIds.Count)],
-            EducationLevelId = educationLevelIds[_random.Next(0, educationLevelIds.Count)],
-            ExperienceId = experienceIds[_random.Next(0, experienceIds.Count)]
+            PhoneNumber = "+48" + Random.Next(10000000, 99999999),
+            DateOfBirth = DateTime.Now.AddYears(-30).AddDays(Random.Next(365 * 30)),
+            MaritalStatusId = maritalStatusIds[Random.Next(0, maritalStatusIds.Count)],
+            AddressId = addressIds[Random.Next(0, addressIds.Count)],
+            EducationLevelId = educationLevelIds[Random.Next(0, educationLevelIds.Count)],
+            ExperienceId = experienceIds[Random.Next(0, experienceIds.Count)]
         };
 
         context.Employees.Add(employee);
@@ -219,7 +219,7 @@ public static class SeedData
 
     public static void CreateEmployees(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateEmployee(context);
     }
@@ -231,17 +231,17 @@ public static class SeedData
         var contractTypesIds = context.ContractTypes.Select(a => a.Id).ToList();
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
 
-        var hourlyRate = (decimal)(_random.Next(1000, 5000) / 100.0);
-        var monthlyRate = (decimal)(_random.Next(50000, 100000) / 100.0);
-        var basicSalary = (decimal)(_random.Next(3000000, 8000000) / 100.0);
+        var hourlyRate = (decimal)(Random.Next(1000, 5000) / 100.0);
+        var monthlyRate = (decimal)(Random.Next(50000, 100000) / 100.0);
+        var basicSalary = (decimal)(Random.Next(3000000, 8000000) / 100.0);
 
         var employmentContract = new EmploymentContract
         {
-            ContractNumber = "Contract-" + _random.Next(1000, 10000),
-            StartDate = DateTime.Now.AddMonths(-_random.Next(1, 13)),
-            EndDate = DateTime.Now.AddMonths(_random.Next(1, 13)),
-            ContractTypeId = contractTypesIds[_random.Next(0, contractTypesIds.Count)],
-            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+            ContractNumber = "Contract-" + Random.Next(1000, 10000),
+            StartDate = DateTime.Now.AddMonths(-Random.Next(1, 13)),
+            EndDate = DateTime.Now.AddMonths(Random.Next(1, 13)),
+            ContractTypeId = contractTypesIds[Random.Next(0, contractTypesIds.Count)],
+            EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
             HourlyRate = Math.Round(hourlyRate, 2),
             MonthlyRate = Math.Round(monthlyRate, 2),
             BasicSalary = Math.Round(basicSalary, 2),
@@ -255,7 +255,7 @@ public static class SeedData
 
     public static void CreateEmploymentContracts(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateEmploymentContract(context);
     }
@@ -267,10 +267,10 @@ public static class SeedData
 
         var leave = new Leave
         {
-            StartDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
-            EndDate = DateTime.Now.AddDays(_random.Next(1, 11)),
-            LeaveTypeId = leaveTypesIds[_random.Next(0, leaveTypesIds.Count)],
-            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+            StartDate = DateTime.Now.AddDays(-Random.Next(1, 11)),
+            EndDate = DateTime.Now.AddDays(Random.Next(1, 11)),
+            LeaveTypeId = leaveTypesIds[Random.Next(0, leaveTypesIds.Count)],
+            EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
         };
 
         context.Leaves.Add(leave);
@@ -281,7 +281,7 @@ public static class SeedData
 
     public static void CreateLeaves(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateLeave(context);
     }
@@ -293,9 +293,9 @@ public static class SeedData
 
         var absence = new Absence
         {
-            AbsenceDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
-            AbsenceTypeId = absenceTypesIds[_random.Next(0, absenceTypesIds.Count)],
-            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+            AbsenceDate = DateTime.Now.AddDays(-Random.Next(1, 11)),
+            AbsenceTypeId = absenceTypesIds[Random.Next(0, absenceTypesIds.Count)],
+            EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
         };
 
         context.Absences.Add(absence);
@@ -306,7 +306,7 @@ public static class SeedData
 
     public static void CreateAbsences(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateAbsence(context);
     }
@@ -315,17 +315,17 @@ public static class SeedData
     {
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
 
-        var basicSalary = (decimal)(_random.Next(3000000, 8000000) / 100.0);
-        var additionalSalary = (decimal)(_random.Next(50000, 100000) / 100.0);
-        var bonuses = (decimal)(_random.Next(10000, 50000) / 100.0);
-        var allowances = (decimal)(_random.Next(1000, 5000) / 100.0);
-        var zusContributions = (decimal)(_random.Next(100, 500) / 100.0);
-        var incomeTax = (decimal)(_random.Next(200, 1000) / 100.0);
+        var basicSalary = (decimal)(Random.Next(3000000, 8000000) / 100.0);
+        var additionalSalary = (decimal)(Random.Next(50000, 100000) / 100.0);
+        var bonuses = (decimal)(Random.Next(10000, 50000) / 100.0);
+        var allowances = (decimal)(Random.Next(1000, 5000) / 100.0);
+        var zusContributions = (decimal)(Random.Next(100, 500) / 100.0);
+        var incomeTax = (decimal)(Random.Next(200, 1000) / 100.0);
 
         var salary = new Salary
         {
-            PaymentDate = DateTime.Now.AddDays(-_random.Next(1, 11)),
-            EmployeeId = employeesIds[_random.Next(0, employeesIds.Count)],
+            PaymentDate = DateTime.Now.AddDays(-Random.Next(1, 11)),
+            EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
             BasicSalary = Math.Round(basicSalary, 2),
             AdditionalSalary = Math.Round(additionalSalary, 2),
             Bonuses = Math.Round(bonuses, 2),
@@ -342,7 +342,7 @@ public static class SeedData
 
     public static void CreateSalaries(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? _random.Next(1, 11);
+        howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateSalary(context);
     }

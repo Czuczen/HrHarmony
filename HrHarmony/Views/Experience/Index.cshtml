@@ -1,5 +1,5 @@
-﻿@using HrHarmony.Models.ViewModels.Experience;
-@using HrHarmony.Models.ViewModels;
+﻿@using HrHarmony.Data.Models.ViewModels.Experience;
+@using HrHarmony.Data.Models.ViewModels;
 @model PagedRecordsViewModel<IndexViewModel>
 
 @{
@@ -8,37 +8,3 @@
 
 @await Html.PartialAsync("~/Views/Shared/Records/_RecordsListHeader.cshtml", "doświadczeń zawodowych")
 @await Html.PartialAsync("~/Views/Shared/Records/_RecordsList.cshtml")
-
-@* 
-<div class="container mt-5">
- 
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mb-4">Lista doświadczeń zawodowych</h1>
-        <a class="btn btn-primary" asp-controller="Experience" asp-action="Create">Dodaj Nowy Rekord</a>
-    </div>
-
-    <table class="table table-bordered table-hover">
-
-        <thead class="table-dark">
-            <tr>
-                <th>Opis doświadczenia</th>
-                <th>Akcje</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.ExperienceDescription</td>
-                    <td>
-                        <a class="btn btn-success btn-sm" asp-controller="Experience" asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
-                        <a class="btn btn-info btn-sm" asp-controller="Experience" asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
-                        <a class="btn btn-danger btn-sm" asp-controller="Experience" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
- *@

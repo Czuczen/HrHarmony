@@ -1,11 +1,11 @@
 ﻿using HrHarmony.Attributes;
+using HrHarmony.Data.Models.Entities;
+using HrHarmony.Data.Models.Shared;
 using HrHarmony.Data.Repositories.QueryBuilder.Entity;
-using HrHarmony.Models.Entities;
-using HrHarmony.Models.Shared;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 
-[RegisterOpenGenericInterfaceInDI(typeof(IPaginatedQueryBuilder<,>))]
+[RegisterOpenGenericInterfaceInDi(typeof(IPaginatedQueryBuilder<,>))]
 public interface IPaginatedQueryBuilder<TEntity, TPrimaryKey> : IEntityQueryBuilder<TEntity, TPrimaryKey>
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct

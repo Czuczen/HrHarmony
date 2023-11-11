@@ -5,7 +5,7 @@ using LinqKit;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
-[RegisterOpenGenericClassInDI(typeof(CharValueFilterStrategy<>))]
+[RegisterOpenGenericClassInDi(typeof(CharValueFilterStrategy<>))]
 public class CharValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>
 {
     public IEnumerable<Type> Types => new List<Type> { typeof(char), typeof(char?) };

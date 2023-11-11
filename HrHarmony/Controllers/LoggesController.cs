@@ -1,8 +1,8 @@
 ﻿using HrHarmony.Consts;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using HrHarmony.Data.Models.ViewModels.Logges;
 using HrHarmony.Logging;
-using HrHarmony.Models.ViewModels.Logges;
 
 namespace HrHarmony.Controllers;
 
@@ -35,80 +35,78 @@ public class LoggesController : Controller
 
             foreach (var logFile in logFiles)
             {
-                using (var fs = new FileStream(logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var sr = new StreamReader(fs, Encoding.Default))
+                using var fs = new FileStream(logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var sr = new StreamReader(fs, Encoding.Default);
+                var buffer = new char[(int)sr.BaseStream.Length];
+                sr.Read(buffer, 0, (int)sr.BaseStream.Length);
+
+                var rawLogs = new string(buffer);
+                var stringSeparators = new[] { "\r\n" };
+                var lines = rawLogs.Split(stringSeparators, StringSplitOptions.None);
+
+                var log = new List<string>();
+                foreach (var line in lines)
                 {
-                    var buffer = new char[(int)sr.BaseStream.Length];
-                    sr.Read(buffer, 0, (int)sr.BaseStream.Length);
+                    var isNewLog = false;
 
-                    var rawLogs = new string(buffer);
-                    var stringSeparators = new[] { "\r\n" };
-                    var lines = rawLogs.Split(stringSeparators, StringSplitOptions.None);
-
-                    var log = new List<string>();
-                    foreach (var line in lines)
+                    if (line.StartsWith("TRACE"))
                     {
-                        var isNewLog = false;
+                        isNewLog = true;
 
-                        if (line.StartsWith("TRACE"))
-                        {
-                            isNewLog = true;
-
-                            log = new List<string> { line };
-                            ret.TraceLogs.Add(log);
-                        }
-
-                        if (line.StartsWith("DEBUG"))
-                        {
-                            isNewLog = true;
-
-                            log = new List<string> { line };
-                            ret.DebugLogs.Add(log);
-                        }
-
-                        if (line.StartsWith("INFORMATION"))
-                        {
-                            isNewLog = true;
-
-                            log = new List<string> { line };
-                            ret.InfoLogs.Add(log);
-                        }
-
-                        if (line.StartsWith("WARN"))
-                        {
-                            isNewLog = true;
-
-                            log = new List<string> { line };
-                            ret.WarnLogs.Add(log);
-                        }
-
-                        if (line.StartsWith("ERROR"))
-                        {
-                            isNewLog = true;
-
-                            log = new List<string> { line };
-                            ret.ErrorLogs.Add(log);
-                        }
-
-                        if (line.StartsWith("CRITICAL"))
-                        {
-                            isNewLog = true;
-
-                            log = new List<string> { line };
-                            ret.CriticalLogs.Add(log);
-                        }
-
-                        if (line.StartsWith("NONE"))
-                        {
-                            isNewLog = true;
-
-                            log = new List<string> { line };
-                            ret.NoneLogs.Add(log);
-                        }
-
-                        if (!isNewLog)
-                            log.Add(line);
+                        log = new List<string> { line };
+                        ret.TraceLogs.Add(log);
                     }
+
+                    if (line.StartsWith("DEBUG"))
+                    {
+                        isNewLog = true;
+
+                        log = new List<string> { line };
+                        ret.DebugLogs.Add(log);
+                    }
+
+                    if (line.StartsWith("INFORMATION"))
+                    {
+                        isNewLog = true;
+
+                        log = new List<string> { line };
+                        ret.InfoLogs.Add(log);
+                    }
+
+                    if (line.StartsWith("WARN"))
+                    {
+                        isNewLog = true;
+
+                        log = new List<string> { line };
+                        ret.WarnLogs.Add(log);
+                    }
+
+                    if (line.StartsWith("ERROR"))
+                    {
+                        isNewLog = true;
+
+                        log = new List<string> { line };
+                        ret.ErrorLogs.Add(log);
+                    }
+
+                    if (line.StartsWith("CRITICAL"))
+                    {
+                        isNewLog = true;
+
+                        log = new List<string> { line };
+                        ret.CriticalLogs.Add(log);
+                    }
+
+                    if (line.StartsWith("NONE"))
+                    {
+                        isNewLog = true;
+
+                        log = new List<string> { line };
+                        ret.NoneLogs.Add(log);
+                    }
+
+                    if (!isNewLog)
+                        log.Add(line);
                 }
             }
 

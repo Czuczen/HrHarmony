@@ -1,14 +1,14 @@
 ﻿using System.Linq.Expressions;
 using HrHarmony.Attributes;
 using HrHarmony.Configuration.Dependencies.DependencyLifecycleInterfaces;
+using HrHarmony.Data.Models.Dto;
+using HrHarmony.Data.Models.Entities;
+using HrHarmony.Data.Models.Shared;
 using HrHarmony.Data.Repositories.AccessLimiters.Selectable;
-using HrHarmony.Models.Dto;
-using HrHarmony.Models.Entities;
-using HrHarmony.Models.Shared;
 
 namespace HrHarmony.Data.Repositories.Dto;
 
-[RegisterOpenGenericInterfaceInDI(typeof(IRepository<,,,,>))]
+[RegisterOpenGenericInterfaceInDi(typeof(IRepository<,,,,>))]
 public interface IRepository<TEntity, TPrimaryKey, TEntityDto, in TUpdateDto, in TCreateDto> : IPerWebRequestDependency
     where TEntity : class, IEntity<TPrimaryKey>, new()
     where TPrimaryKey : struct
@@ -68,8 +68,6 @@ public interface IRepository<TEntity, TPrimaryKey, TEntityDto, in TUpdateDto, in
     public IEnumerable<TEntityDto> ExecuteQuery(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
 
     public Task<IEnumerable<TEntityDto>> ExecuteQueryAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> queryBuilder);
-
-    public Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id);
 
     public PaginatedResult<TEntityDto> GetPagedEntities<TIndexViewModel>(PaginationRequest req)
         where TIndexViewModel : class, new();

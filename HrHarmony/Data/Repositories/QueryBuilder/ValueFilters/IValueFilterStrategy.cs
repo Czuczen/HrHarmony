@@ -5,7 +5,7 @@ using LinqKit;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
-[RegisterOpenGenericInterfaceInDI(typeof(IValueFilterStrategy<>))]
+[RegisterOpenGenericInterfaceInDi(typeof(IValueFilterStrategy<>))]
 public interface IValueFilterStrategy<TEntity> : ITransientDependency
 {
     public IEnumerable<Type> Types { get; }

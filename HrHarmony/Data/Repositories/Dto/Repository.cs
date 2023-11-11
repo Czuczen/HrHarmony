@@ -3,17 +3,17 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HrHarmony.Attributes;
 using HrHarmony.Data.Database;
+using HrHarmony.Data.Models.Dto;
+using HrHarmony.Data.Models.Entities;
+using HrHarmony.Data.Models.Shared;
 using HrHarmony.Data.Repositories.AccessLimiters.Selectable;
 using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 using HrHarmony.Exceptions;
-using HrHarmony.Models.Dto;
-using HrHarmony.Models.Entities;
-using HrHarmony.Models.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Data.Repositories.Dto;
 
-[RegisterOpenGenericClassInDI(typeof(Repository<,,,,>))]
+[RegisterOpenGenericClassInDi(typeof(Repository<,,,,>))]
 public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto> :
     IRepository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto>
     where TEntity : class, IEntity<TPrimaryKey>, new()
@@ -204,16 +204,6 @@ public class Repository<TEntity, TPrimaryKey, TEntityDto, TUpdateDto, TCreateDto
         query = queryBuilder(query);
 
         return _mapper.Map<IEnumerable<TEntityDto>>(await query.ToListAsync());
-    }
-
-    // do wywalenia na koniec
-    public async Task<IEnumerable<TEntityDto>> GetWhere(string key, TPrimaryKey id)
-    {
-        var type = typeof(TEntity);
-
-        var entities = (await _ctx.Set<TEntity>().ToListAsync()).Where(item => type.GetProperty(key).GetValue(item).Equals(id));
-
-        return _mapper.Map<IEnumerable<TEntityDto>>(entities);
     }
 
     public PaginatedResult<TEntityDto> GetPagedEntities<TViewModel>(PaginationRequest req)

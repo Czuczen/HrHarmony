@@ -11,17 +11,17 @@ namespace HrHarmony.Configuration.Dependencies;
 
 public static class DependencyInjection
 {
-    private static readonly Type _transientType = typeof(ITransientDependency);
-    private static readonly Type _scopedType = typeof(IPerWebRequestDependency);
-    private static readonly Type _singletonType = typeof(ISingletonDependency);
+    private static readonly Type TransientType = typeof(ITransientDependency);
+    private static readonly Type ScopedType = typeof(IPerWebRequestDependency);
+    private static readonly Type SingletonType = typeof(ISingletonDependency);
 
     public static void RegisterDependenciesByConvention(this IServiceCollection services)
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        Register(services, assembly, _transientType);
-        Register(services, assembly, _scopedType);
-        Register(services, assembly, _singletonType);
+        Register(services, assembly, TransientType);
+        Register(services, assembly, ScopedType);
+        Register(services, assembly, SingletonType);
 
         services.AddSingleton(MapperConfigurationFactory.Configure().CreateMapper());
 
@@ -81,28 +81,28 @@ public static class DependencyInjection
 
         // jeśli jest typem generycznym i nie jest TransientType to sprawdź ilość interfejsów dziedziczących od interfejsów IPerWebRequestDependency, ISingletonDependency
         // jeśli typ generyczny nie jest TransientType to nie ma możliwości rejestrowania wielu interfejsów bo np. singleton będzie osobnym obiektem dla każdego interfejsu
-        if (!isSameType && dependencyType != _transientType && classInterfacesWithRegistration.Count > 1)
+        if (!isSameType && dependencyType != TransientType && classInterfacesWithRegistration.Count > 1)
             throw new MultipleInterfacesForGenericTypeException($"Type {currType.FullName} has multiple registering interfaces. This is not allowed for IPerWebRequestDependency and ISingletonDependency.");
 
         // jeśli interfejs rejestracyjny jest bezpośrednio na klasie to dodajemy samą klasę
         if (registerInterfaceIsOnClass)
         {
-            if (dependencyType == _transientType)
+            if (dependencyType == TransientType)
                 services.AddTransient(currType);
 
-            if (dependencyType == _scopedType)
+            if (dependencyType == ScopedType)
                 services.AddScoped(currType);
 
-            if (dependencyType == _singletonType)
+            if (dependencyType == SingletonType)
                 services.AddSingleton(currType);
         }
         else
         {
             // jeśli typ nie jest generyczny dodajemy jego implementację klasy
-            if (dependencyType == _scopedType && isSameType)
+            if (dependencyType == ScopedType && isSameType)
                 services.AddScoped(currType);
 
-            if (dependencyType == _singletonType && isSameType)
+            if (dependencyType == SingletonType && isSameType)
                 services.AddSingleton(currType);
         }
         
@@ -110,17 +110,17 @@ public static class DependencyInjection
         {
             var currInterfaceType = GetOpenGenericInterfaceTypeIfExist(interfaceType);
             
-            if (dependencyType == _transientType)
+            if (dependencyType == TransientType)
                 services.AddTransient(currInterfaceType, currType);
 
             // jeśli typ nie jest generyczny dodajemy interfejs do wcześniej dodanej implementacji klasy
-            if (dependencyType == _scopedType)
+            if (dependencyType == ScopedType)
                 if (isSameType)
                     services.AddScoped(currInterfaceType, provider => provider.GetRequiredService(currType));
                 else
                     services.AddScoped(currInterfaceType, currType);
 
-            if (dependencyType == _singletonType)
+            if (dependencyType == SingletonType)
                 if (isSameType)
                     services.AddSingleton(currInterfaceType, provider => provider.GetRequiredService(currType));
                 else
@@ -130,10 +130,10 @@ public static class DependencyInjection
 
     private static Type GetOpenGenericClassTypeIfExist(Type type, out bool isSameType)
     {
-        var genericClassRegistrationAttribute = typeof(RegisterOpenGenericClassInDIAttribute);
+        var genericClassRegistrationAttribute = typeof(RegisterOpenGenericClassInDiAttribute);
         if (type.IsDefined(genericClassRegistrationAttribute, false))
         {
-            var attribute = (RegisterOpenGenericClassInDIAttribute)type.GetCustomAttributes(genericClassRegistrationAttribute, false).First();
+            var attribute = (RegisterOpenGenericClassInDiAttribute)type.GetCustomAttributes(genericClassRegistrationAttribute, false).First();
             isSameType = false;
             return attribute.ImplementationType;
         }
@@ -146,10 +146,10 @@ public static class DependencyInjection
 
     private static Type GetOpenGenericInterfaceTypeIfExist(Type type)
     {
-        var genericInterfaceRegistrationAttribute = typeof(RegisterOpenGenericInterfaceInDIAttribute);
+        var genericInterfaceRegistrationAttribute = typeof(RegisterOpenGenericInterfaceInDiAttribute);
         if (type.IsDefined(genericInterfaceRegistrationAttribute, false))
         {
-            var attribute = (RegisterOpenGenericInterfaceInDIAttribute) type.GetCustomAttributes(genericInterfaceRegistrationAttribute, false).First();
+            var attribute = (RegisterOpenGenericInterfaceInDiAttribute) type.GetCustomAttributes(genericInterfaceRegistrationAttribute, false).First();
             return attribute.InterfaceType;
         }
         else
@@ -167,9 +167,9 @@ public static class DependencyInjection
         
         foreach (var service in services)
         {
-            var associatedWithInjectionConvention = ImplementsDependency(service.ServiceType, _transientType)
-                                                    || ImplementsDependency(service.ServiceType, _scopedType)
-                                                    || ImplementsDependency(service.ServiceType, _singletonType);
+            var associatedWithInjectionConvention = ImplementsDependency(service.ServiceType, TransientType)
+                                                    || ImplementsDependency(service.ServiceType, ScopedType)
+                                                    || ImplementsDependency(service.ServiceType, SingletonType);
 
             if (associatedWithInjectionConvention)
                 logger.LogDebug($"Zarejestrowano usługę w kontenerze DI: {service.Lifetime} => {service.ServiceType} => {service.ImplementationType}");

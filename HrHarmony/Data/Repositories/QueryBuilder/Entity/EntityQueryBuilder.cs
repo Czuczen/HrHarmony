@@ -1,7 +1,7 @@
-﻿using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
+﻿using HrHarmony.Data.Models.Entities;
+using HrHarmony.Data.Models.Shared;
+using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 using HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
-using HrHarmony.Models.Entities;
-using HrHarmony.Models.Shared;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ public abstract class EntityQueryBuilder<TEntity, TPrimaryKey>
     protected IQueryable<TEntity> BaseQuery;
     protected int TotalCount;
     protected string? OrderBy;
-    protected string SearchString;
+    protected string? SearchString;
     protected bool IsDescending;
 
     private readonly IEnumerable<IValueFilterStrategy<TEntity>> _valueFilterStrategies;
@@ -44,7 +44,7 @@ public abstract class EntityQueryBuilder<TEntity, TPrimaryKey>
         return this;
     }
 
-    public EntityQueryBuilder<TEntity, TPrimaryKey> WithSearch(string searchString)
+    public EntityQueryBuilder<TEntity, TPrimaryKey> WithSearch(string? searchString)
     {
         SearchString = searchString;
         return this;
@@ -76,17 +76,17 @@ public abstract class EntityQueryBuilder<TEntity, TPrimaryKey>
     public EntityQueryBuilder<TEntity, TPrimaryKey> ApplyOrdering()
     {
         Query = IsDescending ? Query.OrderByDescending(x =>
-            EF.Property<TEntity>(x, OrderBy)) : Query.OrderBy(x => EF.Property<TEntity>(x, OrderBy));
+            EF.Property<TEntity>(x, OrderBy!)) : Query.OrderBy(x => EF.Property<TEntity>(x, OrderBy!));
         return this;
     }
 
-    public EntityQueryBuilder<TEntity, TPrimaryKey> ApplySearchValueFilter<TViewModel>()
-        where TViewModel : class, new()
+    public EntityQueryBuilder<TEntity, TPrimaryKey> ApplySearchValueFilter<T>()
+        where T : class, new()
     {
         if (string.IsNullOrWhiteSpace(SearchString)) return this;
 
         SearchString = SearchString.Trim().ToLower();
-        var dbProperties = typeof(TViewModel).GetProperties()
+        var dbProperties = typeof(T).GetProperties()
             .Where(p => p.Name.ToLower() != "id" && !p.Name.ToLower().Contains("id")
                                                  && (p.PropertyType.IsValueType || p.PropertyType == typeof(string)
                                                      || Nullable.GetUnderlyingType(p.PropertyType) == typeof(string))

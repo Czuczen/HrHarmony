@@ -5,7 +5,7 @@ using LinqKit;
 
 namespace HrHarmony.Data.Repositories.QueryBuilder.ValueFilters;
 
-[RegisterOpenGenericClassInDI(typeof(DateValueFilterStrategy<>))]
+[RegisterOpenGenericClassInDi(typeof(DateValueFilterStrategy<>))]
 public class DateValueFilterStrategy<TEntity> : IValueFilterStrategy<TEntity>
 {
     public IEnumerable<Type> Types => new List<Type> { typeof(DateTime), typeof(DateTime?) };

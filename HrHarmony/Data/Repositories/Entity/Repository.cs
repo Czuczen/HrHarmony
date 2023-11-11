@@ -2,17 +2,17 @@
 using AutoMapper.QueryableExtensions;
 using HrHarmony.Attributes;
 using HrHarmony.Data.Database;
+using HrHarmony.Data.Models.Entities;
+using HrHarmony.Data.Models.Shared;
 using HrHarmony.Data.Repositories.AccessLimiters.Selectable;
 using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 using HrHarmony.Exceptions;
-using HrHarmony.Models.Entities;
-using HrHarmony.Models.Shared;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace HrHarmony.Data.Repositories.Entity;
 
-[RegisterOpenGenericClassInDI(typeof(Repository<,>))]
+[RegisterOpenGenericClassInDi(typeof(Repository<,>))]
 public class Repository<TEntity, TPrimaryKey> :
     IRepository<TEntity, TPrimaryKey>
     where TEntity : class, IEntity<TPrimaryKey>, new()
