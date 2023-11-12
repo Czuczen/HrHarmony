@@ -22,7 +22,7 @@ namespace HrHarmony.Data.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Dictionary.AbsenceType", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.AbsenceType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("AbsenceTypes");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Dictionary.Address", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Dictionary.ContractType", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.ContractType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +81,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("ContractTypes");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Dictionary.EducationLevel", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.EducationLevel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +98,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("EducationLevels");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Dictionary.Experience", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.Experience", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("Experiences");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Dictionary.LeaveType", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.LeaveType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,7 +132,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("LeaveTypes");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Dictionary.MaritalStatus", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.MaritalStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,7 +149,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("MaritalStatuses");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Absence", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Absence", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,7 +175,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("Absences");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Employee", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -223,7 +223,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.EmploymentContract", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.EmploymentContract", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -265,7 +265,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("EmploymentContracts");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Leave", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Leave", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -294,7 +294,7 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("Leaves");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Salary", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Salary", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,15 +333,15 @@ namespace HrHarmony.Data.Database.Migrations
                     b.ToTable("Salaries");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Absence", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Absence", b =>
                 {
-                    b.HasOne("HrHarmony.Models.Entities.Dictionary.AbsenceType", "AbsenceType")
-                        .WithMany()
+                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.AbsenceType", "AbsenceType")
+                        .WithMany("Absences")
                         .HasForeignKey("AbsenceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrHarmony.Models.Entities.Main.Employee", "Employee")
+                    b.HasOne("HrHarmony.Data.Models.Entities.Main.Employee", "Employee")
                         .WithMany("Absences")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -352,28 +352,28 @@ namespace HrHarmony.Data.Database.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Employee", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Employee", b =>
                 {
-                    b.HasOne("HrHarmony.Models.Entities.Dictionary.Address", "Address")
-                        .WithMany()
+                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.Address", "Address")
+                        .WithMany("Employees")
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrHarmony.Models.Entities.Dictionary.EducationLevel", "EducationLevel")
-                        .WithMany()
+                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.EducationLevel", "EducationLevel")
+                        .WithMany("Employees")
                         .HasForeignKey("EducationLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrHarmony.Models.Entities.Dictionary.Experience", "Experience")
-                        .WithMany()
+                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.Experience", "Experience")
+                        .WithMany("Employees")
                         .HasForeignKey("ExperienceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrHarmony.Models.Entities.Dictionary.MaritalStatus", "MaritalStatus")
-                        .WithMany()
+                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.MaritalStatus", "MaritalStatus")
+                        .WithMany("Employees")
                         .HasForeignKey("MaritalStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -387,15 +387,15 @@ namespace HrHarmony.Data.Database.Migrations
                     b.Navigation("MaritalStatus");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.EmploymentContract", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.EmploymentContract", b =>
                 {
-                    b.HasOne("HrHarmony.Models.Entities.Dictionary.ContractType", "ContractType")
-                        .WithMany()
+                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.ContractType", "ContractType")
+                        .WithMany("Contracts")
                         .HasForeignKey("ContractTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrHarmony.Models.Entities.Main.Employee", "Employee")
+                    b.HasOne("HrHarmony.Data.Models.Entities.Main.Employee", "Employee")
                         .WithMany("Contracts")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -406,16 +406,16 @@ namespace HrHarmony.Data.Database.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Leave", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Leave", b =>
                 {
-                    b.HasOne("HrHarmony.Models.Entities.Main.Employee", "Employee")
+                    b.HasOne("HrHarmony.Data.Models.Entities.Main.Employee", "Employee")
                         .WithMany("Leaves")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrHarmony.Models.Entities.Dictionary.LeaveType", "LeaveType")
-                        .WithMany()
+                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.LeaveType", "LeaveType")
+                        .WithMany("Leaves")
                         .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -425,9 +425,9 @@ namespace HrHarmony.Data.Database.Migrations
                     b.Navigation("LeaveType");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Salary", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Salary", b =>
                 {
-                    b.HasOne("HrHarmony.Models.Entities.Main.Employee", "Employee")
+                    b.HasOne("HrHarmony.Data.Models.Entities.Main.Employee", "Employee")
                         .WithMany("Salaries")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -436,7 +436,42 @@ namespace HrHarmony.Data.Database.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("HrHarmony.Models.Entities.Main.Employee", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.AbsenceType", b =>
+                {
+                    b.Navigation("Absences");
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.Address", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.ContractType", b =>
+                {
+                    b.Navigation("Contracts");
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.EducationLevel", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.Experience", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.LeaveType", b =>
+                {
+                    b.Navigation("Leaves");
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.MaritalStatus", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Employee", b =>
                 {
                     b.Navigation("Absences");
 

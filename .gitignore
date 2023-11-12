@@ -47,4 +47,6 @@ logs/
 # Ignore Visual Studio Code files
 .vscode/
 
-# Custom
+# Ignore secrets files
+secrets.json
+secrets.development.json

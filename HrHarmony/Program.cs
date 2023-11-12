@@ -1,7 +1,10 @@
 using HrHarmony.Configuration.Dependencies;
+using HrHarmony.Configuration.Secrets;
+using HrHarmony.Consts;
 using HrHarmony.Data.Database;
 using HrHarmony.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +14,7 @@ builder.AddFileLogger();
 // Dodaj kontekst bazy danych
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var connectionString = SecretsProvider.GetConnectionString("HrHarmony", DbConnectionTypes.DefaultConnection);
     options.UseSqlServer(connectionString);
 });
 

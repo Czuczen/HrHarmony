@@ -6,6 +6,8 @@ using System.Reflection;
 using HrHarmony.Data.Database;
 using HrHarmony.Exceptions;
 using HrHarmony.Logging;
+using HrHarmony.Consts;
+using HrHarmony.Configuration.Secrets;
 
 namespace HrHarmony.Configuration.Dependencies;
 
@@ -40,7 +42,7 @@ public static class DependencyInjection
                 .AddJsonFile($"appsettings.Development.json", optional: true) // Plik środowiskowy
                 .Build();
 
-            var testConnectionString = configuration.GetConnectionString("TestConnection");
+            var testConnectionString = SecretsProvider.GetConnectionString("HrHarmony", DbConnectionTypes.TestConnection);
             options.UseSqlServer(testConnectionString);
         });
 
@@ -158,13 +160,8 @@ public static class DependencyInjection
 
     private static void LogRegisteredServicesByConvention(IServiceCollection services)
     {
-        var fileLoggingConfig = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory)
-              .AddJsonFile("appsettings.json") // Plik główny
-              .AddJsonFile($"appsettings.Development.json", optional: true) // Plik środowiskowy
-              .Build().GetSection("Logging:FileLogging").Get<FileLoggerConfiguration>();
+        var logger = FileLoggerFactory.GetLogger();
 
-        var logger = new FileLoggerProvider(fileLoggingConfig).CreateLogger("");
-        
         foreach (var service in services)
         {
             var associatedWithInjectionConvention = ImplementsDependency(service.ServiceType, TransientType)

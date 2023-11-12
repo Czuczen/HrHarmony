@@ -1,32 +1,50 @@
-﻿using HrHarmony.Data.Database;
-using HrHarmony.Data.Models.Entities.Dictionary;
+﻿using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Utils;
 
-namespace HrHarmony.Tests.Infrastructure;
+namespace HrHarmony.Data.Database.SeedData;
 
 public static class SeedData
 {
     private static readonly Random Random = new();
+    public static bool GroupSaveChanges = true;
+
+    public static int? MaritalStatusesCount = 10;
+    public static int? AddressesCount = 100;
+    public static int? EducationLevelsCount = 10;
+    public static int? ExperiencesCount = 12;
+    public static int? EmployeesCount = 500;
+    public static int? ContractTypesCount = 7;
+    public static int? LeaveTypesCount = 5;
+    public static int? AbsenceTypesCount = 4;
+    public static int? EmploymentContractsCount = 700;
+    public static int? LeavesCount = 1000;
+    public static int? AbsencesCount = 2000;
+    public static int? SalariesCount = 5000;
+    
 
     public static void Initialize(ApplicationDbContext context)
     {
         // kolejność ma znaczenie
-        CreateMaritalStatuses(context);
-        CreateAddresses(context);
-        CreateEducationLevels(context);
-        CreateExperiences(context);
+        CreateMaritalStatuses(context, MaritalStatusesCount);
+        CreateAddresses(context, AddressesCount);
+        CreateEducationLevels(context, EducationLevelsCount);
+        CreateExperiences(context, ExperiencesCount);
+        context.SaveChanges();
+
+        CreateEmployees(context, EmployeesCount);
+        context.SaveChanges();
         
-        CreateEmployees(context);
-        
-        CreateContractTypes(context);
-        CreateLeaveTypes(context);
-        CreateAbsenceTypes(context);
-        
-        CreateEmploymentContracts(context);
-        CreateLeaves(context);
-        CreateAbsences(context);
-        CreateSalaries(context);
+        CreateContractTypes(context, ContractTypesCount);
+        CreateLeaveTypes(context, LeaveTypesCount);
+        CreateAbsenceTypes(context, AbsenceTypesCount);
+        context.SaveChanges();
+
+        CreateEmploymentContracts(context, EmploymentContractsCount);
+        CreateLeaves(context, LeavesCount);
+        CreateAbsences(context, AbsencesCount);
+        CreateSalaries(context, SalariesCount);
+        context.SaveChanges();
     }
 
     // ============== słownikowe połączone z employee ===========================
@@ -40,8 +58,9 @@ public static class SeedData
         };
 
         context.MaritalStatuses.Add(maritalStatus);
-        context.SaveChanges();
-        
+        if (!GroupSaveChanges)
+            context.SaveChanges();
+
         return maritalStatus;
     }
 
@@ -68,8 +87,9 @@ public static class SeedData
         };
 
         context.Addresses.Add(address);
-        context.SaveChanges();
-        
+        if (!GroupSaveChanges)
+            context.SaveChanges();
+
         return address;
     }
 
@@ -89,7 +109,8 @@ public static class SeedData
         };
 
         context.EducationLevels.Add(educationLevel);
-        context.SaveChanges();
+        if (!GroupSaveChanges)
+            context.SaveChanges();
 
         return educationLevel;
     }
@@ -110,8 +131,9 @@ public static class SeedData
         };
 
         context.Experiences.Add(experience);
-        context.SaveChanges();
-        
+        if (!GroupSaveChanges)
+            context.SaveChanges();
+
         return experience;
     }
 
@@ -133,7 +155,8 @@ public static class SeedData
         };
 
         context.ContractTypes.Add(contractType);
-        context.SaveChanges();
+        if (!GroupSaveChanges)
+            context.SaveChanges();
 
         return contractType;
     }
@@ -154,7 +177,8 @@ public static class SeedData
         };
 
         context.LeaveTypes.Add(leaveType);
-        context.SaveChanges();
+        if (!GroupSaveChanges)
+            context.SaveChanges();
 
         return leaveType;
     }
@@ -175,8 +199,9 @@ public static class SeedData
         };
 
         context.AbsenceTypes.Add(absenceType);
-        context.SaveChanges();
-        
+        if (!GroupSaveChanges)
+            context.SaveChanges();
+
         return absenceType;
     }
 
@@ -212,7 +237,8 @@ public static class SeedData
         };
 
         context.Employees.Add(employee);
-        context.SaveChanges();
+        if (!GroupSaveChanges)
+            context.SaveChanges();
 
         return employee;
     }
@@ -248,7 +274,8 @@ public static class SeedData
         };
 
         context.EmploymentContracts.Add(employmentContract);
-        context.SaveChanges();
+        if (!GroupSaveChanges)
+            context.SaveChanges();
 
         return employmentContract;
     }
@@ -274,8 +301,9 @@ public static class SeedData
         };
 
         context.Leaves.Add(leave);
-        context.SaveChanges();
-        
+        if (!GroupSaveChanges)
+            context.SaveChanges();
+
         return leave;
     }
 
@@ -299,8 +327,9 @@ public static class SeedData
         };
 
         context.Absences.Add(absence);
-        context.SaveChanges();
-        
+        if (!GroupSaveChanges)
+            context.SaveChanges();
+
         return absence;
     }
 
@@ -335,8 +364,9 @@ public static class SeedData
         };
 
         context.Salaries.Add(salary);
-        context.SaveChanges();
-        
+        if (!GroupSaveChanges)
+            context.SaveChanges();
+
         return salary;
     }
 

@@ -1,5 +1,5 @@
 ﻿using HrHarmony.Data.Database;
-using HrHarmony.Tests.Infrastructure;
+using HrHarmony.Data.Database.SeedData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -73,7 +73,7 @@ public class ExperienceController : Controller
             await _experienceRepository.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
-
+        
         var updateViewModel = _mapper.Map<UpdateViewModel>(entity);
 
         return View(updateViewModel);

@@ -128,8 +128,26 @@ public class PagedRecordsViewModel<TIndexViewModel>
         get
         {
             var ret = "";
-            for(var i = 1; i <= TotalPages; i++)
+
+            // Dodaj przycisk do pierwszej strony przed kropkami
+            if (PageNumber > 3)
+                ret += $"<a id=\"pageHref1\" data-page-number=\"1\" class=\"btn m-1 p-r-1 p-l-1 bd-highlight btn-primary\">1</a>";
+
+            // Dodaj kropki przed przyciskami
+            if (PageNumber > 4)
+                ret += $"<a class=\"btn m-1 p-r-1 p-l-1 bd-highlight btn-secondary disabled\">...</a>";
+
+            // Dodaj przyciski
+            for (var i = Math.Max(1, PageNumber - 2); i <= Math.Min(TotalPages, PageNumber + 2); i++)
                 ret += $"<a id=\"pageHref{i}\" data-page-number=\"{i}\" class=\"btn m-1 p-r-1 p-l-1 bd-highlight {(PageNumber == i ? "btn-secondary disabled" : "btn-primary")}\">{i}</a>";
+
+            // Dodaj kropki po przyciskach
+            if (PageNumber < TotalPages - 3)
+                ret += $"<a class=\"btn m-1 p-r-1 p-l-1 bd-highlight btn-secondary disabled\">...</a>";
+
+            // Dodaj przycisk do ostatniej strony po kropkach
+            if (PageNumber < TotalPages - 2)
+                ret += $"<a id=\"pageHref{TotalPages}\" data-page-number=\"{TotalPages}\" class=\"btn m-1 p-r-1 p-l-1 bd-highlight btn-primary\">{TotalPages}</a>";
 
             return new HtmlString(ret);
         }

@@ -1,7 +1,7 @@
-﻿using HrHarmony.Data.Models.Entities.Main;
+﻿using HrHarmony.Data.Database.SeedData;
+using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Data.Repositories.Entity;
 using HrHarmony.Tests.Configuration;
-using HrHarmony.Tests.Infrastructure;
 
 namespace HrHarmony.Tests.Services;
 
@@ -9,7 +9,7 @@ public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, 
 {
     public EmployeeRepositoryTests(TestFixture fixture) : base(fixture)
     {
-
+        SeedData.GroupSaveChanges = false;
     }
 
     [Fact]

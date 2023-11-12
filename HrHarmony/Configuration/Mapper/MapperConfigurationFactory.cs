@@ -9,18 +9,6 @@ using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Data.Models.Shared;
 using HrHarmony.Data.Models.ViewModels;
-using HrHarmony.Data.Models.ViewModels.Absence;
-using HrHarmony.Data.Models.ViewModels.AbsenceType;
-using HrHarmony.Data.Models.ViewModels.Address;
-using HrHarmony.Data.Models.ViewModels.ContractType;
-using HrHarmony.Data.Models.ViewModels.EducationLevel;
-using HrHarmony.Data.Models.ViewModels.Employee;
-using HrHarmony.Data.Models.ViewModels.EmploymentContract;
-using HrHarmony.Data.Models.ViewModels.Experience;
-using HrHarmony.Data.Models.ViewModels.Leave;
-using HrHarmony.Data.Models.ViewModels.LeaveType;
-using HrHarmony.Data.Models.ViewModels.MaritalStatus;
-using HrHarmony.Data.Models.ViewModels.Salary;
 using HrHarmony.Data.Repositories.QueryBuilder.Pagination;
 
 namespace HrHarmony.Configuration.Mapper;
