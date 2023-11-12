@@ -17,7 +17,7 @@ public class FileLogger : ILogger
 
     public IDisposable? BeginScope<TState>(TState state) => null;
 
-    public bool IsEnabled(LogLevel logLevel) => logLevel >= _configuration.LogLevel;
+    public bool IsEnabled(LogLevel logLevel) => logLevel >= _configuration.ToFileLogLevel;
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
     {

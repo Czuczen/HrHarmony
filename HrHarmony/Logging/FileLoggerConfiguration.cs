@@ -4,7 +4,7 @@ public class FileLoggerConfiguration
 {
     public bool Enabled { get; set; }
 
-    public LogLevel LogLevel { get; set; }
+    public LogLevel ToFileLogLevel { get; set; }
 
     public string LogFilePath { get; set; }
 
