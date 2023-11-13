@@ -3,11 +3,15 @@
     ViewData["Title"] = "Strona główna";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css">
+}
+
 <section id="homePage">
     <div class="container">
         <div class="row">
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -41,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -59,7 +63,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania umowami</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">System zarządzania umowami pozwoli Ci skutecznie monitorować i organizować dokumenty związane z zatrudnieniem.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="EmploymentContract" asp-action="Index">Przeglądaj</a>
@@ -75,7 +79,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -93,7 +97,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania urlopami</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">Skorzystaj z naszego systemu zarządzania urlopami, aby efektywnie planować i monitorować czas wolny pracowników.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="Leave" asp-action="Index">Przeglądaj</a>
@@ -109,7 +113,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -127,7 +131,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania absencjami</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">Zarządzaj absencjami pracowników w łatwy sposób za pomocą naszego systemu do śledzenia i raportowania.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="Absence" asp-action="Index">Przeglądaj</a>
@@ -143,7 +147,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -161,7 +165,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania wynagrodzeniami</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">System zarządzania wynagrodzeniami umożliwi Ci efektywne monitorowanie i administrację wynagrodzeniami pracowników.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="Salary" asp-action="Index">Przeglądaj</a>
@@ -177,7 +181,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -195,7 +199,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania rodzajami absencji</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">Sprawdź nasz system zarządzania rodzajami absencji, aby skutecznie kategoryzować i monitorować nieobecności pracowników.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="AbsenceType" asp-action="Index">Przeglądaj</a>
@@ -211,7 +215,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -229,7 +233,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania adresami</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">Efektywnie zarządzaj informacjami adresowymi pracowników dzięki naszemu systemowi zarządzania adresami.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="Address" asp-action="Index">Przeglądaj</a>
@@ -245,7 +249,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -263,7 +267,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania rodzajami umów</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">Poznaj różnorodność umów pracowniczych za pomocą naszego systemu zarządzania rodzajami umów.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="ContractType" asp-action="Index">Przeglądaj</a>
@@ -279,7 +283,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -297,7 +301,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania poziomami wykształcenia</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">System zarządzania poziomami wykształcenia umożliwi Ci skuteczne monitorowanie kwalifikacji edukacyjnych pracowników.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="EducationLevel" asp-action="Index">Przeglądaj</a>
@@ -313,7 +317,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -331,7 +335,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania doświadczeniami</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">Zarządzaj doświadczeniem zawodowym pracowników za pomocą naszego systemu śledzenia kariery zawodowej.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="Experience" asp-action="Index">Przeglądaj</a>
@@ -347,7 +351,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -365,7 +369,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania rodzajami urlopów</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">Skorzystaj z systemu zarządzania rodzajami urlopów, aby dokładnie śledzić i planować różne kategorie urlopów.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="LeaveType" asp-action="Index">Przeglądaj</a>
@@ -381,7 +385,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 feature">
+            <div class="col-xs-12 col-sm-6 col-md-3 feature">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -399,7 +403,7 @@
                             <div class="card">
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">System zarządzania stanami cywilnymi</h4>
-                                    <p class="card-text">aaa</p>
+                                    <p class="card-text">System zarządzania stanami cywilnymi pomoże w efektywnym monitorowaniu i organizowaniu informacji dotyczących stanu cywilnego pracowników.</p>
                                     <ul class="list-inline mt-4">
                                         <li class="list-inline-item">
                                             <a class="btn btn-outline-primary feature" asp-area="" asp-controller="MaritalStatus" asp-action="Index">Przeglądaj</a>
@@ -418,91 +422,3 @@
         </div>
     </div>
 </section>
-
-<style>
-    .image-flip:hover .backside,
-    .image-flip.hover .backside {
-        -webkit-transform: rotateY(0deg);
-        -moz-transform: rotateY(0deg);
-        -o-transform: rotateY(0deg);
-        -ms-transform: rotateY(0deg);
-        transform: rotateY(0deg);
-        border-radius: .25rem;
-    }
-
-    .image-flip:hover .frontside,
-    .image-flip.hover .frontside {
-        -webkit-transform: rotateY(180deg);
-        -moz-transform: rotateY(180deg);
-        -o-transform: rotateY(180deg);
-        transform: rotateY(180deg);
-    }
-
-    .mainflip {
-        -webkit-transition: 1s;
-        -webkit-transform-style: preserve-3d;
-        -ms-transition: 1s;
-        -moz-transition: 1s;
-        -moz-transform: perspective(1000px);
-        -moz-transform-style: preserve-3d;
-        -ms-transform-style: preserve-3d;
-        transition: 1s;
-        transform-style: preserve-3d;
-        position: relative;
-    }
-
-    .frontside {
-        position: relative;
-        -webkit-transform: rotateY(0deg);
-        -ms-transform: rotateY(0deg);
-        z-index: 2;
-        margin-bottom: 2rem;
-    }
-
-    .backside {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: -moz-available;
-        width: -webkit-fill-available;
-        -webkit-transform: rotateY(-180deg);
-        -moz-transform: rotateY(-180deg);
-        -o-transform: rotateY(-180deg);
-        -ms-transform: rotateY(-180deg);
-        transform: rotateY(-180deg);
-        -webkit-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
-        -moz-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
-        box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
-    }
-
-    .frontside,
-    .backside {
-        -webkit-backface-visibility: hidden;
-        -moz-backface-visibility: hidden;
-        -ms-backface-visibility: hidden;
-        backface-visibility: hidden;
-        -webkit-transition: 1s;
-        -webkit-transform-style: preserve-3d;
-        -moz-transition: 1s;
-        -moz-transform-style: preserve-3d;
-        -o-transition: 1s;
-        -o-transform-style: preserve-3d;
-        -ms-transition: 1s;
-        -ms-transform-style: preserve-3d;
-        transition: 1s;
-        transform-style: preserve-3d;
-    }
-
-    .feature {
-        padding: 10px;
-        border-radius: 4px;
-        transition: 0.2s;
-    }
-
-    .feature:hover {
-        margin-top: -10px;
-        border: 1px solid rgb(128, 128, 128);
-        background: rgba(232, 215, 215, 0.10);
-        transition: 0.3s;
-    }
-</style>
