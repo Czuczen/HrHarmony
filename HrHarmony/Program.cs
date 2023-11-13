@@ -4,7 +4,6 @@ using HrHarmony.Consts;
 using HrHarmony.Data.Database;
 using HrHarmony.Logging;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -6,9 +6,9 @@ namespace HrHarmony.Configuration.Secrets
     public static class SecretsProvider
     {
         private static Secrets? Secrets => new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory)
-                    .AddJsonFile("secrets.json") // Plik główny
-                    .AddJsonFile($"secrets.Development.json", optional: true) // Plik środowiskowy
-                    .Build().Get<Secrets?>();
+            .AddJsonFile("secrets.json") // Plik główny
+            .AddJsonFile($"secrets.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true) // Plik środowiskowy
+            .Build().Get<Secrets?>();
 
         public static string GetConnectionString(string appName, string connectionType)
         {

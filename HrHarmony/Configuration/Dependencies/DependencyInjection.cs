@@ -39,7 +39,7 @@ public static class DependencyInjection
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json") // Plik główny
-                .AddJsonFile($"appsettings.Development.json", optional: true) // Plik środowiskowy
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true) // Plik środowiskowy
                 .Build();
 
             var testConnectionString = SecretsProvider.GetConnectionString("HrHarmony", DbConnectionTypes.TestConnection);
