@@ -106,6 +106,6 @@ public class SalaryController : Controller
 
         var results = await employeesQ.ToListAsync();
 
-        entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Address).Select(e => e.Item);
+        entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);
     }
 }

@@ -4,8 +4,14 @@ using HrHarmony.Consts;
 using HrHarmony.Data.Database;
 using HrHarmony.Logging;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Ustawienie kultury polskiej dla formatowania liczb i dat.
+var cultureInfo = new CultureInfo("pl-PL");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Dodaj logowanie do pliku
 builder.AddFileLogger();

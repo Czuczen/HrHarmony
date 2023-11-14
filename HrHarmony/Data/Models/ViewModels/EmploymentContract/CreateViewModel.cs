@@ -32,14 +32,17 @@ public class CreateViewModel : IEmploymentContractOptionFields
     public IEnumerable<SelectListItem> Employees { get; set; } = new List<SelectListItem>();
 
     [Display(Name = "Stawka godzinowa")]
+    [DataType(DataType.Currency)]
     //[Range(1, 1000, ErrorMessage = "Wartość musi być między 1 a 1 000")]
     public decimal HourlyRate { get; set; }
 
     [Display(Name = "Opłata miesięczna")]
+    [DataType(DataType.Currency)]
     //[Range(1, 1000000, ErrorMessage = "Wartość musi być między 1 a 1 000 000")]
     public decimal MonthlyRate { get; set; }
 
     [Display(Name = "Wynagrodzenie podstawowe")]
+    [DataType(DataType.Currency)]
     //[Range(1, 1000000, ErrorMessage = "Wartość musi być między 1 a 1 000 000")]
     public decimal BasicSalary { get; set; }
 }
