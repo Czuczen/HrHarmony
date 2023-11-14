@@ -1,26 +1,40 @@
-# HrHarmony (w trakcie tworzenia)
+# HrHarmony (w trakcie rozwijania)
 
-HrHarmony to projekt aplikacji do zarządzania zasobami ludzkimi (HR) stworzony w technologii ASP.NET Core 7 i przy użyciu Entity Framework. Celem tego projektu jest praktyczne zastosowanie technologii ASP.NET Core 7 wraz z wzorcami projektowymi w kontekście zarządzania zasobami ludzkimi w przedsiębiorstwie.
+HrHarmony to projekt aplikacji do zarządzania zasobami ludzkimi (HR) stworzony w technologii ASP.NET Core 7 i przy użyciu Entity Framework. 
+Celem tego projektu jest praktyczne zastosowanie technologii ASP.NET Core 7 wraz z wzorcami projektowymi w kontekście zarządzania zasobami ludzkimi w przedsiębiorstwie.
 
 ## Funkcje
 
-- Zarządzanie danymi pracowników
-- Obsługa umów o pracę
-- Planowanie i rejestracja urlopów
-- Monitorowanie absencji pracowników
-- Zarządzanie wynagrodzeniem
+- Zarządzanie danymi pracowników  
+- Obsługa umów o pracę  
+- Planowanie i rejestracja urlopów  
+- Monitorowanie absencji pracowników  
+- Zarządzanie wynagrodzeniem  
 
-HrHarmony to narzędzie pozwalające na efektywne zarządzanie personelem w firmie, umożliwiające zautomatyzowanie wielu procesów związanych z HR.
+## Technologie
 
-<!--
-## Uruchomienie projektu
+C#  
+JavaScript  
+HTML  
+CSS  
+Bootstrap  
+xUnit  
 
-Aby uruchomić projekt, wykonaj następujące kroki:
+## Jak uruchomić aplikację
 
-1. Sklonuj repozytorium na swój lokalny komputer.
-2. Otwórz projekt w środowisku programistycznym.
-3. Skonfiguruj połączenie z bazą danych.
-4. Uruchom projekt i przetestuj go w przeglądarce.
--->
+1. W projekcie "**HrHarmony**" dodaj plik "**secrets.json**" i uzupełnij go według szablonu:  
+```  
+	{
+	  "ConnectionStrings": {
+		"HrHarmony": {
+		  "DefaultConnection": "",
+		  "TestConnection": ""
+		}
+	  }
+	}
+```
+2. W wartości klucza "**DefaultConnection**" wprowadź informacje dotyczące połączenia z bazą danych MSSQL.  
+3. Uruchom aplikację (Ctrl+F5).  
 
-Ciesz się prostym i efektywnym zarządzaniem personelem w swojej firmie dzięki HrHarmony!
+
+> Uwaga: Projekt obecnie jest rozwijany, nadal są wprowadzane zmiany i ulepszenia, niektóre funkcje mogą być dodawane lub zmieniane w kolejnych wersjach.
