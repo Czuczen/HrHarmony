@@ -34,7 +34,11 @@ xUnit
 	}
 ```
 2. W wartości klucza "**DefaultConnection**" wprowadź informacje dotyczące połączenia z bazą danych MSSQL.  
-3. Uruchom aplikację (Ctrl+F5).  
-
-
+3. Na górnym pasku menu wybierz "Narzędzia", a następnie z rozwijanej listy najedź na "Menedżer pakietów NuGet" i z kolejnej listy wybierz "Konsola menedżera pakietów".  
+4. W konsoli menedżera pakietów dla pola "Projekt domyślny" z rozwijanej listy wybierz "HrHarmony".  
+5. W konsoli menedżera pakietów wpisz komende "EntityFrameworkCore\Update-Database -Migration Initial -Project HrHarmony" i wciśnij Enter.  
+6. Uruchom aplikację (Ctrl+F5).  
+  
+  
+  
 > Uwaga: Projekt obecnie jest rozwijany, nadal są wprowadzane zmiany i ulepszenia, niektóre funkcje mogą być dodawane lub zmieniane w kolejnych wersjach.
