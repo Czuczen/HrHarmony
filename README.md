@@ -14,6 +14,7 @@ Celem tego projektu jest praktyczne zastosowanie technologii ASP.NET Core 7 MVC 
 ## Technologie
 
 ASP.NET Core 7 MVC
+Entity Framework Core
 
 C#  
 JavaScript  
