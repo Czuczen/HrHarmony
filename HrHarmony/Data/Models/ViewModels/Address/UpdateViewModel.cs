@@ -10,7 +10,6 @@ public class UpdateViewModel
     [Display(Name = "Miasto")]
     public string City { get; set; }
 
-    //[RegularExpression(@"^\d{2}-\d{3}$", ErrorMessage = "Błędny kod pocztowy!")] // nie działa
     [Display(Name = "Kod pocztowy")]
     public string PostalCode { get; set; }
 }

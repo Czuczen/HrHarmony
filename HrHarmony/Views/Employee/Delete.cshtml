@@ -5,7 +5,7 @@
     ViewData["Title"] = "Usuń pracownika";
 }
 
-<h2>Usunąć @Model.FullName?</h2>
+<h2>Usunąć pracownika - @Model.FullName?</h2>
 
 <form asp-controller="Employee" asp-action="Delete" method="post">
     @Html.AntiForgeryToken()

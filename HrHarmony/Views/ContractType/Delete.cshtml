@@ -2,10 +2,10 @@
 @model DeleteViewModel
 
 @{
-    ViewData["Title"] = "Usuń typ umowy";
+    ViewData["Title"] = "Usuń rodzaj umowy";
 }
 
-<h2>Usunąć typ umowy - @Model.TypeName?</h2>
+<h2>Usunąć rodzaj umowy - @Model.TypeName?</h2>
 
 <form asp-controller="ContractType" asp-action="Delete" method="post">
     @Html.AntiForgeryToken()

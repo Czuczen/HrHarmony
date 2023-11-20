@@ -8,8 +8,6 @@ namespace HrHarmony.Data.Models.ViewModels.Absence;
 public class CreateViewModel : IAbsenceOptionFields
 {
     [Display(Name = "Data absencji")]
-    [DataType(DataType.DateTime)]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime AbsenceDate { get; set; }
 
     [Display(Name = "Typ absencji")]
