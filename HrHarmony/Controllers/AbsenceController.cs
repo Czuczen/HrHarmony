@@ -104,13 +104,26 @@ public class AbsenceController : Controller
         return RedirectToAction("Index");
     }
 
+    public async Task<IActionResult> SearchRelatedRecords(string searchTerm, string entityName)
+    {
+        if (EntitiesNames.Employee != entityName)
+            return BadRequest("Nazwa encji nieprawidłowa");
+
+        var employeesQ = _absenceRepository.GetQuery<Employee, Employee>(q => q.Where(e => e.FullName.ToLower().Contains(searchTerm.ToLower())))
+           .Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.FullName });
+
+        var employees = await employeesQ.ToListAsync();
+
+        return Json(employees);
+    }
+
     private async Task LoadSelectOptions(IAbsenceOptionFields entity)
     {
         var absenceTypesQ = _absenceRepository.GetQuery<AbsenceType, CustomEntity<SelectListItem>>(q =>
          q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.AbsenceType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
 
-        var employeesQ = _absenceRepository.GetQuery<Employee, CustomEntity<SelectListItem>>(q =>
-            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } }));
+        var employeesQ = _absenceRepository.GetQuery<Employee, Employee>(q => q.Take(10))
+            .Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
         var results = await absenceTypesQ.Concat(employeesQ).ToListAsync();
 
