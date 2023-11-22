@@ -1,4 +1,5 @@
 ﻿@using HrHarmony.Data.Models.ViewModels.Absence;
+@using HrHarmony.Helpers;
 @model UpdateViewModel
 
 @{
@@ -19,9 +20,13 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.EmployeeId)
-        @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, "Wybierz pracownika", new { @class = "form-control" })
+        @Html.RecordsSearchComboBoxFor(nameof(Model.EmployeeId), Model.EmployeeText, ViewContext.RouteData.Values["controller"].ToString(), Model.Employees, "Wybierz pracownika", new { @class = "form-control dropdown-toggle" })
         @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
     </div>
 
     @await Html.PartialAsync("~/Views/Shared/Records/_FormButtons.cshtml")
+}
+
+@section Scripts {
+    <script src="~/js/searchRelatedRecords.js"></script>
 }

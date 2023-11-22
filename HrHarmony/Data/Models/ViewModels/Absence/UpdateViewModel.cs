@@ -14,5 +14,7 @@ public class UpdateViewModel : IAbsenceOptionFields
     [Display(Name = "Pracownik")]
     public int EmployeeId { get; set; }
 
+    public string EmployeeText { get; set; }
+
     public IEnumerable<SelectListItem> Employees { get; set; } = new List<SelectListItem>();
 }
