@@ -104,6 +104,7 @@ public class AbsenceController : Controller
         return RedirectToAction("Index");
     }
 
+    /// TODO: Zrobić paginacje. Na końcu listy strzałka do kliknięcia żeby pobrała się kolejna strona?
     public async Task<IActionResult> SearchRelatedRecords(string searchTerm, string entityName) =>
         entityName switch 
         {
@@ -117,7 +118,7 @@ public class AbsenceController : Controller
     private async Task LoadSelectOptions(ILoadGroupedAbsenceOptions entity)
     {
         var absenceTypesQ = _absenceRepository.GetQuery<AbsenceType, CustomEntity<SelectListItem>>(q =>
-         q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.AbsenceType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.AbsenceType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
 
         var employeesQ = _absenceRepository.GetQuery<Employee, Employee>(q => q.Take(100))
             .Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });

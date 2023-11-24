@@ -2,7 +2,7 @@
 
 namespace HrHarmony.Data.Models.Interfaces
 {
-    public interface ILoadGroupedAbsenceOptions : ILoadAbsenceTypeOptions, SelectOptions.ILoadEmployeeOptions
+    public interface ILoadGroupedAbsenceOptions : ILoadAbsenceTypeOptions, ILoadEmployeeOptions
     {
     }
 }

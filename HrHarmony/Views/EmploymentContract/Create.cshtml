@@ -1,8 +1,10 @@
 ﻿@using HrHarmony.Data.Models.ViewModels.EmploymentContract;
+@using HrHarmony.Helpers;
 @model CreateViewModel
 
 @{
     ViewData["Title"] = "Utwórz umowę pracownika";
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
 }
 
 <h2>Utwórz umowę pracownika</h2>
@@ -37,7 +39,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.EmployeeId)
-        @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, "Wybierz pracownika", new { @class = "form-control" })
+        @Html.RecordsSearchComboBoxFor(nameof(Model.EmployeeId), Model.EmployeeId, Model.EmployeeText, Model.Employees, "Wyszukaj pracownika", controllerName, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
     </div>
 

@@ -100,15 +100,36 @@ public class LeaveController : Controller
         return RedirectToAction("Index");
     }
 
+    public async Task<IActionResult> SearchRelatedRecords(string searchTerm, string entityName) =>
+        entityName switch
+        {
+            EntitiesNames.Employee => Json(await _leaveRepository.GetQuery<Employee, Employee>(q => q.Where(e =>
+                                e.FullName.ToLower().Contains(searchTerm.ToLower()))).Select(e =>
+                                new SelectListItem { Value = e.Id.ToString(), Text = e.FullName }).ToListAsync()),
+
+            _ => throw new InvalidOperationException($"Unsupported entity: '{entityName}'."),
+        };
+
     private async Task LoadSelectOptions(ILoadGroupedLeaveOptions entity)
     {
         var leaveTypesQ = _leaveRepository.GetQuery<LeaveType, CustomEntity<SelectListItem>>(q =>
            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.LeaveType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
 
-        var employeesQ = _leaveRepository.GetQuery<Employee, CustomEntity<SelectListItem>>(q =>
-            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } }));
+        var employeesQ = _leaveRepository.GetQuery<Employee, Employee>(q => q.Take(100))
+            .Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
-        var results = await leaveTypesQ.Concat(employeesQ).ToListAsync();
+        // jeśli walidacja nie przeszła lub jest edycja to potrzebujemy wartości tekstowej dla pola wyszukiwania połączonych rekordów
+        var results = new List<CustomEntity<SelectListItem>>();
+        if (entity.EmployeeId != 0)
+        {
+            var selectedEmployeeQ = _leaveRepository.GetQuery<Employee, Employee>(q => q.Where(e => e.Id == entity.EmployeeId))
+                .Select(e => new CustomEntity<SelectListItem> { EntityName = "EmployeeText", Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
+
+            results = await leaveTypesQ.Concat(employeesQ).Concat(selectedEmployeeQ).ToListAsync();
+            entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").Single().Item.Text;
+        }
+        else
+            results = await leaveTypesQ.Concat(employeesQ).ToListAsync();
 
         entity.LeaveTypes = results.Where(c => c.EntityName == EntitiesNames.LeaveType).Select(e => e.Item);
         entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);

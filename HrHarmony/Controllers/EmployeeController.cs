@@ -103,7 +103,7 @@ public class EmployeeController : Controller
 
         return RedirectToAction("Index");
     }
-
+    
     private async Task LoadSelectOptions(ILoadGroupedEmployeeOptions entity)
     {
         var maritalStatussesQ = _employeeRepository.GetQuery<MaritalStatus, CustomEntity<SelectListItem>>(q =>

@@ -104,15 +104,36 @@ public class EmploymentContractController : Controller
         return RedirectToAction("Index");
     }
 
+    public async Task<IActionResult> SearchRelatedRecords(string searchTerm, string entityName) =>
+        entityName switch
+        {
+            EntitiesNames.Employee => Json(await _employmentContractRepository.GetQuery<Employee, Employee>(q => q.Where(e =>
+                                e.FullName.ToLower().Contains(searchTerm.ToLower()))).Select(e =>
+                                new SelectListItem { Value = e.Id.ToString(), Text = e.FullName }).ToListAsync()),
+
+            _ => throw new InvalidOperationException($"Unsupported entity: '{entityName}'."),
+        };
+
     private async Task LoadSelectOptions(ILoadGroupedEmploymentContractOptions entity)
     {
         var contractTypesQ = _employmentContractRepository.GetQuery<ContractType, CustomEntity<SelectListItem>>(q =>
-         q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.ContractType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
-        
-        var employeesQ = _employmentContractRepository.GetQuery<Employee, CustomEntity<SelectListItem>>(q =>
-            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } }));
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.ContractType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
 
-        var results = await contractTypesQ.Concat(employeesQ).ToListAsync();
+        var employeesQ = _employmentContractRepository.GetQuery<Employee, Employee>(q => q.Take(100))
+            .Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
+
+        // jeśli walidacja nie przeszła lub jest edycja to potrzebujemy wartości tekstowej dla pola wyszukiwania połączonych rekordów
+        var results = new List<CustomEntity<SelectListItem>>();
+        if (entity.EmployeeId != 0)
+        {
+            var selectedEmployeeQ = _employmentContractRepository.GetQuery<Employee, Employee>(q => q.Where(e => e.Id == entity.EmployeeId))
+                .Select(e => new CustomEntity<SelectListItem> { EntityName = "EmployeeText", Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
+
+            results = await contractTypesQ.Concat(employeesQ).Concat(selectedEmployeeQ).ToListAsync();
+            entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").Single().Item.Text;
+        }
+        else
+            results = await contractTypesQ.Concat(employeesQ).ToListAsync();
 
         entity.ContractTypes = results.Where(c => c.EntityName == EntitiesNames.ContractType).Select(e => e.Item);
         entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);
