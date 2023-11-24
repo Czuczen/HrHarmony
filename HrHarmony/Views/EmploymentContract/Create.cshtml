@@ -33,7 +33,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.ContractTypeId)
-        @Html.DropDownListFor(model => model.ContractTypeId, Model.ContractTypes, "Wybierz stan cywilny", new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.ContractTypeId, Model.ContractTypes, "Wybierz rodzaj umowy", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.ContractTypeId, "", new { @class = "text-danger" })
     </div>
 
@@ -62,4 +62,8 @@
     </div>
 
     @await Html.PartialAsync("~/Views/Shared/Records/_FormButtons.cshtml")
+}
+
+@section Scripts {
+    <script src="~/js/searchRelatedRecords.js"></script>
 }

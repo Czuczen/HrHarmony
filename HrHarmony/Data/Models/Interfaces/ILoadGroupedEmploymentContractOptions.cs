@@ -2,7 +2,7 @@
 
 namespace HrHarmony.Data.Models.Interfaces
 {
-    public interface ILoadGroupedEmploymentContractOptions : ILoadContractTypeOptions, SelectOptions.ILoadEmployeeOptions
+    public interface ILoadGroupedEmploymentContractOptions : ILoadContractTypeOptions, ILoadEmployeeOptions
     {
     }
 }

@@ -15,7 +15,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.AbsenceTypeId)
-        @Html.DropDownListFor(model => model.AbsenceTypeId, Model.AbsenceTypes, "Wybierz absencję", new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.AbsenceTypeId, Model.AbsenceTypes, "Wybierz rodzaj absencji", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.AbsenceTypeId, "", new { @class = "text-danger" })
     </div>
 

@@ -112,22 +112,21 @@ public class SalaryController : Controller
 
     private async Task LoadSelectOptions(ILoadEmployeeOptions entity)
     {
-        var employeesQ = _salaryRepository.GetQuery<Employee, Employee>(q => q.Take(100))
+        var query = _salaryRepository.GetQuery<Employee, Employee>(q => q.Take(100))
             .Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
         // jeśli walidacja nie przeszła lub jest edycja to potrzebujemy wartości tekstowej dla pola wyszukiwania połączonych rekordów
-        var results = new List<CustomEntity<SelectListItem>>();
         if (entity.EmployeeId != 0)
         {
             var selectedEmployeeQ = _salaryRepository.GetQuery<Employee, Employee>(q => q.Where(e => e.Id == entity.EmployeeId))
                 .Select(e => new CustomEntity<SelectListItem> { EntityName = "EmployeeText", Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
-            results = await employeesQ.Concat(selectedEmployeeQ).ToListAsync();
-            entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").Single().Item.Text;
+            query = query.Concat(selectedEmployeeQ);
         }
-        else
-            results = await employeesQ.ToListAsync();
 
+        var results = await query.ToListAsync();
+
+        entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").SingleOrDefault()?.Item.Text;
         entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);
     }
 }

@@ -119,18 +119,18 @@ public class LeaveController : Controller
             .Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
         // jeśli walidacja nie przeszła lub jest edycja to potrzebujemy wartości tekstowej dla pola wyszukiwania połączonych rekordów
-        var results = new List<CustomEntity<SelectListItem>>();
+        var query = leaveTypesQ.Concat(employeesQ);
         if (entity.EmployeeId != 0)
         {
             var selectedEmployeeQ = _leaveRepository.GetQuery<Employee, Employee>(q => q.Where(e => e.Id == entity.EmployeeId))
                 .Select(e => new CustomEntity<SelectListItem> { EntityName = "EmployeeText", Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
-            results = await leaveTypesQ.Concat(employeesQ).Concat(selectedEmployeeQ).ToListAsync();
-            entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").Single().Item.Text;
+            query = query.Concat(selectedEmployeeQ);
         }
-        else
-            results = await leaveTypesQ.Concat(employeesQ).ToListAsync();
 
+        var results = await query.ToListAsync();
+
+        entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").SingleOrDefault()?.Item.Text;
         entity.LeaveTypes = results.Where(c => c.EntityName == EntitiesNames.LeaveType).Select(e => e.Item);
         entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);
     }
