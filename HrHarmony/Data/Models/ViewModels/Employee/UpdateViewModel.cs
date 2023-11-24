@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Data.Models.ViewModels.Employee;
 
-public class UpdateViewModel : IEmployeeOptionFields
+public class UpdateViewModel : ILoadGroupedEmployeeOptions
 {
     [Display(Name = "Imię i nazwisko")]
     public string FullName { get; set; }

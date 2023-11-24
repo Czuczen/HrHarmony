@@ -2,7 +2,7 @@
 
 namespace HrHarmony.Data.Models.Interfaces.SelectOptions
 {
-    public interface IEmployeeOptions
+    public interface ILoadEmployeeOptions
     {
         public int EmployeeId { get; set; }
 

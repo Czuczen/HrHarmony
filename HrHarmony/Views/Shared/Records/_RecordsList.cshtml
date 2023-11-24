@@ -1,5 +1,5 @@
 ﻿@{
-    Model.ControllerName = Context.Request.Path.Value?.Replace("/", "");
+    Model.ControllerName = ViewContext.RouteData.Values["controller"].ToString();
 }
 
 <link rel="stylesheet" href="~/css/_recordsList.css">

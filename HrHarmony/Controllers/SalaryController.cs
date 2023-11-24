@@ -99,7 +99,7 @@ public class SalaryController : Controller
         return RedirectToAction("Index");
     }
 
-    private async Task LoadSelectOptions(IEmployeeOptions entity)
+    private async Task LoadSelectOptions(ILoadEmployeeOptions entity)
     {
         var employeesQ = _salaryRepository.GetQuery<Employee, CustomEntity<SelectListItem>>(q =>
             q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } }));

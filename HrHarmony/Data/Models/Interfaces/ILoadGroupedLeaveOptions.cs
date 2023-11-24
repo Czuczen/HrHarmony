@@ -2,7 +2,7 @@
 
 namespace HrHarmony.Data.Models.Interfaces
 {
-    public interface ILeaveOptionFields : ILeaveTypeOptions, IEmployeeOptions
+    public interface ILoadGroupedLeaveOptions : ILoadLeaveTypeOptions, ILoadEmployeeOptions
     {
     }
 }

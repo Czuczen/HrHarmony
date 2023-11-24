@@ -2,8 +2,8 @@
 
 namespace HrHarmony.Data.Models.Interfaces.SelectOptions
 {
-    public interface IAddressOptions
+    public interface ILoadLeaveTypeOptions
     {
-        public IEnumerable<SelectListItem> Addresses { get; set; }
+        public IEnumerable<SelectListItem> LeaveTypes { get; set; }
     }
 }

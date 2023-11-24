@@ -2,8 +2,8 @@
 
 namespace HrHarmony.Data.Models.Interfaces.SelectOptions
 {
-    public interface ILeaveTypeOptions
+    public interface ILoadExperienceOptions
     {
-        public IEnumerable<SelectListItem> LeaveTypes { get; set; }
+        public IEnumerable<SelectListItem> Experiences { get; set; }
     }
 }

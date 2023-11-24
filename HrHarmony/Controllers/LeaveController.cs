@@ -100,7 +100,7 @@ public class LeaveController : Controller
         return RedirectToAction("Index");
     }
 
-    private async Task LoadSelectOptions(ILeaveOptionFields entity)
+    private async Task LoadSelectOptions(ILoadGroupedLeaveOptions entity)
     {
         var leaveTypesQ = _leaveRepository.GetQuery<LeaveType, CustomEntity<SelectListItem>>(q =>
            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.LeaveType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));

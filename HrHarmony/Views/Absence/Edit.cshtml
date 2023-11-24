@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Edycja absencji";
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
 }
 
 <h2>Edytuj absencje</h2>
@@ -20,7 +21,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.EmployeeId)
-        @Html.RecordsSearchComboBoxFor(nameof(Model.EmployeeId), Model.EmployeeText, ViewContext.RouteData.Values["controller"].ToString(), Model.Employees, "Wybierz pracownika", new { @class = "form-control dropdown-toggle" })
+        @Html.RecordsSearchComboBoxFor(nameof(Model.EmployeeId), Model.EmployeeId, Model.EmployeeText, Model.Employees, "Wyszukaj pracownika", controllerName, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
     </div>
 

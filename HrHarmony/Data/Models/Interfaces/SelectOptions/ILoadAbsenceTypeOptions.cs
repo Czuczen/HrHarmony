@@ -2,8 +2,8 @@
 
 namespace HrHarmony.Data.Models.Interfaces.SelectOptions
 {
-    public interface IContractTypeOptions
+    public interface ILoadAbsenceTypeOptions
     {
-        public IEnumerable<SelectListItem> ContractTypes { get; set; }
+        public IEnumerable<SelectListItem> AbsenceTypes { get; set; }
     }
 }

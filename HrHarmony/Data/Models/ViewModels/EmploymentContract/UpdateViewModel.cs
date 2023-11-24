@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Data.Models.ViewModels.EmploymentContract;
 
-public class UpdateViewModel : IEmploymentContractOptionFields
+public class UpdateViewModel : ILoadGroupedEmploymentContractOptions
 {
     [Display(Name = "Data rozpoczęcia")]
     public DateTime StartDate { get; set; }

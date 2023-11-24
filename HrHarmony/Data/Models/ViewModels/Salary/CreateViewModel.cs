@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Data.Models.ViewModels.Salary;
 
-public class CreateViewModel : IEmployeeOptions
+public class CreateViewModel : ILoadEmployeeOptions
 {
     [Display(Name = "Data płatności")]
-    public DateTime PaymentDate { get; set; }
+    public DateTime? PaymentDate { get; set; }
 
     [Display(Name = "Pracownik")]
     public int EmployeeId { get; set; }

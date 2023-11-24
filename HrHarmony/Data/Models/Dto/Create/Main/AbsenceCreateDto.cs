@@ -1,5 +1,4 @@
-﻿using HrHarmony.Attributes;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace HrHarmony.Data.Models.Dto.Create.Main;
 

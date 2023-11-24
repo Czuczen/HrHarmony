@@ -1,21 +1,19 @@
-﻿const searchableInputsSelector = 'input[data-list][data-controller][data-entity-name][data-bs-toggle]';
+﻿const searchableInputsSelector = "input[data-list][data-controller][data-entity-name][data-bs-toggle]";
 
 $(document).ready(() => {
     const $searchableInputs = $(searchableInputsSelector);
-    $searchableInputs.click(function () { SetListMaxHeight($(this).data('list')) });
+    $searchableInputs.click(function () { setListMaxHeight($(this).data("list")) });
 
     let timer;
-    $searchableInputs.on('input', function () {
+    $searchableInputs.on("input", function () {
         const $this = $(this);
-        $this.closest('.dropdown').find("input:hidden").val("");
+        $this.closest(".dropdown").find("input:hidden").val("");
 
         clearTimeout(timer);
-        timer = setTimeout(() => {
-            SearchRelatedRecords($this);
-        }, 300);
+        timer = setTimeout(() => searchRelatedRecords($this), 300);
     });
 
-    $(document).on('click', `input[data-list] + .dropdown-menu .dropdown-item`, function () {
+    $(document).on("click", "input[data-list] + .dropdown-menu .dropdown-item", function () {
         const $this = $(this);
         const selectedText = $this.text();
         const selectedValue = $this.val();
@@ -28,8 +26,8 @@ $(document).ready(() => {
     });
 });
 
-const SearchRelatedRecords = ($this) => {
-    const listId = $this.data('list');
+const searchRelatedRecords = ($this) => {
+    const listId = $this.data("list");
     const searchTerm = $this.val();
     const controllerName = $this.data("controller");
     const entityName = $this.data("entity-name");
@@ -38,20 +36,24 @@ const SearchRelatedRecords = ($this) => {
 
     $.ajax({
         url: `/${controllerName}/SearchRelatedRecords`,
-        method: 'GET',
+        method: "GET",
         data: { searchTerm: searchTerm, entityName: entityName },
         success: data => {
-            const $emptyList = $('#' + listId).empty();
-            $.each(data, (index, item) => $emptyList.append(`<option class="dropdown-item" value="${item.value}">${item.text}</option>`));
-            SetListMaxHeight(listId);
+            try {
+                const $emptyList = $('#' + listId).empty();
+                $.each(data, (index, item) => $emptyList.append(`<option class="dropdown-item cursor-pointer" value="${item.value}">${item.text}</option>`));
+                setListMaxHeight(listId);
+            }
+            catch (ex) {
+                console.error(ex);
+                showAjaxError();
+            }
         },
-        error: (error) => {
-            console.log(error);
-        }
+        error: () => showAjaxError()
     });
 };
 
-const SetListMaxHeight = (listId) => {
+const setListMaxHeight = (listId) => {
     const list = document.getElementById(listId);
 
     // Oblicz wysokość widoku dostępną dla dropdown
@@ -60,5 +62,5 @@ const SetListMaxHeight = (listId) => {
     const availableHeight = windowHeight - dropdownOffset - 20; // Odejmujemy 20 pikseli na margines
 
     // Ustaw maksymalną wysokość dla listy wyboru
-    list.style.maxHeight = `${availableHeight}px`;
+    list.style.maxHeight = availableHeight + "px";
 };

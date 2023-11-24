@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Data.Models.ViewModels.Leave;
 
-public class CreateViewModel : ILeaveOptionFields
+public class CreateViewModel : ILoadGroupedLeaveOptions
 {
     [Display(Name = "Data rozpoczęcia")]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [Display(Name = "Data zakończenia")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     [Display(Name = "Rodzaj urlopu")]
     public int LeaveTypeId { get; set; }

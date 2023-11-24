@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using HrHarmony.Attributes;
 using HrHarmony.Data.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Data.Models.ViewModels.Absence;
 
-public class CreateViewModel : IAbsenceOptionFields
+public class CreateViewModel : ILoadGroupedAbsenceOptions
 {
     [Display(Name = "Data absencji")]
-    public DateTime AbsenceDate { get; set; }
+    public DateTime? AbsenceDate { get; set; }
 
     [Display(Name = "Typ absencji")]
     public int AbsenceTypeId { get; set; }

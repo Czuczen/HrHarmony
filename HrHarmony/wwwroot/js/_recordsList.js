@@ -1,5 +1,5 @@
 ﻿document.addEventListener("DOMContentLoaded", () => {
-    const pageSize = $('#pageSize').val();
+    const pageSize = $("#pageSize").val();
     const pageNumber = $('input[name="PageNumber"]').val();
     const orderBy = $('input[name="OrderBy"]').val();
     const isDescending = $('input[name="IsDescending"]').val().toLowerCase();

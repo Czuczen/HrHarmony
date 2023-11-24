@@ -104,7 +104,7 @@ public class EmployeeController : Controller
         return RedirectToAction("Index");
     }
 
-    private async Task LoadSelectOptions(IEmployeeOptionFields entity)
+    private async Task LoadSelectOptions(ILoadGroupedEmployeeOptions entity)
     {
         var maritalStatussesQ = _employeeRepository.GetQuery<MaritalStatus, CustomEntity<SelectListItem>>(q =>
          q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.MaritalStatus, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.StatusName } }));

@@ -104,7 +104,7 @@ public class EmploymentContractController : Controller
         return RedirectToAction("Index");
     }
 
-    private async Task LoadSelectOptions(IEmploymentContractOptionFields entity)
+    private async Task LoadSelectOptions(ILoadGroupedEmploymentContractOptions entity)
     {
         var contractTypesQ = _employmentContractRepository.GetQuery<ContractType, CustomEntity<SelectListItem>>(q =>
          q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.ContractType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));

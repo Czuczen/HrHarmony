@@ -2,8 +2,8 @@
 
 namespace HrHarmony.Data.Models.Interfaces.SelectOptions
 {
-    public interface IExperienceOptions
+    public interface ILoadAddressOptions
     {
-        public IEnumerable<SelectListItem> Experiences { get; set; }
+        public IEnumerable<SelectListItem> Addresses { get; set; }
     }
 }

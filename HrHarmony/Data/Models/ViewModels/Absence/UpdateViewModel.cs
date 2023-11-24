@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Data.Models.ViewModels.Absence;
 
-public class UpdateViewModel : IAbsenceOptionFields
+public class UpdateViewModel : ILoadGroupedAbsenceOptions
 {
     [Display(Name = "Typ absencji")]
     public int AbsenceTypeId { get; set; }

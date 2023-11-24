@@ -2,7 +2,7 @@
 
 namespace HrHarmony.Data.Models.Interfaces.SelectOptions
 {
-    public interface IMaritalStatusOptions
+    public interface ILoadMaritalStatusOptions
     {
         public IEnumerable<SelectListItem> MaritalStatuses { get; set; }
     }

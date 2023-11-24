@@ -104,25 +104,22 @@ public class AbsenceController : Controller
         return RedirectToAction("Index");
     }
 
-    public async Task<IActionResult> SearchRelatedRecords(string searchTerm, string entityName)
-    {
-        if (EntitiesNames.Employee != entityName)
-            return BadRequest("Nazwa encji nieprawidłowa");
-
-        var employeesQ = _absenceRepository.GetQuery<Employee, Employee>(q => q.Where(e => e.FullName.ToLower().Contains(searchTerm.ToLower())))
-           .Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.FullName });
-
-        var employees = await employeesQ.ToListAsync();
-
-        return Json(employees);
-    }
-
-    private async Task LoadSelectOptions(IAbsenceOptionFields entity)
+    public async Task<IActionResult> SearchRelatedRecords(string searchTerm, string entityName) =>
+        entityName switch 
+        {
+            EntitiesNames.Employee => Json(await _absenceRepository.GetQuery<Employee, Employee>(q => q.Where(e =>
+                                e.FullName.ToLower().Contains(searchTerm.ToLower()))).Select(e =>
+                                new SelectListItem { Value = e.Id.ToString(), Text = e.FullName }).ToListAsync()),
+            
+            _ => throw new InvalidOperationException($"Unsupported entity: '{entityName}'."),
+        };
+    
+    private async Task LoadSelectOptions(ILoadGroupedAbsenceOptions entity)
     {
         var absenceTypesQ = _absenceRepository.GetQuery<AbsenceType, CustomEntity<SelectListItem>>(q =>
          q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.AbsenceType, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.TypeName } }));
 
-        var employeesQ = _absenceRepository.GetQuery<Employee, Employee>(q => q.Take(10))
+        var employeesQ = _absenceRepository.GetQuery<Employee, Employee>(q => q.Take(100))
             .Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Employee, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
         // jeśli walidacja nie przeszła lub jest edycja to potrzebujemy wartości tekstowej dla pola wyszukiwania połączonych rekordów
@@ -133,7 +130,6 @@ public class AbsenceController : Controller
                 .Select(e => new CustomEntity<SelectListItem> { EntityName = "EmployeeText", Item = new SelectListItem { Value = e.Id.ToString(), Text = e.FullName } });
 
             results = await absenceTypesQ.Concat(employeesQ).Concat(selectedEmployeeQ).ToListAsync();
-
             entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").Single().Item.Text;
         }
         else

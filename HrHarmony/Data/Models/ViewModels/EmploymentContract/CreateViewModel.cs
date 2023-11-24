@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HrHarmony.Data.Models.ViewModels.EmploymentContract;
 
-public class CreateViewModel : IEmploymentContractOptionFields
+public class CreateViewModel : ILoadGroupedEmploymentContractOptions
 {
     [Display(Name = "Numer umowy")]
     public string ContractNumber { get; set; }
 
     [Display(Name = "Data rozpoczęcia")]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [Display(Name = "Data zakończenia")]
     public DateTime? EndDate { get; set; }

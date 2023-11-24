@@ -2,7 +2,7 @@
 
 namespace HrHarmony.Data.Models.Interfaces.SelectOptions
 {
-    public interface IEducationLevelOptions
+    public interface ILoadEducationLevelOptions
     {
         public IEnumerable<SelectListItem> EducationLevels { get; set; }
     }
