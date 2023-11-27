@@ -1,0 +1,36 @@
+﻿@using HrHarmony.Data.Models.ViewModels.Home;
+@model IndexViewModel
+
+<div class="col-xs-12 col-sm-6 col-md-3 feature">
+    <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+        <div class="mainflip">
+            <div class="frontside">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <p>
+                            <img class="img-fluid" alt="@Model.ImageAlt" src="@Model.ImagePath" />
+                        </p>
+                        <h4 class="card-title">@Model.FrontTitle</h4>
+                        <p class="card-text">@Model.FrontText</p>
+                    </div>
+                </div>
+            </div>
+            <div class="backside">
+                <div class="card">
+                    <div class="card-body text-center mt-4">
+                        <h4 class="card-title">@Model.BackSideTitle</h4>
+                        <p class="card-text">@Model.BackSideText</p>
+                        <ul class="list-inline mt-4">
+                            <li class="list-inline-item">
+                                <a class="btn btn-outline-primary feature" asp-area="" asp-controller="@Model.EntityName" asp-action="Index">Przeglądaj</a>
+                            </li>
+                            <li class="list-inline-item ms-4">
+                                <a class="btn btn-outline-primary feature" asp-area="" asp-controller="@Model.EntityName" asp-action="Create">Dodaj</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
