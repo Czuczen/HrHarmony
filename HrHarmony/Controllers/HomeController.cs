@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using HrHarmony.Data.Models.ViewModels;
 using HrHarmony.Data.Models.ViewModels.Home;
+using HrHarmony.Consts;
 
 namespace HrHarmony.Controllers;
 
@@ -19,7 +20,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania pracownikami",
                 BackSideText = "Zarządzaj swoim zespołem efektywnie dzięki naszemu systemowi do zarządzania pracownikami.",
-                EntityName = "Employee",
+                EntityName = EntitiesNames.Employee,
             },
             new IndexViewModel
             {
@@ -29,7 +30,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania umowami",
                 BackSideText = "System zarządzania umowami pozwoli Ci skutecznie monitorować i organizować dokumenty związane z zatrudnieniem.",
-                EntityName = "EmploymentContract",
+                EntityName = EntitiesNames.EmploymentContract,
             },
             new IndexViewModel
             {
@@ -39,7 +40,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania urlopami",
                 BackSideText = "Skorzystaj z naszego systemu zarządzania urlopami, aby efektywnie planować i monitorować czas wolny pracowników.",
-                EntityName = "Leave",
+                EntityName = EntitiesNames.Leave,
             },
             new IndexViewModel
             {
@@ -49,7 +50,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania absencjami",
                 BackSideText = "Zarządzaj absencjami pracowników w łatwy sposób za pomocą naszego systemu do śledzenia i raportowania.",
-                EntityName = "Absence",
+                EntityName = EntitiesNames.Absence,
             },
             new IndexViewModel
             {
@@ -59,7 +60,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania wynagrodzeniami",
                 BackSideText = "System zarządzania wynagrodzeniami umożliwi Ci efektywne monitorowanie i administrację wynagrodzeniami pracowników.",
-                EntityName = "Salary",
+                EntityName = EntitiesNames.Salary,
             },
             new IndexViewModel
             {
@@ -69,7 +70,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania rodzajami absencji",
                 BackSideText = "Sprawdź nasz system zarządzania rodzajami absencji, aby skutecznie kategoryzować i monitorować nieobecności pracowników.",
-                EntityName = "AbsenceType",
+                EntityName = EntitiesNames.AbsenceType,
             },
             new IndexViewModel
             {
@@ -79,7 +80,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania adresami",
                 BackSideText = "Efektywnie zarządzaj informacjami adresowymi pracowników dzięki naszemu systemowi zarządzania adresami.",
-                EntityName = "Address",
+                EntityName = EntitiesNames.Address,
             },
             new IndexViewModel
             {
@@ -89,7 +90,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania rodzajami umów",
                 BackSideText = "Poznaj różnorodność umów pracowniczych za pomocą naszego systemu zarządzania rodzajami umów.",
-                EntityName = "ContractType",
+                EntityName = EntitiesNames.ContractType,
             },
             new IndexViewModel
             {
@@ -99,7 +100,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania poziomami wykształcenia",
                 BackSideText = "System zarządzania poziomami wykształcenia umożliwi Ci skuteczne monitorowanie kwalifikacji edukacyjnych pracowników.",
-                EntityName = "EducationLevel",
+                EntityName = EntitiesNames.EducationLevel,
             },
             new IndexViewModel
             {
@@ -109,7 +110,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania doświadczeniami",
                 BackSideText = "Zarządzaj doświadczeniem zawodowym pracowników za pomocą naszego systemu śledzenia kariery zawodowej.",
-                EntityName = "Experience",
+                EntityName = EntitiesNames.Experience,
             },
             new IndexViewModel
             {
@@ -119,7 +120,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania rodzajami urlopów",
                 BackSideText = "Skorzystaj z systemu zarządzania rodzajami urlopów, aby dokładnie śledzić i planować różne kategorie urlopów.",
-                EntityName = "LeaveType",
+                EntityName = EntitiesNames.LeaveType,
             },
             new IndexViewModel
             {
@@ -129,7 +130,7 @@ public class HomeController : Controller
                 FrontText = "",
                 BackSideTitle = "System zarządzania stanami cywilnymi",
                 BackSideText = "System zarządzania stanami cywilnymi pomoże w efektywnym monitorowaniu i organizowaniu informacji dotyczących stanu cywilnego pracowników.",
-                EntityName = "MaritalStatus",
+                EntityName = EntitiesNames.MaritalStatus,
             },
         };
 
