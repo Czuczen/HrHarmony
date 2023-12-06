@@ -9,6 +9,11 @@ public class TestFixture
 
     public TestFixture()
     {
+
+#if DEBUG
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+#endif
+
         var serviceCollection = new ServiceCollection();
         serviceCollection.RegisterTestsDependencies();
         ServiceProvider = serviceCollection.BuildServiceProvider();
