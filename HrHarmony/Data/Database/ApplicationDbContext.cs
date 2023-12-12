@@ -1,27 +1,25 @@
-﻿using HrHarmony.Data.Models.Entities.Dictionary;
+﻿using HrHarmony.Data.Database.SeedData.StartDataSeeders;
+using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Data.Database;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
+    private readonly IEnumerable<ISeeder> _seeders;
+
 
     public DbSet<Absence> Absences { get; set; }
 
     public DbSet<Employee> Employees { get; set; }
-        
+
     public DbSet<EmploymentContract> EmploymentContracts { get; set; }
 
     public DbSet<Leave> Leaves { get; set; }
 
     public DbSet<Salary> Salaries { get; set; }
-
-
 
 
     public DbSet<AbsenceType> AbsenceTypes { get; set; }
@@ -37,4 +35,19 @@ public class ApplicationDbContext : DbContext
     public DbSet<LeaveType> LeaveTypes { get; set; }
 
     public DbSet<MaritalStatus> MaritalStatuses { get; set; }
+
+
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IEnumerable<ISeeder> seeders)
+        : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        foreach (var seeder in _seeders)
+            seeder.Seed(modelBuilder);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }

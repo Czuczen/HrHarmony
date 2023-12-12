@@ -1,6 +1,7 @@
 ﻿using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Utils;
+using static HrHarmony.Data.Models.Entities.Enums;
 
 namespace HrHarmony.Data.Database.SeedData;
 
@@ -23,8 +24,10 @@ public static class SeedData
     public static int? SalariesCount = 5000;
     
 
-    public static void Initialize(ApplicationDbContext context)
+    public static void Initialize(ApplicationDbContext context, SampleObjectsCreationSizeLevel sizeLevel)
     {
+        SetCreationSize(sizeLevel);
+
         // kolejność ma znaczenie
         CreateMaritalStatuses(context, MaritalStatusesCount);
         CreateAddresses(context, AddressesCount);
@@ -375,5 +378,18 @@ public static class SeedData
         howMany = howMany ?? Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             CreateSalary(context);
+    }
+
+
+    // ====================================================================================================
+    // ====================================================================================================
+    // ====================================================================================================
+
+    private static void SetCreationSize(SampleObjectsCreationSizeLevel sizeLevel)
+    {
+        if (sizeLevel == SampleObjectsCreationSizeLevel.Low)
+        {
+            
+        }
     }
 }

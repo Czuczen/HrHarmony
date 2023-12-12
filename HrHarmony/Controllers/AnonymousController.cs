@@ -3,6 +3,8 @@ using HrHarmony.Data.Database;
 using HrHarmony.Data.Database.SeedData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
+using static HrHarmony.Data.Models.Entities.Enums;
 
 namespace HrHarmony.Controllers
 {
@@ -16,38 +18,12 @@ namespace HrHarmony.Controllers
             _ctx = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult CreateSampleObjects(string accessKey, int? maritalStatusesCount = null,
-            int? addressesCount = null, int? educationLevelsCount = null, int? experiencesCount = null,
-            int? employeesCount = null, int? contractTypesCount = null, int? leaveTypesCount = null,
-            int? absenceTypesCount = null, int? employmentContractsCount = null, int? leavesCount = null,
-            int? absencesCount = null, int? salariesCount = null)
+        public IActionResult CreateSampleObjects(string accessKey, SampleObjectsCreationSizeLevel sizeLevel)
         {
             if (accessKey == AccessKeys.CreateSampleObjectsKey)
-            {
-                SeedData.MaritalStatusesCount = maritalStatusesCount;
-                SeedData.AddressesCount = addressesCount;
-                SeedData.EducationLevelsCount = educationLevelsCount;
-                SeedData.ExperiencesCount = experiencesCount;
-                SeedData.EmployeesCount = employeesCount;
-                SeedData.ContractTypesCount = contractTypesCount;
-                SeedData.LeaveTypesCount = leaveTypesCount;
-                SeedData.AbsenceTypesCount = absenceTypesCount;
-                SeedData.EmploymentContractsCount = employmentContractsCount;
-                SeedData.LeavesCount = leavesCount;
-                SeedData.AbsencesCount = absencesCount;
-                SeedData.SalariesCount = salariesCount;
-
-                SeedData.Initialize(_ctx);
-            }
+                SeedData.Initialize(_ctx, sizeLevel);
             else
-            {
                 return Unauthorized();
-            }
 
             return Ok();
         }
