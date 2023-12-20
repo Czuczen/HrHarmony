@@ -1,9 +1,8 @@
-﻿namespace HrHarmony.Data.Models.Shared
-{
-    public class CustomEntity<TObject>
-    {
-        public string EntityName { get; set; }
+﻿namespace HrHarmony.Data.Models.Shared;
 
-        public TObject Item { get; set; }
-    }
+public class CustomEntity<TObject>
+{
+    public string EntityName { get; set; }
+
+    public TObject Item { get; set; }
 }

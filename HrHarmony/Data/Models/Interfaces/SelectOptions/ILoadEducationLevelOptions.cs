@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace HrHarmony.Data.Models.Interfaces.SelectOptions
+namespace HrHarmony.Data.Models.Interfaces.SelectOptions;
+
+public interface ILoadEducationLevelOptions
 {
-    public interface ILoadEducationLevelOptions
-    {
-        public IEnumerable<SelectListItem> EducationLevels { get; set; }
-    }
+    public IEnumerable<SelectListItem> EducationLevels { get; set; }
 }

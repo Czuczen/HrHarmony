@@ -1,9 +1,8 @@
-﻿namespace HrHarmony.Configuration.Secrets
-{
-    public class AppConnectionStrings
-    {
-        public string DefaultConnection { get; set; }
+﻿namespace HrHarmony.Configuration.Secrets;
 
-        public string TestConnection { get; set; }
-    }
+public class AppConnectionStrings
+{
+    public string DefaultConnection { get; set; }
+
+    public string TestConnection { get; set; }
 }

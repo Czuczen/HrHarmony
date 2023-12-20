@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace HrHarmony.Data.Models.Interfaces.SelectOptions
+namespace HrHarmony.Data.Models.Interfaces.SelectOptions;
+
+public interface ILoadExperienceOptions
 {
-    public interface ILoadExperienceOptions
-    {
-        public IEnumerable<SelectListItem> Experiences { get; set; }
-    }
+    public IEnumerable<SelectListItem> Experiences { get; set; }
 }

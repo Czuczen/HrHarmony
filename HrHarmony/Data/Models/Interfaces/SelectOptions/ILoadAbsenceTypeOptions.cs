@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace HrHarmony.Data.Models.Interfaces.SelectOptions
+namespace HrHarmony.Data.Models.Interfaces.SelectOptions;
+
+public interface ILoadAbsenceTypeOptions
 {
-    public interface ILoadAbsenceTypeOptions
-    {
-        public IEnumerable<SelectListItem> AbsenceTypes { get; set; }
-    }
+    public IEnumerable<SelectListItem> AbsenceTypes { get; set; }
 }

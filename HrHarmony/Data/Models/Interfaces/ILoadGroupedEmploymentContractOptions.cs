@@ -1,8 +1,7 @@
 ﻿using HrHarmony.Data.Models.Interfaces.SelectOptions;
 
-namespace HrHarmony.Data.Models.Interfaces
+namespace HrHarmony.Data.Models.Interfaces;
+
+public interface ILoadGroupedEmploymentContractOptions : ILoadContractTypeOptions, ILoadEmployeeOptions
 {
-    public interface ILoadGroupedEmploymentContractOptions : ILoadContractTypeOptions, ILoadEmployeeOptions
-    {
-    }
 }

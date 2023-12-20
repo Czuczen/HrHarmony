@@ -3,28 +3,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text;
 
-namespace HrHarmony.Helpers
+namespace HrHarmony.Helpers;
+
+public static class HtmlHelpers
 {
-    public static class HtmlHelpers
+    public static IHtmlContent RecordsSearchComboBoxFor(this IHtmlHelper helper, string fieldName, int fieldValue, 
+        string fieldText, IEnumerable<SelectListItem> selectList, string placeholder, string controllerName, object htmlAttributes)
     {
-        public static IHtmlContent RecordsSearchComboBoxFor(this IHtmlHelper helper, string fieldName, int fieldValue, 
-            string fieldText, IEnumerable<SelectListItem> selectList, string placeholder, string controllerName, object htmlAttributes)
-        {
-            if (!fieldName.EndsWith("Id"))
-                throw new InvalidOperationException($"The field '{fieldName}' must be a relational field ending with 'Id'.");
+        if (!fieldName.EndsWith("Id"))
+            throw new InvalidOperationException($"The field '{fieldName}' must be a relational field ending with 'Id'.");
 
-            var entityName = fieldName.Substring(0, fieldName.Length - 2);
-            var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
+        var entityName = fieldName.Substring(0, fieldName.Length - 2);
+        var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
 
-            attributes["class"] = attributes.ContainsKey("class") ? $"{attributes["class"]} dropdown-toggle" : "dropdown-toggle";
-            var inputAttributes = string.Join(" ", attributes.Select(x => $"{x.Key}=\"{x.Value}\""));
-            var fieldValueAsString = fieldValue == 0 ? string.Empty : fieldValue.ToString();
+        attributes["class"] = attributes.ContainsKey("class") ? $"{attributes["class"]} dropdown-toggle" : "dropdown-toggle";
+        var inputAttributes = string.Join(" ", attributes.Select(x => $"{x.Key}=\"{x.Value}\""));
+        var fieldValueAsString = fieldValue == 0 ? string.Empty : fieldValue.ToString();
 
-            var options = new StringBuilder();
-            foreach (var item in selectList)
-                options.Append($"<option class=\"dropdown-item cursor-pointer\" value=\"{item.Value}\">{item.Text}</option>");
+        var options = new StringBuilder();
+        foreach (var item in selectList)
+            options.Append($"<option class=\"dropdown-item cursor-pointer\" value=\"{item.Value}\">{item.Text}</option>");
 
-            var searchableSelect = $@"
+        var searchableSelect = $@"
                 <div class=""dropdown"">
                     <input type=""hidden"" id=""{fieldName}"" name=""{fieldName}"" value=""{fieldValueAsString}"" />
 
@@ -38,7 +38,6 @@ namespace HrHarmony.Helpers
             
                 </div>";
 
-            return helper.Raw(searchableSelect);
-        }
+        return helper.Raw(searchableSelect);
     }
 }

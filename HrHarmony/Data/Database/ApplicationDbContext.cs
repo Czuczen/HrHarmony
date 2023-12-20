@@ -1,16 +1,15 @@
 ﻿using HrHarmony.Data.Database.SeedData.StartDataSeeders;
 using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Data.Database;
 
 public class ApplicationDbContext : DbContext
 {
-    private readonly IEnumerable<ISeeder> _seeders;
+    private readonly IEnumerable<ISeeder>? _seeders;
 
-
+    
     public DbSet<Absence> Absences { get; set; }
 
     public DbSet<Employee> Employees { get; set; }
@@ -38,15 +37,17 @@ public class ApplicationDbContext : DbContext
 
 
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IEnumerable<ISeeder> seeders)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IEnumerable<ISeeder>? seeders = null)
         : base(options)
     {
+        _seeders = seeders?.OrderBy(seeder => seeder.Order);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        foreach (var seeder in _seeders)
-            seeder.Seed(modelBuilder);
+        if (!base.Database.GetAppliedMigrations().Any() && _seeders != null)
+            foreach (var seeder in _seeders)
+                seeder.Seed(modelBuilder);
 
         base.OnModelCreating(modelBuilder);
     }

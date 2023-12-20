@@ -12,7 +12,6 @@ using HrHarmony.Data.Models.ViewModels.Salary;
 using HrHarmony.Data.Models.Dto.Create.Main;
 using HrHarmony.Data.Models.Dto.Details.Main;
 using HrHarmony.Data.Models.Dto.Update.Main;
-using HrHarmony.Data.Models.Entities.Dictionary;
 
 namespace HrHarmony.Controllers;
 

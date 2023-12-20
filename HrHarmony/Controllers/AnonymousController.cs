@@ -3,29 +3,27 @@ using HrHarmony.Data.Database;
 using HrHarmony.Data.Database.SeedData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
 using static HrHarmony.Data.Models.Entities.Enums;
 
-namespace HrHarmony.Controllers
+namespace HrHarmony.Controllers;
+
+[AllowAnonymous]
+public class AnonymousController : Controller
 {
-    [AllowAnonymous]
-    public class AnonymousController : Controller
+    private readonly ApplicationDbContext _ctx;
+
+    public AnonymousController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _ctx;
+        _ctx = context;
+    }
 
-        public AnonymousController(ApplicationDbContext context)
-        {
-            _ctx = context;
-        }
+    public IActionResult CreateSampleObjects(string accessKey, SampleObjectsCreationSizeLevel sizeLevel)
+    {
+        if (accessKey == AccessKeys.CreateSampleObjectsKey)
+            RandomDataSeeder.Initialize(_ctx, sizeLevel);
+        else
+            return Unauthorized();
 
-        public IActionResult CreateSampleObjects(string accessKey, SampleObjectsCreationSizeLevel sizeLevel)
-        {
-            if (accessKey == AccessKeys.CreateSampleObjectsKey)
-                SeedData.Initialize(_ctx, sizeLevel);
-            else
-                return Unauthorized();
-
-            return Ok();
-        }
+        return Ok();
     }
 }

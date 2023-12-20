@@ -9,14 +9,14 @@ public class EmployeeServiceTests : HrHarmonyTestsBase<IEmployeeService>
 {
     public EmployeeServiceTests(TestFixture fixture) : base(fixture)
     {
-        SeedData.GroupSaveChanges = false;
+        RandomDataSeeder.GroupSaveChanges = false;
     }
 
     [Fact]
     public async Task Temporary_Test() // service method
     {
         // Arrange
-        var employee = SeedData.CreateEmployee(Ctx);
+        var employee = RandomDataSeeder.CreateEmployee(Ctx);
 
         // Act
         var downloadedEmployee = new Employee(); // tymczasowo

@@ -5,7 +5,7 @@ using static HrHarmony.Data.Models.Entities.Enums;
 
 namespace HrHarmony.Data.Database.SeedData;
 
-public static class SeedData
+public static class RandomDataSeeder
 {
     private static readonly Random Random = new();
     public static bool GroupSaveChanges = true;

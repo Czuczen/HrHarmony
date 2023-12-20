@@ -1,5 +1,4 @@
 ﻿using HrHarmony.Data.Database;
-using HrHarmony.Data.Database.SeedData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,12 +12,9 @@ public abstract class HrHarmonyTestsBase<TService> : IClassFixture<TestFixture>
     protected readonly TService Service;
 
 
-    protected HrHarmonyTestsBase(TestFixture fixture, bool initSeedData = false)
+    protected HrHarmonyTestsBase(TestFixture fixture)
     {
         Ctx = new ApplicationDbContext(fixture.ServiceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
         Service = fixture.ServiceProvider.GetService(typeof(TService)) as TService;
-
-        if (initSeedData)
-            SeedData.Initialize(Ctx);
     }
 }

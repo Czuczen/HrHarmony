@@ -5,7 +5,7 @@ namespace HrHarmony.Tests.Infrastructure;
 
 public class SeedDataInitializer : HrHarmonyTestsBase<object>
 {
-    public SeedDataInitializer(TestFixture fixture) : base(fixture, true)
+    public SeedDataInitializer(TestFixture fixture) : base(fixture)
     {
     }
 
