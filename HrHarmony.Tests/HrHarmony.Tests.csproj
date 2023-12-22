@@ -26,4 +26,10 @@
     <ProjectReference Include="..\HrHarmony\HrHarmony.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integration\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
 </Project>

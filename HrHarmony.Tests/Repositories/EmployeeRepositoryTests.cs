@@ -3,7 +3,7 @@ using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Data.Repositories.Entity;
 using HrHarmony.Tests.Configuration;
 
-namespace HrHarmony.Tests.Services;
+namespace HrHarmony.Tests.Repositories;
 
 public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, int>>
 {
@@ -19,7 +19,7 @@ public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, 
 
         // Act
         var downloadedEmployee = await Service.GetByIdAsync(employee.Id);
-        
+
         // Assert
         Assert.Equal(employee, downloadedEmployee);
     }
