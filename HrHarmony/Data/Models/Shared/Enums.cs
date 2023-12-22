@@ -1,11 +1,11 @@
-﻿namespace HrHarmony.Data.Models.Entities;
+﻿namespace HrHarmony.Data.Models.Shared;
 
 public static class Enums
 {
     public enum SampleObjectsCreationSizeLevel
     {
         Low,
-        Medium, 
+        Medium,
         High,
         Extreme
     }

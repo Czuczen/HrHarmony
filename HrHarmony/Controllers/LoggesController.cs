@@ -16,7 +16,7 @@ public class LoggesController : Controller
     }
 
     /// <summary>
-    /// Uruchamiane z linka - https://localhost:44329/Logs/Index?accessKey=haslo
+    /// Uruchamiane z linka - http://localhost:5092/Logges/Index?accessKey=klucz
     /// </summary>
     /// <param name="accessKey"></param>
     /// <returns></returns>

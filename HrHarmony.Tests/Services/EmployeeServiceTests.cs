@@ -9,7 +9,6 @@ public class EmployeeServiceTests : HrHarmonyTestsBase<IEmployeeService>
 {
     public EmployeeServiceTests(TestFixture fixture) : base(fixture)
     {
-        RandomDataSeeder.GroupSaveChanges = false;
     }
 
     [Fact]

@@ -1,32 +1,33 @@
 ﻿using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Utils;
-using static HrHarmony.Data.Models.Entities.Enums;
+using static HrHarmony.Data.Models.Shared.Enums;
 
 namespace HrHarmony.Data.Database.SeedData;
 
 public static class RandomDataSeeder
 {
     private static readonly Random Random = new();
-    public static bool GroupSaveChanges = true;
+    private static bool GroupSaveChanges;
 
-    public static int? MaritalStatusesCount = 10;
-    public static int? AddressesCount = 100;
-    public static int? EducationLevelsCount = 10;
-    public static int? ExperiencesCount = 12;
-    public static int? EmployeesCount = 500;
-    public static int? ContractTypesCount = 7;
-    public static int? LeaveTypesCount = 5;
-    public static int? AbsenceTypesCount = 4;
-    public static int? EmploymentContractsCount = 700;
-    public static int? LeavesCount = 1000;
-    public static int? AbsencesCount = 2000;
-    public static int? SalariesCount = 5000;
+    private static int? MaritalStatusesCount;
+    private static int? AddressesCount;
+    private static int? EducationLevelsCount;
+    private static int? ExperiencesCount;
+    private static int? EmployeesCount;
+    private static int? ContractTypesCount;
+    private static int? LeaveTypesCount;
+    private static int? AbsenceTypesCount;
+    private static int? EmploymentContractsCount;
+    private static int? LeavesCount;
+    private static int? AbsencesCount;
+    private static int? SalariesCount;
     
 
-    public static void Initialize(ApplicationDbContext context, SampleObjectsCreationSizeLevel sizeLevel)
+    public static void Initialize(ApplicationDbContext context, SampleObjectsCreationSizeLevel? sizeLevel)
     {
         SetCreationSize(sizeLevel);
+        GroupSaveChanges = true;
 
         // kolejność ma znaczenie
         CreateMaritalStatuses(context, MaritalStatusesCount);
@@ -224,15 +225,20 @@ public static class RandomDataSeeder
         var educationLevelIds = context.EducationLevels.Select(a => a.Id).ToList();
         var experienceIds = context.Experiences.Select(a => a.Id).ToList();
 
-        var fullNameLength = Random.Next(3, 21);
-        var emailLength = Random.Next(3, 11);
+        var employeeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(Random.Next(3, 16)));
+        var employeeSurname = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(Random.Next(3, 16)));
+        var email = StringUtils.GenerateRandomString(Random.Next(3, 11)).ToLower() + "@example.com";
+
+        var minDoB = DateTime.Now.AddYears(-60);
+        var maxDoB = DateTime.Now.AddYears(-18);
+        var randomDoB = minDoB.AddDays(Random.Next((maxDoB - minDoB).Days));
 
         var employee = new Employee
         {
-            FullName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(fullNameLength)),
-            Email = StringUtils.GenerateRandomString(emailLength).ToLower() + "@example.com",
+            FullName = employeeName + " " + employeeSurname,
+            Email = email,
             PhoneNumber = "+48" + Random.Next(10000000, 99999999),
-            DateOfBirth = DateTime.Now.AddYears(-30).AddDays(Random.Next(365 * 30)),
+            DateOfBirth = randomDoB,
             MaritalStatusId = maritalStatusIds[Random.Next(0, maritalStatusIds.Count)],
             AddressId = addressIds[Random.Next(0, addressIds.Count)],
             EducationLevelId = educationLevelIds[Random.Next(0, educationLevelIds.Count)],
@@ -260,15 +266,17 @@ public static class RandomDataSeeder
         var contractTypesIds = context.ContractTypes.Select(a => a.Id).ToList();
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
 
+        var needEndDate = Random.NextDouble() < 0.3; // 30% szansy na true
+
         var hourlyRate = (decimal)(Random.Next(1000, 5000) / 100.0);
         var monthlyRate = (decimal)(Random.Next(50000, 100000) / 100.0);
         var basicSalary = (decimal)(Random.Next(3000000, 8000000) / 100.0);
 
         var employmentContract = new EmploymentContract
         {
-            ContractNumber = "Contract-" + Random.Next(1000, 10000),
+            ContractNumber = "CNT" + Random.Next(1000, 10000),
             StartDate = DateTime.Now.AddMonths(-Random.Next(1, 13)),
-            EndDate = DateTime.Now.AddMonths(Random.Next(1, 13)),
+            EndDate = needEndDate ? DateTime.Now.AddMonths(Random.Next(1, 13)) : null,
             ContractTypeId = contractTypesIds[Random.Next(0, contractTypesIds.Count)],
             EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
             HourlyRate = Math.Round(hourlyRate, 2),
@@ -380,16 +388,80 @@ public static class RandomDataSeeder
             CreateSalary(context);
     }
 
-
-    // ====================================================================================================
-    // ====================================================================================================
-    // ====================================================================================================
-
-    private static void SetCreationSize(SampleObjectsCreationSizeLevel sizeLevel)
+    private static void SetCreationSize(SampleObjectsCreationSizeLevel? sizeLevel)
     {
-        if (sizeLevel == SampleObjectsCreationSizeLevel.Low)
+        switch (sizeLevel)
         {
-            
+            case SampleObjectsCreationSizeLevel.Low:
+                MaritalStatusesCount = 5;
+                AddressesCount = 20;
+                EducationLevelsCount = 5;
+                ExperiencesCount = 5;
+                EmployeesCount = 5;
+                ContractTypesCount = 5;
+                LeaveTypesCount = 5;
+                AbsenceTypesCount = 5;
+                EmploymentContractsCount = 5;
+                LeavesCount = 20;
+                AbsencesCount = 20;
+                SalariesCount = 50;
+                break;
+            case SampleObjectsCreationSizeLevel.Medium:
+                MaritalStatusesCount = 25;
+                AddressesCount = 100;
+                EducationLevelsCount = 25;
+                ExperiencesCount = 25;
+                EmployeesCount = 25;
+                ContractTypesCount = 25;
+                LeaveTypesCount = 25;
+                AbsenceTypesCount = 25;
+                EmploymentContractsCount = 25;
+                LeavesCount = 100;
+                AbsencesCount = 100;
+                SalariesCount = 250;
+                break;
+            case SampleObjectsCreationSizeLevel.High:
+                MaritalStatusesCount = 125;
+                AddressesCount = 500;
+                EducationLevelsCount = 125;
+                ExperiencesCount = 125;
+                EmployeesCount = 125;
+                ContractTypesCount = 125;
+                LeaveTypesCount = 125;
+                AbsenceTypesCount = 125;
+                EmploymentContractsCount = 125;
+                LeavesCount = 500;
+                AbsencesCount = 500;
+                SalariesCount = 1250;
+                break;
+            case SampleObjectsCreationSizeLevel.Extreme:
+                MaritalStatusesCount = 12500;
+                AddressesCount = 50000;
+                EducationLevelsCount = 12500;
+                ExperiencesCount = 12500;
+                EmployeesCount = 12500;
+                ContractTypesCount = 12500;
+                LeaveTypesCount = 12500;
+                AbsenceTypesCount = 12500;
+                EmploymentContractsCount = 12500;
+                LeavesCount = 50000;
+                AbsencesCount = 50000;
+                SalariesCount = 125000;
+                break;
+            default:
+                MaritalStatusesCount = 1;
+                AddressesCount = 1;
+                EducationLevelsCount = 1;
+                ExperiencesCount = 1;
+                EmployeesCount = 1;
+                ContractTypesCount = 1;
+                LeaveTypesCount = 1;
+                AbsenceTypesCount = 1;
+                EmploymentContractsCount = 1;
+                LeavesCount = 5;
+                AbsencesCount = 5;
+                SalariesCount = 10;
+                break;
         }
     }
 }
