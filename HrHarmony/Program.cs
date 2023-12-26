@@ -3,6 +3,7 @@ using HrHarmony.Configuration.Secrets;
 using HrHarmony.Consts;
 using HrHarmony.Data.Database;
 using HrHarmony.Logging;
+using HrHarmony.Middlewares.VisitorsRecorder;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -41,6 +42,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// użyj rejestrowania odwiedzających
+app.UseVisitorsRecorder();
 
 app.UseRouting();
 

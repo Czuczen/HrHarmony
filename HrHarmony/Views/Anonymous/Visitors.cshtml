@@ -1,0 +1,96 @@
+﻿@using HrHarmony.Data.Models.ViewModels.Anonymous
+@model List<VisitorsViewModel>
+
+@{
+    ViewData["Title"] = "Odwiedzający";
+}
+
+<h2 class="text-center m-3">@ViewData["Title"]</h2>
+
+<div class="accordion" id="visitorsAccordion">
+    @foreach (var visitorGroup in Model)
+    {
+        if (!visitorGroup.VisitorDataById.Any()) continue;
+
+        var visitorId = visitorGroup.VisitorDataById.First().VisitorId;
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading@(visitorId)">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(visitorId)" aria-expanded="false" aria-controls="collapse@(visitorId)">
+                    Id odwiedzającego: @visitorId
+                </button>
+            </h2>
+            <div id="collapse@(visitorId)" class="accordion-collapse collapse" aria-labelledby="heading@(visitorId)" data-bs-parent="#visitorsAccordion">
+                <div class="accordion-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>VisitorId</th>
+                                <th>Timestamp</th>
+                                <th>Ip Address</th>
+                                <th>User Agent</th>
+                                <th>Path</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var visitor in visitorGroup.VisitorDataById)
+                            {
+                                <tr>
+                                    <td>@visitor.VisitorId</td>
+                                    <td>@visitor.Timestamp</td>
+                                    <td>@visitor.IpAddress</td>
+                                    <td>@visitor.UserAgent</td>
+                                    <td>@visitor.Path</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="accordion" id="sameIpAccordion@(visitorId)">
+                        @foreach (var idGroup in visitorGroup.VisitorOthersId)
+                        {
+                            if (!idGroup.Any()) continue;
+
+                            var visitorIdByIp = idGroup.First().VisitorId;
+                            var groupId = visitorId + visitorIdByIp;
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSameIp@(groupId)">
+                                    <button class="accordion-button accordion-button-color" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSameIp@(groupId)" aria-expanded="false" aria-controls="collapseSameIp@(groupId)">
+                                        Inne id odwiedzającego: @visitorIdByIp
+                                    </button>
+                                </h2>
+                                <div id="collapseSameIp@(groupId)" class="accordion-collapse collapse" aria-labelledby="headingSameIp@(groupId)" data-bs-parent="#sameIpAccordion@(visitorId)">
+                                    <div class="accordion-body">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>VisitorId</th>
+                                                    <th>Timestamp</th>
+                                                    <th>Ip Address</th>
+                                                    <th>User Agent</th>
+                                                    <th>Path</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var visitor in idGroup)
+                                                {
+                                                    <tr>
+                                                        <td>@visitor.VisitorId</td>
+                                                        <td>@visitor.Timestamp</td>
+                                                        <td>@visitor.IpAddress</td>
+                                                        <td>@visitor.UserAgent</td>
+                                                        <td>@visitor.Path</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -103,6 +104,23 @@ namespace HrHarmony.Data.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MaritalStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Visitors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VisitorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Visitors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -524,6 +542,9 @@ namespace HrHarmony.Data.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Salaries");
+
+            migrationBuilder.DropTable(
+                name: "Visitors");
 
             migrationBuilder.DropTable(
                 name: "AbsenceTypes");

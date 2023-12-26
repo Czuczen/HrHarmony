@@ -1,6 +1,7 @@
 ﻿using HrHarmony.Consts;
 using HrHarmony.Data.Database;
 using HrHarmony.Data.Database.SeedData;
+using HrHarmony.Data.Models.ViewModels.Anonymous;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,26 @@ public class AnonymousController : Controller
     public AnonymousController(ApplicationDbContext context)
     {
         _ctx = context;
+    }
+
+    public async Task<IActionResult> Visitors()
+    {
+        var model = new List<VisitorsViewModel>();
+        var visitors = await _ctx.Visitors.ToListAsync();
+        var groupedVisitorsById = visitors.GroupBy(x => x.VisitorId);
+
+        foreach (var visitorGroup in groupedVisitorsById)
+        {
+            model.Add(new VisitorsViewModel
+            {
+                VisitorDataById = visitorGroup.OrderBy(x => x.Timestamp).ToList(),
+                VisitorOthersId = visitorGroup.GroupBy(x => x.IpAddress).SelectMany(ipGroup =>
+                    visitors.Where(x => x.IpAddress == ipGroup.Key && x.VisitorId != visitorGroup.Key)).GroupBy(x =>
+                    x.VisitorId).Select(group => group.OrderBy(x => x.Timestamp).ToList())
+            });
+        }
+
+        return View(model);
     }
 
     /// <summary>
@@ -39,7 +60,7 @@ public class AnonymousController : Controller
     /// </summary>
     /// <param name="accessKey"></param>
     /// <returns></returns>
-    public IActionResult ClearAll(string accessKey)
+    public async Task<IActionResult> ClearAll(string accessKey)
     {
         if (accessKey == AccessKeys.CreateSampleObjectsKey)
         {
@@ -52,7 +73,7 @@ public class AnonymousController : Controller
                 _ctx.RemoveRange(objects);
             }
 
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
         else
             return Unauthorized("Nieprawidłowy klucz dostępu");

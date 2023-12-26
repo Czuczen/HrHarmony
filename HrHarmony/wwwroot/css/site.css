@@ -24,3 +24,7 @@ body {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.accordion-button-color {
+    background-color: #e7f1ff;
+}

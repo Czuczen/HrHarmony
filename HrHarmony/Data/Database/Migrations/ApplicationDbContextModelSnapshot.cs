@@ -1199,6 +1199,35 @@ namespace HrHarmony.Data.Database.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Visitor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VisitorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Visitors");
+                });
+
             modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Absence", b =>
                 {
                     b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.AbsenceType", "AbsenceType")

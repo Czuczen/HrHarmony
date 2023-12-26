@@ -1,4 +1,5 @@
 ﻿using HrHarmony.Data.Database.SeedData.StartDataSeeders;
+using HrHarmony.Data.Models.Entities;
 using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,10 @@ public class ApplicationDbContext : DbContext
     public DbSet<LeaveType> LeaveTypes { get; set; }
 
     public DbSet<MaritalStatus> MaritalStatuses { get; set; }
+
+
+
+    public DbSet<Visitor> Visitors { get; set; }
 
 
 

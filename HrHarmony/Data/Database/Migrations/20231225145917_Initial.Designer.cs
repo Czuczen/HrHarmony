@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrHarmony.Data.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231220095517_Initial")]
+    [Migration("20231225145917_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -1200,6 +1200,35 @@ namespace HrHarmony.Data.Database.Migrations
                             PaymentDate = new DateTime(2023, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ZUSContributions = 735.0m
                         });
+                });
+
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Visitor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VisitorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Visitors");
                 });
 
             modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Absence", b =>
