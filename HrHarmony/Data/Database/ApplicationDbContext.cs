@@ -1,7 +1,7 @@
 ﻿using HrHarmony.Data.Database.SeedData.StartDataSeeders;
-using HrHarmony.Data.Models.Entities;
 using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
+using HrHarmony.Data.Models.Entities.Management;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrHarmony.Data.Database;

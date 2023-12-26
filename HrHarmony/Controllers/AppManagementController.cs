@@ -3,11 +3,11 @@ using HrHarmony.Data.Database.SeedData;
 using HrHarmony.Data.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static HrHarmony.Data.Models.Shared.Enums;
+using static HrHarmony.Consts.Enums;
 using HrHarmony.Data.Models.ViewModels.AppManagement;
 using HrHarmony.Logging;
-using Microsoft.Extensions.Configuration;
 using System.Text;
+using HrHarmony.Configuration.Secrets;
 
 namespace HrHarmony.Controllers;
 
@@ -23,14 +23,14 @@ public class AppManagementController : Controller
     }
 
     /// <summary>
-    /// Uruchamiane z linka - http://localhost:5092/AppManagement/Visitors?accessKey=klucz
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/Visitors?accessKey=key
     /// </summary>
     /// <returns></returns>
     public async Task<IActionResult> Visitors(string accessKey)
     {
         var model = new List<VisitorsViewModel>();
 
-        if (accessKey == AccessKeys.VisitorsKey)
+        if (accessKey == SecretsProvider.GetAccessKey(AccessNames.Visitors))
         {
             var visitors = await _ctx.Visitors.ToListAsync();
             var groupedVisitorsById = visitors.GroupBy(x => x.VisitorId);
@@ -53,14 +53,14 @@ public class AppManagementController : Controller
     }
 
     /// <summary>
-    /// Uruchamiane z linka - http://localhost:5092/AppManagement/CreateSampleObjects?accessKey=klucz&sizeLevel=Low
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/CreateSampleObjects?accessKey=key&sizeLevel=Low
     /// </summary>
     /// <param name="accessKey"></param>
     /// <param name="sizeLevel"></param>
     /// <returns></returns>
     public async Task<IActionResult> CreateSampleObjects(string accessKey, SampleObjectsCreationSizeLevel? sizeLevel)
     {
-        if (accessKey == AccessKeys.CreateSampleObjectsKey)
+        if (accessKey == SecretsProvider.GetAccessKey(AccessNames.CreateSampleObjects))
             await RandomDataSeeder.Initialize(_ctx, sizeLevel);
         else
             return Unauthorized("Nieprawidłowy klucz dostępu");
@@ -69,13 +69,13 @@ public class AppManagementController : Controller
     }
 
     /// <summary>
-    /// Uruchamiane z linka - http://localhost:5092/AppManagement/ClearAll?accessKey=klucz
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/ClearAll?accessKey=key
     /// </summary>
     /// <param name="accessKey"></param>
     /// <returns></returns>
     public async Task<IActionResult> ClearAll(string accessKey)
     {
-        if (accessKey == AccessKeys.CreateSampleObjectsKey)
+        if (accessKey == SecretsProvider.GetAccessKey(AccessNames.ClearAll))
         {
             var dbSets = _ctx.GetType().GetProperties().Where(p =>
                 p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
@@ -95,7 +95,7 @@ public class AppManagementController : Controller
     }
 
     /// <summary>
-    /// Uruchamiane z linka - http://localhost:5092/AppManagement/Logs?accessKey=klucz
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/Logs?accessKey=key
     /// </summary>
     /// <param name="accessKey"></param>
     /// <returns></returns>
@@ -103,7 +103,7 @@ public class AppManagementController : Controller
     {
         var ret = new LogsViewModel();
 
-        if (accessKey == AccessKeys.LogsAccessKey)
+        if (accessKey == SecretsProvider.GetAccessKey(AccessNames.Logs))
         {
             var logFilePath = _configuration.GetSection("Logging:FileLogging").Get<FileLoggerConfiguration>().LogFilePath;
             var logDirectory = Path.GetDirectoryName(logFilePath);

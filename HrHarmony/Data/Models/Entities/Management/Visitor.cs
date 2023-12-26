@@ -1,4 +1,4 @@
-﻿namespace HrHarmony.Data.Models.Entities;
+﻿namespace HrHarmony.Data.Models.Entities.Management;
 
 public class Visitor : Entity<int>
 {

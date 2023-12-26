@@ -1,5 +1,5 @@
 ﻿using HrHarmony.Data.Database;
-using HrHarmony.Data.Models.Entities;
+using HrHarmony.Data.Models.Entities.Management;
 
 namespace HrHarmony.Middlewares.VisitorsRecorder;
 

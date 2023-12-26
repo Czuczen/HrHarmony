@@ -1,4 +1,4 @@
-﻿namespace HrHarmony.Data.Models.Shared;
+﻿namespace HrHarmony.Consts;
 
 public static class Enums
 {

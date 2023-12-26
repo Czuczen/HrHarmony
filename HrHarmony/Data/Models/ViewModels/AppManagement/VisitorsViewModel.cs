@@ -1,4 +1,4 @@
-﻿using HrHarmony.Data.Models.Entities;
+﻿using HrHarmony.Data.Models.Entities.Management;
 
 namespace HrHarmony.Data.Models.ViewModels.AppManagement;
 

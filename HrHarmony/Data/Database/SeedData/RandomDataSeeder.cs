@@ -1,7 +1,7 @@
 ﻿using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Utils;
-using static HrHarmony.Data.Models.Shared.Enums;
+using static HrHarmony.Consts.Enums;
 
 namespace HrHarmony.Data.Database.SeedData;
 
