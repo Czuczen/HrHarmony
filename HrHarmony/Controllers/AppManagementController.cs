@@ -1,26 +1,105 @@
 ﻿using HrHarmony.Consts;
+using HrHarmony.Data.Database.SeedData;
+using HrHarmony.Data.Database;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using HrHarmony.Data.Models.ViewModels.Logges;
+using Microsoft.EntityFrameworkCore;
+using static HrHarmony.Data.Models.Shared.Enums;
+using HrHarmony.Data.Models.ViewModels.AppManagement;
 using HrHarmony.Logging;
+using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace HrHarmony.Controllers;
 
-public class LoggesController : Controller
+public class AppManagementController : Controller
 {
+    private readonly ApplicationDbContext _ctx;
     private readonly IConfiguration _configuration;
 
-    public LoggesController(IConfiguration configuration)
+    public AppManagementController(ApplicationDbContext context, IConfiguration configuration)
     {
+        _ctx = context;
         _configuration = configuration;
     }
 
     /// <summary>
-    /// Uruchamiane z linka - http://localhost:5092/Logges/Index?accessKey=klucz
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/Visitors?accessKey=klucz
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IActionResult> Visitors(string accessKey)
+    {
+        var model = new List<VisitorsViewModel>();
+
+        if (accessKey == AccessKeys.VisitorsKey)
+        {
+            var visitors = await _ctx.Visitors.ToListAsync();
+            var groupedVisitorsById = visitors.GroupBy(x => x.VisitorId);
+
+            foreach (var visitorGroup in groupedVisitorsById)
+            {
+                model.Add(new VisitorsViewModel
+                {
+                    VisitorDataById = visitorGroup.OrderBy(x => x.Timestamp).ToList(),
+                    VisitorOthersId = visitorGroup.GroupBy(x => x.IpAddress).SelectMany(ipGroup =>
+                        visitors.Where(x => x.IpAddress == ipGroup.Key && x.VisitorId != visitorGroup.Key)).GroupBy(x =>
+                        x.VisitorId).Select(group => group.OrderBy(x => x.Timestamp).ToList())
+                });
+            }
+        }
+        else
+            return Unauthorized("Nieprawidłowy klucz dostępu");
+
+        return View(model);
+    }
+
+    /// <summary>
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/CreateSampleObjects?accessKey=klucz&sizeLevel=Low
+    /// </summary>
+    /// <param name="accessKey"></param>
+    /// <param name="sizeLevel"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> CreateSampleObjects(string accessKey, SampleObjectsCreationSizeLevel? sizeLevel)
+    {
+        if (accessKey == AccessKeys.CreateSampleObjectsKey)
+            await RandomDataSeeder.Initialize(_ctx, sizeLevel);
+        else
+            return Unauthorized("Nieprawidłowy klucz dostępu");
+
+        return Ok("Utworzono");
+    }
+
+    /// <summary>
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/ClearAll?accessKey=klucz
     /// </summary>
     /// <param name="accessKey"></param>
     /// <returns></returns>
-    public IActionResult Index(string accessKey)
+    public async Task<IActionResult> ClearAll(string accessKey)
+    {
+        if (accessKey == AccessKeys.CreateSampleObjectsKey)
+        {
+            var dbSets = _ctx.GetType().GetProperties().Where(p =>
+                p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
+
+            foreach (var prop in dbSets)
+            {
+                var objects = (IEnumerable<object>)prop.GetValue(_ctx)!;
+                _ctx.RemoveRange(objects);
+            }
+
+            await _ctx.SaveChangesAsync();
+        }
+        else
+            return Unauthorized("Nieprawidłowy klucz dostępu");
+
+        return Ok("Usunięto");
+    }
+
+    /// <summary>
+    /// Uruchamiane z linka - http://localhost:5092/AppManagement/Logs?accessKey=klucz
+    /// </summary>
+    /// <param name="accessKey"></param>
+    /// <returns></returns>
+    public IActionResult Logs(string accessKey)
     {
         var ret = new LogsViewModel();
 
@@ -119,10 +198,8 @@ public class LoggesController : Controller
             ret.NoneLogs.Reverse();
         }
         else
-        {
-            ret.PermissionInfo = "Brak uprawnień!";
-        }
- 
+            return Unauthorized("Nieprawidłowy klucz dostępu");
+
         return View(ret);
     }
 }

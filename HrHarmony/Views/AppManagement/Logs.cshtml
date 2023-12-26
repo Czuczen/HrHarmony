@@ -1,0 +1,101 @@
+﻿@using HrHarmony.Data.Models.ViewModels.AppManagement;
+@model LogsViewModel
+
+@{
+    ViewData["Title"] = "Logi";
+}
+
+<div class="accordion" id="logsAccordion">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTrace">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrace" aria-expanded="false" aria-controls="collapseTrace">
+                Trace
+            </button>
+        </h2>
+        <div id="collapseTrace" class="accordion-collapse collapse" aria-labelledby="headingTrace" data-bs-parent="#logsAccordion">
+            <div class="accordion-body">
+                @await Html.PartialAsync("_Logs", Model.TraceLogs)
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDebug">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDebug" aria-expanded="false" aria-controls="collapseDebug">
+                Debug
+            </button>
+        </h2>
+        <div id="collapseDebug" class="accordion-collapse collapse" aria-labelledby="headingDebug" data-bs-parent="#logsAccordion">
+            <div class="accordion-body">
+                @await Html.PartialAsync("_Logs", Model.DebugLogs)
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingInfo">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo">
+                Info
+            </button>
+        </h2>
+        <div id="collapseInfo" class="accordion-collapse collapse" aria-labelledby="headingInfo" data-bs-parent="#logsAccordion">
+            <div class="accordion-body">
+                @await Html.PartialAsync("_Logs", Model.InfoLogs)
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingWarn">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWarn" aria-expanded="false" aria-controls="collapseWarn">
+                Warn
+            </button>
+        </h2>
+        <div id="collapseWarn" class="accordion-collapse collapse" aria-labelledby="headingWarn" data-bs-parent="#logsAccordion">
+            <div class="accordion-body">
+                @await Html.PartialAsync("_Logs", Model.WarnLogs)
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingError">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseError" aria-expanded="false" aria-controls="collapseError">
+                Error
+            </button>
+        </h2>
+        <div id="collapseError" class="accordion-collapse collapse" aria-labelledby="headingError" data-bs-parent="#logsAccordion">
+            <div class="accordion-body">
+                @await Html.PartialAsync("_Logs", Model.ErrorLogs)
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingCritical">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCritical" aria-expanded="false" aria-controls="collapseCritical">
+                Critical
+            </button>
+        </h2>
+        <div id="collapseCritical" class="accordion-collapse collapse" aria-labelledby="headingCritical" data-bs-parent="#logsAccordion">
+            <div class="accordion-body">
+                @await Html.PartialAsync("_Logs", Model.CriticalLogs)
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingNone">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNone" aria-expanded="false" aria-controls="collapseNone">
+                None
+            </button>
+        </h2>
+        <div id="collapseNone" class="accordion-collapse collapse" aria-labelledby="headingNone" data-bs-parent="#logsAccordion">
+            <div class="accordion-body">
+                @await Html.PartialAsync("_Logs", Model.NoneLogs)
+            </div>
+        </div>
+    </div>
+
+</div>

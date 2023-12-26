@@ -15,7 +15,7 @@ public class EmployeeServiceTests : HrHarmonyTestsBase<IEmployeeService>
     public async Task Temporary_Test() // service method
     {
         // Arrange
-        var employee = RandomDataSeeder.CreateEmployee(Ctx);
+        var employee = await RandomDataSeeder.CreateEmployee(Ctx);
 
         // Act
         var downloadedEmployee = new Employee(); // tymczasowo

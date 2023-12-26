@@ -1,6 +1,6 @@
 ﻿using HrHarmony.Data.Models.Entities;
 
-namespace HrHarmony.Data.Models.ViewModels.Anonymous;
+namespace HrHarmony.Data.Models.ViewModels.AppManagement;
 
 public class VisitorsViewModel
 {
