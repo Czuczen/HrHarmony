@@ -29,7 +29,7 @@ public class PagedRecordsViewModel<TIndexViewModel>
 
     public string ControllerName { get; set; }
 
-    public string ValidPageSize => (PageSize > TotalCount ? TotalCount : PageSize > Items.Count ? Items.Count : PageSize).ToString();
+    public string ValidPageSize => (PageSize > Items.Count ? Items.Count : PageSize).ToString();
 
     public int TotalPages => (int)Math.Ceiling((double)SearchedCount / PageSize);
 
