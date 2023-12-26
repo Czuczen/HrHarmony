@@ -45,10 +45,10 @@ public class AnonymousController : Controller
     /// <param name="accessKey"></param>
     /// <param name="sizeLevel"></param>
     /// <returns></returns>
-    public IActionResult CreateSampleObjects(string accessKey, SampleObjectsCreationSizeLevel? sizeLevel)
+    public async Task<IActionResult> CreateSampleObjects(string accessKey, SampleObjectsCreationSizeLevel? sizeLevel)
     {
         if (accessKey == AccessKeys.CreateSampleObjectsKey)
-            RandomDataSeeder.Initialize(_ctx, sizeLevel);
+            await RandomDataSeeder.Initialize(_ctx, sizeLevel);
         else
             return Unauthorized("Nieprawidłowy klucz dostępu");
 

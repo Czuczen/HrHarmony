@@ -8,52 +8,52 @@ namespace HrHarmony.Data.Database.SeedData;
 public static class RandomDataSeeder
 {
     private static readonly Random Random = new();
-    private static bool GroupSaveChanges;
+    private static bool _groupSaveChanges;
 
-    private static int? MaritalStatusesCount;
-    private static int? AddressesCount;
-    private static int? EducationLevelsCount;
-    private static int? ExperiencesCount;
-    private static int? EmployeesCount;
-    private static int? ContractTypesCount;
-    private static int? LeaveTypesCount;
-    private static int? AbsenceTypesCount;
-    private static int? EmploymentContractsCount;
-    private static int? LeavesCount;
-    private static int? AbsencesCount;
-    private static int? SalariesCount;
+    private static int? _maritalStatusesCount;
+    private static int? _addressesCount;
+    private static int? _educationLevelsCount;
+    private static int? _experiencesCount;
+    private static int? _employeesCount;
+    private static int? _contractTypesCount;
+    private static int? _leaveTypesCount;
+    private static int? _absenceTypesCount;
+    private static int? _employmentContractsCount;
+    private static int? _leavesCount;
+    private static int? _absencesCount;
+    private static int? _salariesCount;
     
 
-    public static void Initialize(ApplicationDbContext context, SampleObjectsCreationSizeLevel? sizeLevel)
+    public static async Task Initialize(ApplicationDbContext context, SampleObjectsCreationSizeLevel? sizeLevel)
     {
         SetCreationSize(sizeLevel);
-        GroupSaveChanges = true;
+        _groupSaveChanges = true;
 
         // kolejność ma znaczenie
-        CreateMaritalStatuses(context, MaritalStatusesCount);
-        CreateAddresses(context, AddressesCount);
-        CreateEducationLevels(context, EducationLevelsCount);
-        CreateExperiences(context, ExperiencesCount);
-        context.SaveChanges();
+        await CreateMaritalStatuses(context, _maritalStatusesCount);
+        await CreateAddresses(context, _addressesCount);
+        await CreateEducationLevels(context, _educationLevelsCount);
+        await CreateExperiences(context, _experiencesCount);
+        await context.SaveChangesAsync();
 
-        CreateEmployees(context, EmployeesCount);
-        context.SaveChanges();
-        
-        CreateContractTypes(context, ContractTypesCount);
-        CreateLeaveTypes(context, LeaveTypesCount);
-        CreateAbsenceTypes(context, AbsenceTypesCount);
-        context.SaveChanges();
+        await CreateEmployees(context, _employeesCount);
+        await context.SaveChangesAsync();
 
-        CreateEmploymentContracts(context, EmploymentContractsCount);
-        CreateLeaves(context, LeavesCount);
-        CreateAbsences(context, AbsencesCount);
-        CreateSalaries(context, SalariesCount);
-        context.SaveChanges();
+        await CreateContractTypes(context, _contractTypesCount);
+        await CreateLeaveTypes(context, _leaveTypesCount);
+        await CreateAbsenceTypes(context, _absenceTypesCount);
+        await context.SaveChangesAsync();
+
+        await CreateEmploymentContracts(context, _employmentContractsCount);
+        await CreateLeaves(context, _leavesCount);
+        await CreateAbsences(context, _absencesCount);
+        await CreateSalaries(context, _salariesCount);
+        await context.SaveChangesAsync();
     }
 
     // ============== słownikowe połączone z employee ===========================
 
-    public static MaritalStatus CreateMaritalStatus(ApplicationDbContext context)
+    public static async Task<MaritalStatus> CreateMaritalStatus(ApplicationDbContext context)
     {
         var stringLength = Random.Next(3, 21);
         var maritalStatus = new MaritalStatus
@@ -62,20 +62,20 @@ public static class RandomDataSeeder
         };
 
         context.MaritalStatuses.Add(maritalStatus);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return maritalStatus;
     }
 
-    public static void CreateMaritalStatuses(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateMaritalStatuses(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateMaritalStatus(context);
+            await CreateMaritalStatus(context);
     }
 
-    public static Address CreateAddress(ApplicationDbContext context)
+    public static async Task<Address> CreateAddress(ApplicationDbContext context)
     {
         var streetLength = Random.Next(3, 21);
         var cityLength = Random.Next(3, 21);
@@ -91,20 +91,20 @@ public static class RandomDataSeeder
         };
 
         context.Addresses.Add(address);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return address;
     }
 
-    public static void CreateAddresses(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateAddresses(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateAddress(context);
+            await CreateAddress(context);
     }
 
-    public static EducationLevel CreateEducationLevel(ApplicationDbContext context)
+    public static async Task<EducationLevel> CreateEducationLevel(ApplicationDbContext context)
     {
         var stringLength = Random.Next(3, 21);
         var educationLevel = new EducationLevel
@@ -113,20 +113,20 @@ public static class RandomDataSeeder
         };
 
         context.EducationLevels.Add(educationLevel);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return educationLevel;
     }
 
-    public static void CreateEducationLevels(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateEducationLevels(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateEducationLevel(context);
+            await CreateEducationLevel(context);
     }
 
-    public static Experience CreateExperience(ApplicationDbContext context)
+    public static async Task<Experience> CreateExperience(ApplicationDbContext context)
     {
         var stringLength = Random.Next(3, 21);
         var experience = new Experience
@@ -135,22 +135,22 @@ public static class RandomDataSeeder
         };
 
         context.Experiences.Add(experience);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return experience;
     }
 
-    public static void CreateExperiences(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateExperiences(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateExperience(context);
+            await CreateExperience(context);
     }
 
     // ============== słownikowe połączone z innymi ===========================
 
-    public static ContractType CreateContractType(ApplicationDbContext context)
+    public static async Task<ContractType> CreateContractType(ApplicationDbContext context)
     {
         var stringLength = Random.Next(3, 21);
         var contractType = new ContractType
@@ -159,20 +159,20 @@ public static class RandomDataSeeder
         };
 
         context.ContractTypes.Add(contractType);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return contractType;
     }
 
-    public static void CreateContractTypes(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateContractTypes(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateContractType(context);
+            await CreateContractType(context);
     }
 
-    public static LeaveType CreateLeaveType(ApplicationDbContext context)
+    public static async Task<LeaveType> CreateLeaveType(ApplicationDbContext context)
     {
         var stringLength = Random.Next(3, 21);
         var leaveType = new LeaveType
@@ -181,20 +181,20 @@ public static class RandomDataSeeder
         };
 
         context.LeaveTypes.Add(leaveType);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return leaveType;
     }
 
-    public static void CreateLeaveTypes(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateLeaveTypes(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateLeaveType(context);
+            await CreateLeaveType(context);
     }
 
-    public static AbsenceType CreateAbsenceType(ApplicationDbContext context)
+    public static async Task<AbsenceType> CreateAbsenceType(ApplicationDbContext context)
     {
         var stringLength = Random.Next(3, 21);
         var absenceType = new AbsenceType
@@ -203,22 +203,22 @@ public static class RandomDataSeeder
         };
 
         context.AbsenceTypes.Add(absenceType);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return absenceType;
     }
 
-    public static void CreateAbsenceTypes(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateAbsenceTypes(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateAbsenceType(context);
+            await CreateAbsenceType(context);
     }
 
     // ============== employee ===========================
 
-    public static Employee CreateEmployee(ApplicationDbContext context)
+    public static async Task<Employee> CreateEmployee(ApplicationDbContext context)
     {
         var maritalStatusIds = context.MaritalStatuses.Select(a => a.Id).ToList();
         var addressIds = context.Addresses.Select(a => a.Id).ToList();
@@ -246,22 +246,22 @@ public static class RandomDataSeeder
         };
 
         context.Employees.Add(employee);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return employee;
     }
 
-    public static void CreateEmployees(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateEmployees(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateEmployee(context);
+            await CreateEmployee(context);
     }
 
     // ============== główne połączone z employee ===========================
 
-    public static EmploymentContract CreateEmploymentContract(ApplicationDbContext context)
+    public static async Task<EmploymentContract> CreateEmploymentContract(ApplicationDbContext context)
     {
         var contractTypesIds = context.ContractTypes.Select(a => a.Id).ToList();
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
@@ -285,20 +285,20 @@ public static class RandomDataSeeder
         };
 
         context.EmploymentContracts.Add(employmentContract);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return employmentContract;
     }
 
-    public static void CreateEmploymentContracts(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateEmploymentContracts(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateEmploymentContract(context);
+            await CreateEmploymentContract(context);
     }
 
-    public static Leave CreateLeave(ApplicationDbContext context)
+    public static async Task<Leave> CreateLeave(ApplicationDbContext context)
     {
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
         var leaveTypesIds = context.LeaveTypes.Select(a => a.Id).ToList();
@@ -312,20 +312,20 @@ public static class RandomDataSeeder
         };
 
         context.Leaves.Add(leave);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return leave;
     }
 
-    public static void CreateLeaves(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateLeaves(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateLeave(context);
+            await CreateLeave(context);
     }
 
-    public static Absence CreateAbsence(ApplicationDbContext context)
+    public static async Task<Absence> CreateAbsence(ApplicationDbContext context)
     {
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
         var absenceTypesIds = context.AbsenceTypes.Select(a => a.Id).ToList();
@@ -338,20 +338,20 @@ public static class RandomDataSeeder
         };
 
         context.Absences.Add(absence);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return absence;
     }
 
-    public static void CreateAbsences(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateAbsences(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateAbsence(context);
+            await CreateAbsence(context);
     }
 
-    public static Salary CreateSalary(ApplicationDbContext context)
+    public static async Task<Salary> CreateSalary(ApplicationDbContext context)
     {
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
 
@@ -375,17 +375,17 @@ public static class RandomDataSeeder
         };
 
         context.Salaries.Add(salary);
-        if (!GroupSaveChanges)
-            context.SaveChanges();
+        if (!_groupSaveChanges)
+            await context.SaveChangesAsync();
 
         return salary;
     }
 
-    public static void CreateSalaries(ApplicationDbContext context, int? howMany = null)
+    public static async Task CreateSalaries(ApplicationDbContext context, int? howMany = null)
     {
-        howMany = howMany ?? Random.Next(1, 11);
+        howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
-            CreateSalary(context);
+            await CreateSalary(context);
     }
 
     private static void SetCreationSize(SampleObjectsCreationSizeLevel? sizeLevel)
@@ -393,74 +393,74 @@ public static class RandomDataSeeder
         switch (sizeLevel)
         {
             case SampleObjectsCreationSizeLevel.Low:
-                MaritalStatusesCount = 5;
-                AddressesCount = 20;
-                EducationLevelsCount = 5;
-                ExperiencesCount = 5;
-                EmployeesCount = 5;
-                ContractTypesCount = 5;
-                LeaveTypesCount = 5;
-                AbsenceTypesCount = 5;
-                EmploymentContractsCount = 5;
-                LeavesCount = 20;
-                AbsencesCount = 20;
-                SalariesCount = 50;
+                _maritalStatusesCount = 5;
+                _addressesCount = 20;
+                _educationLevelsCount = 5;
+                _experiencesCount = 5;
+                _employeesCount = 5;
+                _contractTypesCount = 5;
+                _leaveTypesCount = 5;
+                _absenceTypesCount = 5;
+                _employmentContractsCount = 5;
+                _leavesCount = 20;
+                _absencesCount = 20;
+                _salariesCount = 50;
                 break;
             case SampleObjectsCreationSizeLevel.Medium:
-                MaritalStatusesCount = 25;
-                AddressesCount = 100;
-                EducationLevelsCount = 25;
-                ExperiencesCount = 25;
-                EmployeesCount = 25;
-                ContractTypesCount = 25;
-                LeaveTypesCount = 25;
-                AbsenceTypesCount = 25;
-                EmploymentContractsCount = 25;
-                LeavesCount = 100;
-                AbsencesCount = 100;
-                SalariesCount = 250;
+                _maritalStatusesCount = 25;
+                _addressesCount = 100;
+                _educationLevelsCount = 25;
+                _experiencesCount = 25;
+                _employeesCount = 25;
+                _contractTypesCount = 25;
+                _leaveTypesCount = 25;
+                _absenceTypesCount = 25;
+                _employmentContractsCount = 25;
+                _leavesCount = 100;
+                _absencesCount = 100;
+                _salariesCount = 250;
                 break;
             case SampleObjectsCreationSizeLevel.High:
-                MaritalStatusesCount = 125;
-                AddressesCount = 500;
-                EducationLevelsCount = 125;
-                ExperiencesCount = 125;
-                EmployeesCount = 125;
-                ContractTypesCount = 125;
-                LeaveTypesCount = 125;
-                AbsenceTypesCount = 125;
-                EmploymentContractsCount = 125;
-                LeavesCount = 500;
-                AbsencesCount = 500;
-                SalariesCount = 1250;
+                _maritalStatusesCount = 125;
+                _addressesCount = 500;
+                _educationLevelsCount = 125;
+                _experiencesCount = 125;
+                _employeesCount = 125;
+                _contractTypesCount = 125;
+                _leaveTypesCount = 125;
+                _absenceTypesCount = 125;
+                _employmentContractsCount = 125;
+                _leavesCount = 500;
+                _absencesCount = 500;
+                _salariesCount = 1250;
                 break;
             case SampleObjectsCreationSizeLevel.Extreme:
-                MaritalStatusesCount = 12500;
-                AddressesCount = 50000;
-                EducationLevelsCount = 12500;
-                ExperiencesCount = 12500;
-                EmployeesCount = 12500;
-                ContractTypesCount = 12500;
-                LeaveTypesCount = 12500;
-                AbsenceTypesCount = 12500;
-                EmploymentContractsCount = 12500;
-                LeavesCount = 50000;
-                AbsencesCount = 50000;
-                SalariesCount = 125000;
+                _maritalStatusesCount = 12500;
+                _addressesCount = 50000;
+                _educationLevelsCount = 12500;
+                _experiencesCount = 12500;
+                _employeesCount = 12500;
+                _contractTypesCount = 12500;
+                _leaveTypesCount = 12500;
+                _absenceTypesCount = 12500;
+                _employmentContractsCount = 12500;
+                _leavesCount = 50000;
+                _absencesCount = 50000;
+                _salariesCount = 125000;
                 break;
             default:
-                MaritalStatusesCount = 1;
-                AddressesCount = 1;
-                EducationLevelsCount = 1;
-                ExperiencesCount = 1;
-                EmployeesCount = 1;
-                ContractTypesCount = 1;
-                LeaveTypesCount = 1;
-                AbsenceTypesCount = 1;
-                EmploymentContractsCount = 1;
-                LeavesCount = 5;
-                AbsencesCount = 5;
-                SalariesCount = 10;
+                _maritalStatusesCount = 1;
+                _addressesCount = 1;
+                _educationLevelsCount = 1;
+                _experiencesCount = 1;
+                _employeesCount = 1;
+                _contractTypesCount = 1;
+                _leaveTypesCount = 1;
+                _absenceTypesCount = 1;
+                _employmentContractsCount = 1;
+                _leavesCount = 5;
+                _absencesCount = 5;
+                _salariesCount = 10;
                 break;
         }
     }

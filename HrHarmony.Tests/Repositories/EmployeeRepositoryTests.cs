@@ -15,7 +15,7 @@ public class EmployeeRepositoryTests : HrHarmonyTestsBase<IRepository<Employee, 
     public async Task Create_Employee_Test()
     {
         // Arrange
-        var employee = RandomDataSeeder.CreateEmployee(Ctx);
+        var employee = await RandomDataSeeder.CreateEmployee(Ctx);
 
         // Act
         var downloadedEmployee = await Service.GetByIdAsync(employee.Id);
