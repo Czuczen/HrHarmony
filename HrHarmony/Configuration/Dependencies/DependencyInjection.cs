@@ -169,7 +169,7 @@ public static class DependencyInjection
                                                     || ImplementsDependency(service.ServiceType, SingletonType);
 
             if (associatedWithInjectionConvention)
-                logger.LogDebug($"Zarejestrowano usługę w kontenerze DI: {service.Lifetime} => {service.ServiceType} => {service.ImplementationType}");
+                logger.LogDebug($"Zarejestrowano usługę w kontenerze DI według konwencji: {service.Lifetime} => {service.ServiceType} => {service.ImplementationType}");
         }
     }
 }
