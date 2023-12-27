@@ -33,7 +33,7 @@ public class LeaveTypeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        return View(await _leaveTypeRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
+        return View(await _leaveTypeRepository.GetByIdAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public IActionResult Create()

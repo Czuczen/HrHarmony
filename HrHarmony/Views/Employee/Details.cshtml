@@ -72,10 +72,19 @@
             <div class="collapse" id="multiCollapseLeaves">
                 <div class="card card-body">
                     <h2 class="text-center">Szczegóły urlopów</h2>
-                    @foreach (var leave in Model.Leaves)
-                    {
-                        @await Html.PartialAsync("~/Views/Leave/Details.cshtml", leave)
-                    }
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                @await Html.PartialAsync("~/Views/Leave/_Columns.cshtml")
+                            </thead>
+                            <tbody>
+                                @foreach (var leave in Model.Leaves)
+                                {
+                                    @await Html.PartialAsync("~/Views/Leave/Details.cshtml", leave)
+                                }
+                               </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,10 +92,19 @@
             <div class="collapse" id="multiCollapseAbsences">
                 <div class="card card-body">
                     <h2 class="text-center">Szczegóły absencyj</h2>
-                    @foreach (var absence in Model.Absences)
-                    {
-                        @await Html.PartialAsync("~/Views/Absence/Details.cshtml", absence)
-                    }
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                @await Html.PartialAsync("~/Views/Absence/_Columns.cshtml")
+                            </thead>
+                            <tbody>
+                                @foreach (var absence in Model.Absences)
+                                {
+                                    @await Html.PartialAsync("~/Views/Absence/Details.cshtml", absence)
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,10 +112,19 @@
             <div class="collapse" id="multiCollapseSalaries">
                 <div class="card card-body">
                     <h2 class="text-center">Szczegóły wynagrodzeń</h2>
-                    @foreach (var absence in Model.Salaries)
-                    {
-                        @await Html.PartialAsync("~/Views/Salary/Details.cshtml", absence)
-                    }
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                @await Html.PartialAsync("~/Views/Salary/_Columns.cshtml")
+                            </thead>
+                            <tbody>
+                                @foreach (var absence in Model.Salaries)
+                                {
+                                    @await Html.PartialAsync("~/Views/Salary/Details.cshtml", absence)
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

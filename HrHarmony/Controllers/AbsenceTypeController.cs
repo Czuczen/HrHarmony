@@ -33,7 +33,7 @@ public class AbsenceTypeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        return View(await _absenceTypeRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
+        return View(await _absenceTypeRepository.GetByIdAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public IActionResult Create()

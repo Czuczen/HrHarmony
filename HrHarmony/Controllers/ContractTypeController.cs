@@ -33,7 +33,7 @@ public class ContractTypeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        return View(await _contractTypeRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
+        return View(await _contractTypeRepository.GetByIdAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public IActionResult Create()

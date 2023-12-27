@@ -33,7 +33,7 @@ public class AddressController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        return View(await _addressRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
+        return View(await _addressRepository.GetByIdAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public IActionResult Create()

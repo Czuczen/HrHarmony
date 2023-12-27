@@ -33,7 +33,7 @@ public class ExperienceController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        return View(await _experienceRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
+        return View(await _experienceRepository.GetByIdAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public IActionResult Create()

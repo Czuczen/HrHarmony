@@ -33,7 +33,7 @@ public class EducationLevelController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        return View(await _educationLevelRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
+        return View(await _educationLevelRepository.GetByIdAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public IActionResult Create()

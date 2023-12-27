@@ -33,7 +33,7 @@ public class MaritalStatusController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        return View(await _maritalStatusRepository.GetByIdWithRelatedAsCustomObjectAsync<DetailsViewModel>(id));
+        return View(await _maritalStatusRepository.GetByIdAsCustomObjectAsync<DetailsViewModel>(id));
     }
 
     public IActionResult Create()

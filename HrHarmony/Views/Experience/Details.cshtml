@@ -34,21 +34,4 @@
 @if (Layout != null)
 {
     @await Html.PartialAsync("~/Views/Shared/Records/_ComeBackButton.cshtml")
-
-    <div class="text-center mt-3">
-        <button class="btn btn-primary m-1 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseEmployees" aria-expanded="false" aria-controls="multiCollapseEmployees">Pracownicy</button>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="collapse" id="multiCollapseEmployees">
-                <div class="card card-body">
-                    <h2 class="text-center">Szczegóły pracowników</h2>
-                    @foreach (var employee in Model.Employees)
-                    {
-                        @await Html.PartialAsync("~/Views/Employee/Details.cshtml", employee)
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
 }
