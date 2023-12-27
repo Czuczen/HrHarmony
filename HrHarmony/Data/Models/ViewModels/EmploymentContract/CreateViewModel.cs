@@ -15,7 +15,7 @@ public class CreateViewModel : ILoadGroupedEmploymentContractOptions
     [Display(Name = "Data zakończenia")]
     public DateTime? EndDate { get; set; }
 
-    [Display(Name = "Typ umowy")]
+    [Display(Name = "Rodzaj umowy")]
     public int ContractTypeId { get; set; }
 
     public IEnumerable<SelectListItem> ContractTypes { get; set; } = new List<SelectListItem>();

@@ -103,8 +103,8 @@ public class SalaryController : Controller
         entityName switch
         {
             EntitiesNames.Employee => Json(await _salaryRepository.GetQuery<Employee, Employee>(q => q.Where(e =>
-                                e.FullName.ToLower().Contains(searchTerm.ToLower()))).Select(e =>
-                                new SelectListItem { Value = e.Id.ToString(), Text = e.FullName }).ToListAsync()),
+                        e.FullName.ToLower().Contains(searchTerm.ToLower()))).Select(e =>
+                        new SelectListItem { Value = e.Id.ToString(), Text = e.FullName }).OrderBy(x => x.Text).ToListAsync()),
 
             _ => throw new InvalidOperationException($"Unsupported entity: '{entityName}'."),
         };
@@ -123,7 +123,7 @@ public class SalaryController : Controller
             query = query.Concat(selectedEmployeeQ);
         }
 
-        var results = await query.ToListAsync();
+        var results = await query.OrderBy(x => x.Item.Text).ToListAsync();
 
         entity.EmployeeText = results.Where(c => c.EntityName == "EmployeeText").SingleOrDefault()?.Item.Text;
         entity.Employees = results.Where(c => c.EntityName == EntitiesNames.Employee).Select(e => e.Item);

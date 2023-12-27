@@ -6,7 +6,7 @@ namespace HrHarmony.Data.Models.ViewModels.Absence;
 
 public class UpdateViewModel : ILoadGroupedAbsenceOptions
 {
-    [Display(Name = "Typ absencji")]
+    [Display(Name = "Rodzaj absencji")]
     public int AbsenceTypeId { get; set; }
 
     public IEnumerable<SelectListItem> AbsenceTypes { get; set; } = new List<SelectListItem>();

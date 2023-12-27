@@ -8,34 +8,31 @@
 @if (Layout != null)
 {
     <h2 class="text-center">Szczegóły absencji</h2>
+
+    @:<div class="table-responsive">
+        @:<table class="table table-bordered table-hover">
+            @:<thead class="table-dark">
+                @await Html.PartialAsync("~/Views/Absence/_Columns.cshtml")
+            @:</thead>
+            @:<tbody>
 }
 
-<div class="table-responsive">
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Data absencji</th>
-                <th>Typ absencji</th>
-                <th>Pracownik</th>
-                <th>Akcje</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Model.AbsenceDate</td>
-                <td>@Model.AbsenceType?.TypeName</td>
-                <td>@Model.Employee?.FullName</td>
+<tr>
+    <td>@Model.AbsenceDate</td>
+    <td>@Model.AbsenceType?.TypeName</td>
+    <td>@Model.Employee?.FullName</td>
 
-                <td class="d-flex">
-                    <a class="btn btn-info btn-sm ms-2" asp-controller="Absence" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
-                    <a class="btn btn-danger btn-sm ms-2" asp-controller="Absence" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <td class="d-flex">
+        <a class="btn btn-info btn-sm ms-2" asp-controller="Absence" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+        <a class="btn btn-danger btn-sm ms-2" asp-controller="Absence" asp-action="Delete" asp-route-id="@Model.Id">Usuń</a>
+    </td>
+</tr>
 
 @if (Layout != null)
 {
+                @:</tbody>
+        @:</table>
+    @:</div>
+
     @await Html.PartialAsync("~/Views/Shared/Records/_ComeBackButton.cshtml")
 }

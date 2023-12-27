@@ -9,7 +9,7 @@ public class CreateViewModel : ILoadGroupedAbsenceOptions
     [Display(Name = "Data absencji")]
     public DateTime? AbsenceDate { get; set; }
 
-    [Display(Name = "Typ absencji")]
+    [Display(Name = "Rodzaj absencji")]
     public int AbsenceTypeId { get; set; }
 
     public IEnumerable<SelectListItem> AbsenceTypes { get; set; } = new List<SelectListItem>();
