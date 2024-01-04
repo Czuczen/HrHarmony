@@ -30,8 +30,6 @@ public class EmployeeDto : EntityDto<int>
 
     public List<EmploymentContractDto> Contracts { get; set; }
 
-    public List<LeaveDto> Leaves { get; set; }
-
     public List<AbsenceDto> Absences { get; set; }
 
     public List<SalaryDto> Salaries { get; set; }

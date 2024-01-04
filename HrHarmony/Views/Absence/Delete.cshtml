@@ -5,7 +5,7 @@
     ViewData["Title"] = "Usuń absencję";
 }
 
-<h2>Usunąć absencję z @Model.AbsenceDate?</h2>
+<h2>Usunąć absencję z okresu: @Model.StartDate - @Model.EndDate?</h2>
 
 <form asp-controller="Absence" asp-action="Delete" method="post">
     @Html.AntiForgeryToken()

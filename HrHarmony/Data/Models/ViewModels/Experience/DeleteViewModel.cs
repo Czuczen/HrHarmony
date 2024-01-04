@@ -3,5 +3,5 @@
 public class DeleteViewModel
 {
     public int Id { get; set; }
-    public string ExperienceDescription { get; set; }
+    public string ExperienceName { get; set; }
 }

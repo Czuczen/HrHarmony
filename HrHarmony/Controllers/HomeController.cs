@@ -34,16 +34,6 @@ public class HomeController : Controller
             },
             new IndexViewModel
             {
-                ImagePath = "/Content/Urlopy.jpg",
-                ImageAlt = "Zarządzaj urlopami",
-                FrontTitle = "Urlopy",
-                FrontText = "",
-                BackSideTitle = "System zarządzania urlopami",
-                BackSideText = "Skorzystaj z naszego systemu zarządzania urlopami, aby efektywnie planować i monitorować czas wolny pracowników.",
-                EntityName = EntitiesNames.Leave,
-            },
-            new IndexViewModel
-            {
                 ImagePath = "/Content/Absencje.jpeg",
                 ImageAlt = "Zarządzaj absencjami",
                 FrontTitle = "Absencje",
@@ -111,16 +101,6 @@ public class HomeController : Controller
                 BackSideTitle = "System zarządzania doświadczeniami",
                 BackSideText = "Zarządzaj doświadczeniem zawodowym pracowników za pomocą naszego systemu śledzenia kariery zawodowej.",
                 EntityName = EntitiesNames.Experience,
-            },
-            new IndexViewModel
-            {
-                ImagePath = "/Content/Others.png",
-                ImageAlt = "Zarządzaj rodzajami urlopów",
-                FrontTitle = "Rodzaje urlopów",
-                FrontText = "",
-                BackSideTitle = "System zarządzania rodzajami urlopów",
-                BackSideText = "Skorzystaj z systemu zarządzania rodzajami urlopów, aby dokładnie śledzić i planować różne kategorie urlopów.",
-                EntityName = EntitiesNames.LeaveType,
             },
             new IndexViewModel
             {

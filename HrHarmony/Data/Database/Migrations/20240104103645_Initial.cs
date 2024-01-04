@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -72,24 +73,11 @@ namespace HrHarmony.Data.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ExperienceDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ExperienceName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Experiences", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeaveTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeaveTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,7 +160,8 @@ namespace HrHarmony.Data.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AbsenceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AbsenceTypeId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -226,34 +215,6 @@ namespace HrHarmony.Data.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Leaves",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LeaveTypeId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Leaves", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Leaves_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Leaves_LeaveTypes_LeaveTypeId",
-                        column: x => x.LeaveTypeId,
-                        principalTable: "LeaveTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Salaries",
                 columns: table => new
                 {
@@ -285,9 +246,17 @@ namespace HrHarmony.Data.Database.Migrations
                 values: new object[,]
                 {
                     { 1, "Urlop wypoczynkowy" },
-                    { 2, "Chorobowe" },
-                    { 3, "Urlop bezpłatny" },
-                    { 4, "Opieka nad dzieckiem" }
+                    { 2, "Urlop bezpłatny" },
+                    { 3, "Urlop okolicznościowy" },
+                    { 4, "Urlop zdrowotny" },
+                    { 5, "Urlop macierzyński" },
+                    { 6, "Urlop ojcowski" },
+                    { 7, "Urlop na żądanie" },
+                    { 8, "Urlop naukowy" },
+                    { 9, "Urlop szkoleniowy" },
+                    { 10, "Urlop wychowawczy" },
+                    { 11, "Urlop rehabilitacyjny" },
+                    { 12, "Zwolnienie lekarskie" }
                 });
 
             migrationBuilder.InsertData(
@@ -343,7 +312,7 @@ namespace HrHarmony.Data.Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "Experiences",
-                columns: new[] { "Id", "ExperienceDescription" },
+                columns: new[] { "Id", "ExperienceName" },
                 values: new object[,]
                 {
                     { 1, "Stażysta" },
@@ -351,24 +320,6 @@ namespace HrHarmony.Data.Database.Migrations
                     { 3, "Średniozaawansowany" },
                     { 4, "Starszy" },
                     { 5, "Ekspert" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "LeaveTypes",
-                columns: new[] { "Id", "TypeName" },
-                values: new object[,]
-                {
-                    { 1, "Urlop wypoczynkowy" },
-                    { 2, "Urlop bezpłatny" },
-                    { 3, "Urlop okolicznościowy" },
-                    { 4, "Urlop zdrowotny" },
-                    { 5, "Urlop macierzyński" },
-                    { 6, "Urlop ojcowski" },
-                    { 7, "Urlop na żądanie" },
-                    { 8, "Urlop naukowy" },
-                    { 9, "Urlop szkoleniowy" },
-                    { 10, "Urlop wychowawczy" },
-                    { 11, "Urlop rehabilitacyjny" }
                 });
 
             migrationBuilder.InsertData(
@@ -400,14 +351,24 @@ namespace HrHarmony.Data.Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "Absences",
-                columns: new[] { "Id", "AbsenceDate", "AbsenceTypeId", "EmployeeId" },
+                columns: new[] { "Id", "AbsenceTypeId", "EmployeeId", "EndDate", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 1 },
-                    { 2, new DateTime(2023, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 2 },
-                    { 3, new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 3 },
-                    { 4, new DateTime(2023, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 4 },
-                    { 5, new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 5 }
+                    { 1, 1, 1, new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 2, 2, new DateTime(2023, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 3, 3, new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, 4, 4, new DateTime(2023, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, 5, 5, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, 6, 1, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, 7, 2, new DateTime(2023, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 8, 8, 3, new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 9, 9, 4, new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 10, 10, 5, new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 11, 11, 1, new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 12, 12, 2, new DateTime(2024, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 13, 1, 3, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 14, 2, 4, new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 15, 3, 5, new DateTime(2024, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -420,28 +381,6 @@ namespace HrHarmony.Data.Database.Migrations
                     { 3, 38400.0m, "CNT3", 3, 3, new DateTime(2023, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 55.0m, 3200.0m, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
                     { 4, 42000.0m, "CNT4", 4, 4, null, 60.0m, 3500.0m, new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
                     { 5, 36000.0m, "CNT5", 1, 5, null, 50.0m, 3000.0m, new DateTime(2023, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Leaves",
-                columns: new[] { "Id", "EmployeeId", "EndDate", "LeaveTypeId", "StartDate" },
-                values: new object[,]
-                {
-                    { 1, 1, new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 2, new DateTime(2023, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, 3, new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2023, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, 4, new DateTime(2023, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, new DateTime(2023, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, 5, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 5, new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, 1, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, new DateTime(2023, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 7, 2, new DateTime(2023, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 8, 3, new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 10, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 9, 4, new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 11, new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 10, 5, new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2023, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 11, 1, new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 12, 2, new DateTime(2024, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2024, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 13, 3, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 14, 4, new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 5, new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 15, 5, new DateTime(2024, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, new DateTime(2024, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -512,16 +451,6 @@ namespace HrHarmony.Data.Database.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Leaves_EmployeeId",
-                table: "Leaves",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Leaves_LeaveTypeId",
-                table: "Leaves",
-                column: "LeaveTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Salaries_EmployeeId",
                 table: "Salaries",
                 column: "EmployeeId");
@@ -537,9 +466,6 @@ namespace HrHarmony.Data.Database.Migrations
                 name: "EmploymentContracts");
 
             migrationBuilder.DropTable(
-                name: "Leaves");
-
-            migrationBuilder.DropTable(
                 name: "Salaries");
 
             migrationBuilder.DropTable(
@@ -550,9 +476,6 @@ namespace HrHarmony.Data.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "ContractTypes");
-
-            migrationBuilder.DropTable(
-                name: "LeaveTypes");
 
             migrationBuilder.DropTable(
                 name: "Employees");

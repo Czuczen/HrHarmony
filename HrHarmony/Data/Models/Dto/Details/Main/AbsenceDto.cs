@@ -4,7 +4,9 @@ namespace HrHarmony.Data.Models.Dto.Details.Main;
 
 public class AbsenceDto : EntityDto<int>
 {
-    public DateTime AbsenceDate { get; set; }
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
 
     public int AbsenceTypeId { get; set; }
 

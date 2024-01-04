@@ -5,7 +5,7 @@ namespace HrHarmony.Data.Database.SeedData.StartDataSeeders.Dictionary;
 
 public class ExperienceDataSeeder : ISeeder
 {
-    public int Order => 3;
+    public int Order => 2;
 
     private readonly List<string> _experiences = new()
     {
@@ -19,7 +19,7 @@ public class ExperienceDataSeeder : ISeeder
             modelBuilder.Entity<Experience>().HasData(new Experience
             {
                 Id = _experiences.IndexOf(experience) + 1,
-                ExperienceDescription = experience
+                ExperienceName = experience
             });
         }
     }

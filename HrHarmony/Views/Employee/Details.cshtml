@@ -25,7 +25,7 @@
     <td>@Model.MaritalStatus?.StatusName</td>
     <td>@(Model.Address?.Street + " " + Model.Address?.PostalCode + " " + Model.Address?.City)</td>
     <td>@Model.EducationLevel?.LevelName</td>
-    <td>@Model.Experience?.ExperienceDescription</td>
+    <td>@Model.Experience?.ExperienceName</td>
 
     <td class="d-flex">
         <a class="btn btn-info btn-sm ms-2" asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
@@ -43,7 +43,6 @@
 
     <div class="text-center mt-3 d-flex bd-highlight">
         <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseContracts" aria-expanded="false" aria-controls="multiCollapseContracts">Umowy</button>
-        <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseLeaves" aria-expanded="false" aria-controls="multiCollapseLeaves">Urlopy</button>
         <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseAbsences" aria-expanded="false" aria-controls="multiCollapseAbsences">Absencje</button>
         <button class="btn btn-primary m-1 w-100 me-auto bd-highlight" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseSalaries" aria-expanded="false" aria-controls="multiCollapseSalaries">Wynagrodzenia</button>
     </div>
@@ -63,26 +62,6 @@
                                     @await Html.PartialAsync("~/Views/EmploymentContract/Details.cshtml", contract)
                                 }
                             </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="collapse" id="multiCollapseLeaves">
-                <div class="card card-body">
-                    <h2 class="text-center">Szczegóły urlopów</h2>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
-                                @await Html.PartialAsync("~/Views/Leave/_Columns.cshtml")
-                            </thead>
-                            <tbody>
-                                @foreach (var leave in Model.Leaves)
-                                {
-                                    @await Html.PartialAsync("~/Views/Leave/Details.cshtml", leave)
-                                }
-                               </tbody>
                         </table>
                     </div>
                 </div>

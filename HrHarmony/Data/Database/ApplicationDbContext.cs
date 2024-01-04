@@ -17,8 +17,6 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<EmploymentContract> EmploymentContracts { get; set; }
 
-    public DbSet<Leave> Leaves { get; set; }
-
     public DbSet<Salary> Salaries { get; set; }
 
 
@@ -31,8 +29,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<EducationLevel> EducationLevels { get; set; }
 
     public DbSet<Experience> Experiences { get; set; }
-
-    public DbSet<LeaveType> LeaveTypes { get; set; }
 
     public DbSet<MaritalStatus> MaritalStatuses { get; set; }
 

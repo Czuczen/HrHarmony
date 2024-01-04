@@ -5,7 +5,7 @@ namespace HrHarmony.Data.Database.SeedData.StartDataSeeders.Dictionary;
 
 public class AddressDataSeeder : ISeeder
 {
-    public int Order => 6;
+    public int Order => 5;
 
     private readonly List<Address> _addresses = new()
     {

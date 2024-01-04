@@ -4,7 +4,9 @@ public class DetailsViewModel
 {
     public int Id{ get; set; }
 
-    public DateTime AbsenceDate { get; set; }
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
 
     public int AbsenceTypeId { get; set; }
     public AbsenceType.IndexViewModel AbsenceType { get; set; }

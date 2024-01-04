@@ -47,17 +47,57 @@ namespace HrHarmony.Data.Database.Migrations
                         new
                         {
                             Id = 2,
-                            TypeName = "Chorobowe"
-                        },
-                        new
-                        {
-                            Id = 3,
                             TypeName = "Urlop bezpłatny"
                         },
                         new
                         {
+                            Id = 3,
+                            TypeName = "Urlop okolicznościowy"
+                        },
+                        new
+                        {
                             Id = 4,
-                            TypeName = "Opieka nad dzieckiem"
+                            TypeName = "Urlop zdrowotny"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            TypeName = "Urlop macierzyński"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            TypeName = "Urlop ojcowski"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            TypeName = "Urlop na żądanie"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            TypeName = "Urlop naukowy"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            TypeName = "Urlop szkoleniowy"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            TypeName = "Urlop wychowawczy"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            TypeName = "Urlop rehabilitacyjny"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            TypeName = "Zwolnienie lekarskie"
                         });
                 });
 
@@ -324,7 +364,7 @@ namespace HrHarmony.Data.Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ExperienceDescription")
+                    b.Property<string>("ExperienceName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -336,101 +376,27 @@ namespace HrHarmony.Data.Database.Migrations
                         new
                         {
                             Id = 1,
-                            ExperienceDescription = "Stażysta"
+                            ExperienceName = "Stażysta"
                         },
                         new
                         {
                             Id = 2,
-                            ExperienceDescription = "Młodszy"
+                            ExperienceName = "Młodszy"
                         },
                         new
                         {
                             Id = 3,
-                            ExperienceDescription = "Średniozaawansowany"
+                            ExperienceName = "Średniozaawansowany"
                         },
                         new
                         {
                             Id = 4,
-                            ExperienceDescription = "Starszy"
+                            ExperienceName = "Starszy"
                         },
                         new
                         {
                             Id = 5,
-                            ExperienceDescription = "Ekspert"
-                        });
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.LeaveType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LeaveTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            TypeName = "Urlop wypoczynkowy"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            TypeName = "Urlop bezpłatny"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            TypeName = "Urlop okolicznościowy"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            TypeName = "Urlop zdrowotny"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            TypeName = "Urlop macierzyński"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            TypeName = "Urlop ojcowski"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            TypeName = "Urlop na żądanie"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            TypeName = "Urlop naukowy"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            TypeName = "Urlop szkoleniowy"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            TypeName = "Urlop wychowawczy"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            TypeName = "Urlop rehabilitacyjny"
+                            ExperienceName = "Ekspert"
                         });
                 });
 
@@ -501,14 +467,17 @@ namespace HrHarmony.Data.Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AbsenceDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("AbsenceTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -522,37 +491,122 @@ namespace HrHarmony.Data.Database.Migrations
                         new
                         {
                             Id = 1,
-                            AbsenceDate = new DateTime(2023, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AbsenceTypeId = 1,
-                            EmployeeId = 1
+                            EmployeeId = 1,
+                            EndDate = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            AbsenceDate = new DateTime(2023, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AbsenceTypeId = 2,
-                            EmployeeId = 2
+                            EmployeeId = 2,
+                            EndDate = new DateTime(2023, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            AbsenceDate = new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AbsenceTypeId = 3,
-                            EmployeeId = 3
+                            EmployeeId = 3,
+                            EndDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            AbsenceDate = new DateTime(2023, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AbsenceTypeId = 4,
-                            EmployeeId = 4
+                            EmployeeId = 4,
+                            EndDate = new DateTime(2023, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
-                            AbsenceDate = new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AbsenceTypeId = 5,
+                            EmployeeId = 5,
+                            EndDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AbsenceTypeId = 6,
+                            EmployeeId = 1,
+                            EndDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AbsenceTypeId = 7,
+                            EmployeeId = 2,
+                            EndDate = new DateTime(2023, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AbsenceTypeId = 8,
+                            EmployeeId = 3,
+                            EndDate = new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AbsenceTypeId = 9,
+                            EmployeeId = 4,
+                            EndDate = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AbsenceTypeId = 10,
+                            EmployeeId = 5,
+                            EndDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AbsenceTypeId = 11,
+                            EmployeeId = 1,
+                            EndDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AbsenceTypeId = 12,
+                            EmployeeId = 2,
+                            EndDate = new DateTime(2024, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 13,
                             AbsenceTypeId = 1,
-                            EmployeeId = 5
+                            EmployeeId = 3,
+                            EndDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AbsenceTypeId = 2,
+                            EmployeeId = 4,
+                            EndDate = new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AbsenceTypeId = 3,
+                            EmployeeId = 5,
+                            EndDate = new DateTime(2024, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -764,157 +818,6 @@ namespace HrHarmony.Data.Database.Migrations
                             HourlyRate = 50.0m,
                             MonthlyRate = 3000.0m,
                             StartDate = new DateTime(2023, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Leave", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LeaveTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LeaveTypeId");
-
-                    b.ToTable("Leaves");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EmployeeId = 1,
-                            EndDate = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 1,
-                            StartDate = new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EmployeeId = 2,
-                            EndDate = new DateTime(2023, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 2,
-                            StartDate = new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EmployeeId = 3,
-                            EndDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 3,
-                            StartDate = new DateTime(2023, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            EmployeeId = 4,
-                            EndDate = new DateTime(2023, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 4,
-                            StartDate = new DateTime(2023, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            EmployeeId = 5,
-                            EndDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 5,
-                            StartDate = new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 6,
-                            EmployeeId = 1,
-                            EndDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 6,
-                            StartDate = new DateTime(2023, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 7,
-                            EmployeeId = 2,
-                            EndDate = new DateTime(2023, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 9,
-                            StartDate = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 8,
-                            EmployeeId = 3,
-                            EndDate = new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 10,
-                            StartDate = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 9,
-                            EmployeeId = 4,
-                            EndDate = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 11,
-                            StartDate = new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 10,
-                            EmployeeId = 5,
-                            EndDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 1,
-                            StartDate = new DateTime(2023, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 11,
-                            EmployeeId = 1,
-                            EndDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 2,
-                            StartDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 12,
-                            EmployeeId = 2,
-                            EndDate = new DateTime(2024, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 3,
-                            StartDate = new DateTime(2024, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 13,
-                            EmployeeId = 3,
-                            EndDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 4,
-                            StartDate = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 14,
-                            EmployeeId = 4,
-                            EndDate = new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 5,
-                            StartDate = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 15,
-                            EmployeeId = 5,
-                            EndDate = new DateTime(2024, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeaveTypeId = 6,
-                            StartDate = new DateTime(2024, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1199,7 +1102,7 @@ namespace HrHarmony.Data.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Visitor", b =>
+            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Management.Visitor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1231,7 +1134,7 @@ namespace HrHarmony.Data.Database.Migrations
             modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Absence", b =>
                 {
                     b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.AbsenceType", "AbsenceType")
-                        .WithMany("Absences")
+                        .WithMany()
                         .HasForeignKey("AbsenceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1250,25 +1153,25 @@ namespace HrHarmony.Data.Database.Migrations
             modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Employee", b =>
                 {
                     b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.Address", "Address")
-                        .WithMany("Employees")
+                        .WithMany()
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.EducationLevel", "EducationLevel")
-                        .WithMany("Employees")
+                        .WithMany()
                         .HasForeignKey("EducationLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.Experience", "Experience")
-                        .WithMany("Employees")
+                        .WithMany()
                         .HasForeignKey("ExperienceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.MaritalStatus", "MaritalStatus")
-                        .WithMany("Employees")
+                        .WithMany()
                         .HasForeignKey("MaritalStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1285,7 +1188,7 @@ namespace HrHarmony.Data.Database.Migrations
             modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.EmploymentContract", b =>
                 {
                     b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.ContractType", "ContractType")
-                        .WithMany("Contracts")
+                        .WithMany()
                         .HasForeignKey("ContractTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1301,25 +1204,6 @@ namespace HrHarmony.Data.Database.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Leave", b =>
-                {
-                    b.HasOne("HrHarmony.Data.Models.Entities.Main.Employee", "Employee")
-                        .WithMany("Leaves")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HrHarmony.Data.Models.Entities.Dictionary.LeaveType", "LeaveType")
-                        .WithMany("Leaves")
-                        .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("LeaveType");
-                });
-
             modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Salary", b =>
                 {
                     b.HasOne("HrHarmony.Data.Models.Entities.Main.Employee", "Employee")
@@ -1331,48 +1215,11 @@ namespace HrHarmony.Data.Database.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.AbsenceType", b =>
-                {
-                    b.Navigation("Absences");
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.Address", b =>
-                {
-                    b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.ContractType", b =>
-                {
-                    b.Navigation("Contracts");
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.EducationLevel", b =>
-                {
-                    b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.Experience", b =>
-                {
-                    b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.LeaveType", b =>
-                {
-                    b.Navigation("Leaves");
-                });
-
-            modelBuilder.Entity("HrHarmony.Data.Models.Entities.Dictionary.MaritalStatus", b =>
-                {
-                    b.Navigation("Employees");
-                });
-
             modelBuilder.Entity("HrHarmony.Data.Models.Entities.Main.Employee", b =>
                 {
                     b.Navigation("Absences");
 
                     b.Navigation("Contracts");
-
-                    b.Navigation("Leaves");
 
                     b.Navigation("Salaries");
                 });

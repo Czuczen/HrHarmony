@@ -5,7 +5,7 @@ namespace HrHarmony.Data.Database.SeedData.StartDataSeeders.Main;
 
 public class EmploymentContractDataSeeder : ISeeder
 {
-    public int Order => 10;
+    public int Order => 9;
 
     private readonly List<EmploymentContract> _contracts = new()
     {

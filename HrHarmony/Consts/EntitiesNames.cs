@@ -8,8 +8,6 @@ public static class EntitiesNames
 
     public const string EmploymentContract = "EmploymentContract";
 
-    public const string Leave = "Leave";
-
     public const string Salary = "Salary";
         
     public const string AbsenceType = "AbsenceType";
@@ -21,8 +19,6 @@ public static class EntitiesNames
     public const string EducationLevel = "EducationLevel";
 
     public const string Experience = "Experience";
-
-    public const string LeaveType = "LeaveType";
 
     public const string MaritalStatus = "MaritalStatus";
 }

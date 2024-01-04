@@ -4,7 +4,7 @@ namespace HrHarmony.Data.Models.ViewModels.Experience;
 
 public class CreateViewModel
 {
-    [Display(Name = "Opis doświadczenia")]
-    public string ExperienceDescription { get; set; }
+    [Display(Name = "Nazwa doświadczenia")]
+    public string ExperienceName { get; set; }
 
 }

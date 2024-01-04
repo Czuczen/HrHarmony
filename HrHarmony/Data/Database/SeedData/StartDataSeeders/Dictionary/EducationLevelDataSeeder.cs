@@ -5,7 +5,7 @@ namespace HrHarmony.Data.Database.SeedData.StartDataSeeders.Dictionary;
 
 public class EducationLevelDataSeeder : ISeeder
 {
-    public int Order => 4;
+    public int Order => 3;
 
     private readonly List<string> _levels = new()
     {

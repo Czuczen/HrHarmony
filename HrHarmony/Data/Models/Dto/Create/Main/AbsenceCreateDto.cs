@@ -6,7 +6,11 @@ public class AbsenceCreateDto
 {
     [Required(ErrorMessage = "Pole jest wymagane.")]
     [DataType(DataType.DateTime, ErrorMessage = "Proszę podać poprawną datę.")]
-    public DateTime? AbsenceDate { get; set; }
+    public DateTime StartDate { get; set; }
+
+    [Required(ErrorMessage = "Pole jest wymagane.")]
+    [DataType(DataType.DateTime, ErrorMessage = "Proszę podać poprawną datę.")]
+    public DateTime EndDate { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane.")]
     public int? AbsenceTypeId { get; set; }

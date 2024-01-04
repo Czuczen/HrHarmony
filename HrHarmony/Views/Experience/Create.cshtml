@@ -12,9 +12,9 @@
     @Html.AntiForgeryToken()
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ExperienceDescription)
-        @Html.TextBoxFor(model => model.ExperienceDescription, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.ExperienceDescription, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.ExperienceName)
+        @Html.TextBoxFor(model => model.ExperienceName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ExperienceName, "", new { @class = "text-danger" })
     </div>
 
     @await Html.PartialAsync("~/Views/Shared/Records/_FormButtons.cshtml")

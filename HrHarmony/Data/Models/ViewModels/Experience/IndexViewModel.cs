@@ -6,6 +6,6 @@ public class IndexViewModel
 {
     public int Id { get; set; }
 
-    [Display(Name = "Opis doświadczenia")]
-    public string ExperienceDescription { get; set; }
+    [Display(Name = "Nazwa doświadczenia")]
+    public string ExperienceName { get; set; }
 }

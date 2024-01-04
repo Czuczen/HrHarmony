@@ -116,7 +116,7 @@ public class EmployeeController : Controller
             q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.EducationLevel, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.LevelName } }));
 
         var experiancesQ = _employeeRepository.GetQuery<Experience, CustomEntity<SelectListItem>>(q =>
-            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Experience, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.ExperienceDescription } }));
+            q.Select(e => new CustomEntity<SelectListItem> { EntityName = EntitiesNames.Experience, Item = new SelectListItem { Value = e.Id.ToString(), Text = e.ExperienceName } }));
 
         var results = await maritalStatussesQ.Concat(addressesQ).Concat(educationLevelsQ).Concat(experiancesQ).OrderBy(x => x.Item.Text).ToListAsync();
 

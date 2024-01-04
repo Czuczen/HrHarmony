@@ -6,8 +6,11 @@ namespace HrHarmony.Data.Models.ViewModels.Absence;
 
 public class CreateViewModel : ILoadGroupedAbsenceOptions
 {
-    [Display(Name = "Data absencji")]
-    public DateTime? AbsenceDate { get; set; }
+    [Display(Name = "Data rozpoczęcia")]
+    public DateTime? StartDate { get; set; }
+
+    [Display(Name = "Data zakończenia")]
+    public DateTime? EndDate { get; set; }
 
     [Display(Name = "Rodzaj absencji")]
     public int AbsenceTypeId { get; set; }

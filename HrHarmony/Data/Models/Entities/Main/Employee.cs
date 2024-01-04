@@ -30,8 +30,6 @@ public class Employee : Entity<int>
 
     public List<EmploymentContract> Contracts { get; set; }
 
-    public List<Leave> Leaves { get; set; }
-
     public List<Absence> Absences { get; set; }
 
     public List<Salary> Salaries { get; set; }

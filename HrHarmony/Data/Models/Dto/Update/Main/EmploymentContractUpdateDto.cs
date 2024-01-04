@@ -8,7 +8,6 @@ public class EmploymentContractUpdateDto : EntityDto<int>
     [DataType(DataType.Date, ErrorMessage = "Proszę podać poprawną datę.")]
     public DateTime? StartDate { get; set; }
 
-    [Required(ErrorMessage = "Pole jest wymagane.")]
     [DataType(DataType.Date, ErrorMessage = "Proszę podać poprawną datę.")]
     public DateTime? EndDate { get; set; }
 

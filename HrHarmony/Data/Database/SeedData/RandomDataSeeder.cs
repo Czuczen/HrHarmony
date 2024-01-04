@@ -16,10 +16,8 @@ public static class RandomDataSeeder
     private static int? _experiencesCount;
     private static int? _employeesCount;
     private static int? _contractTypesCount;
-    private static int? _leaveTypesCount;
     private static int? _absenceTypesCount;
     private static int? _employmentContractsCount;
-    private static int? _leavesCount;
     private static int? _absencesCount;
     private static int? _salariesCount;
     
@@ -40,12 +38,10 @@ public static class RandomDataSeeder
         await context.SaveChangesAsync();
 
         await CreateContractTypes(context, _contractTypesCount);
-        await CreateLeaveTypes(context, _leaveTypesCount);
         await CreateAbsenceTypes(context, _absenceTypesCount);
         await context.SaveChangesAsync();
 
         await CreateEmploymentContracts(context, _employmentContractsCount);
-        await CreateLeaves(context, _leavesCount);
         await CreateAbsences(context, _absencesCount);
         await CreateSalaries(context, _salariesCount);
         await context.SaveChangesAsync();
@@ -131,7 +127,7 @@ public static class RandomDataSeeder
         var stringLength = Random.Next(3, 21);
         var experience = new Experience
         {
-            ExperienceDescription = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
+            ExperienceName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
         };
 
         context.Experiences.Add(experience);
@@ -170,28 +166,6 @@ public static class RandomDataSeeder
         howMany ??= Random.Next(1, 11);
         for (int i = 0; i < howMany; i++)
             await CreateContractType(context);
-    }
-
-    public static async Task<LeaveType> CreateLeaveType(ApplicationDbContext context)
-    {
-        var stringLength = Random.Next(3, 21);
-        var leaveType = new LeaveType
-        {
-            TypeName = StringUtils.FirstCharacterUpRestDown(StringUtils.GenerateRandomString(stringLength))
-        };
-
-        context.LeaveTypes.Add(leaveType);
-        if (!_groupSaveChanges)
-            await context.SaveChangesAsync();
-
-        return leaveType;
-    }
-
-    public static async Task CreateLeaveTypes(ApplicationDbContext context, int? howMany = null)
-    {
-        howMany ??= Random.Next(1, 11);
-        for (int i = 0; i < howMany; i++)
-            await CreateLeaveType(context);
     }
 
     public static async Task<AbsenceType> CreateAbsenceType(ApplicationDbContext context)
@@ -298,33 +272,6 @@ public static class RandomDataSeeder
             await CreateEmploymentContract(context);
     }
 
-    public static async Task<Leave> CreateLeave(ApplicationDbContext context)
-    {
-        var employeesIds = context.Employees.Select(a => a.Id).ToList();
-        var leaveTypesIds = context.LeaveTypes.Select(a => a.Id).ToList();
-
-        var leave = new Leave
-        {
-            StartDate = DateTime.Now.AddDays(-Random.Next(1, 11)),
-            EndDate = DateTime.Now.AddDays(Random.Next(1, 11)),
-            LeaveTypeId = leaveTypesIds[Random.Next(0, leaveTypesIds.Count)],
-            EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
-        };
-
-        context.Leaves.Add(leave);
-        if (!_groupSaveChanges)
-            await context.SaveChangesAsync();
-
-        return leave;
-    }
-
-    public static async Task CreateLeaves(ApplicationDbContext context, int? howMany = null)
-    {
-        howMany ??= Random.Next(1, 11);
-        for (int i = 0; i < howMany; i++)
-            await CreateLeave(context);
-    }
-
     public static async Task<Absence> CreateAbsence(ApplicationDbContext context)
     {
         var employeesIds = context.Employees.Select(a => a.Id).ToList();
@@ -332,7 +279,8 @@ public static class RandomDataSeeder
 
         var absence = new Absence
         {
-            AbsenceDate = DateTime.Now.AddDays(-Random.Next(1, 11)),
+            StartDate = DateTime.Now.AddDays(-Random.Next(1, 11)),
+            EndDate = DateTime.Now.AddDays(Random.Next(1, 11)),
             AbsenceTypeId = absenceTypesIds[Random.Next(0, absenceTypesIds.Count)],
             EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
         };
@@ -399,10 +347,8 @@ public static class RandomDataSeeder
                 _experiencesCount = 5;
                 _employeesCount = 5;
                 _contractTypesCount = 5;
-                _leaveTypesCount = 5;
                 _absenceTypesCount = 5;
                 _employmentContractsCount = 5;
-                _leavesCount = 20;
                 _absencesCount = 20;
                 _salariesCount = 50;
                 break;
@@ -413,10 +359,8 @@ public static class RandomDataSeeder
                 _experiencesCount = 25;
                 _employeesCount = 25;
                 _contractTypesCount = 25;
-                _leaveTypesCount = 25;
                 _absenceTypesCount = 25;
                 _employmentContractsCount = 25;
-                _leavesCount = 100;
                 _absencesCount = 100;
                 _salariesCount = 250;
                 break;
@@ -427,10 +371,8 @@ public static class RandomDataSeeder
                 _experiencesCount = 125;
                 _employeesCount = 125;
                 _contractTypesCount = 125;
-                _leaveTypesCount = 125;
                 _absenceTypesCount = 125;
                 _employmentContractsCount = 125;
-                _leavesCount = 500;
                 _absencesCount = 500;
                 _salariesCount = 1250;
                 break;
@@ -441,10 +383,8 @@ public static class RandomDataSeeder
                 _experiencesCount = 12500;
                 _employeesCount = 12500;
                 _contractTypesCount = 12500;
-                _leaveTypesCount = 12500;
                 _absenceTypesCount = 12500;
                 _employmentContractsCount = 12500;
-                _leavesCount = 50000;
                 _absencesCount = 50000;
                 _salariesCount = 125000;
                 break;
@@ -455,10 +395,8 @@ public static class RandomDataSeeder
                 _experiencesCount = 1;
                 _employeesCount = 1;
                 _contractTypesCount = 1;
-                _leaveTypesCount = 1;
                 _absenceTypesCount = 1;
                 _employmentContractsCount = 1;
-                _leavesCount = 5;
                 _absencesCount = 5;
                 _salariesCount = 10;
                 break;

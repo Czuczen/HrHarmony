@@ -23,7 +23,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<Absence, Absence>();
             cfg.CreateMap<Employee, Employee>();
             cfg.CreateMap<EmploymentContract, EmploymentContract>();
-            cfg.CreateMap<Leave, Leave>();
             cfg.CreateMap<Salary, Salary>();
 
             cfg.CreateMap<AbsenceType, AbsenceType>();
@@ -31,7 +30,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<ContractType, ContractType>();
             cfg.CreateMap<EducationLevel, EducationLevel>();
             cfg.CreateMap<Experience, Experience>();
-            cfg.CreateMap<LeaveType, LeaveType>();
             cfg.CreateMap<MaritalStatus, MaritalStatus>();
 
 
@@ -39,7 +37,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<Absence, AbsenceDto>();
             cfg.CreateMap<Employee, EmployeeDto>();
             cfg.CreateMap<EmploymentContract, EmploymentContractDto>();
-            cfg.CreateMap<Leave, LeaveDto>();
             cfg.CreateMap<Salary, SalaryDto>();
 
             cfg.CreateMap<AbsenceType, AbsenceTypeDto>();
@@ -47,7 +44,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<ContractType, ContractTypeDto>();
             cfg.CreateMap<EducationLevel, EducationLevelDto>();
             cfg.CreateMap<Experience, ExperienceDto>();
-            cfg.CreateMap<LeaveType, LeaveTypeDto>();
             cfg.CreateMap<MaritalStatus, MaritalStatusDto>();
 
 
@@ -55,7 +51,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<AbsenceCreateDto, Absence>();
             cfg.CreateMap<EmployeeCreateDto, Employee>();
             cfg.CreateMap<EmploymentContractCreateDto, EmploymentContract>();
-            cfg.CreateMap<LeaveCreateDto, Leave>();
             cfg.CreateMap<SalaryCreateDto, Salary>();
 
             cfg.CreateMap<AbsenceTypeCreateDto, AbsenceType>();
@@ -63,7 +58,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<ContractTypeCreateDto, ContractType>();
             cfg.CreateMap<EducationLevelCreateDto, EducationLevel>();
             cfg.CreateMap<ExperienceCreateDto, Experience>();
-            cfg.CreateMap<LeaveTypeCreateDto, LeaveType>();
             cfg.CreateMap<MaritalStatusCreateDto, MaritalStatus>();
 
 
@@ -71,7 +65,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<AbsenceUpdateDto, Absence>();
             cfg.CreateMap<EmployeeUpdateDto, Employee>();
             cfg.CreateMap<EmploymentContractUpdateDto, EmploymentContract>();
-            cfg.CreateMap<LeaveUpdateDto, Leave>();
             cfg.CreateMap<SalaryUpdateDto, Salary>();
 
             cfg.CreateMap<AbsenceTypeUpdateDto, AbsenceType>();
@@ -79,7 +72,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<ContractTypeUpdateDto, ContractType>();
             cfg.CreateMap<EducationLevelUpdateDto, EducationLevel>();
             cfg.CreateMap<ExperienceUpdateDto, Experience>();
-            cfg.CreateMap<LeaveTypeUpdateDto, LeaveType>();
             cfg.CreateMap<MaritalStatusUpdateDto, MaritalStatus>();
 
 
@@ -138,24 +130,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<PaginatedResult<EmploymentContractDto>, PagedRecordsViewModel<Data.Models.ViewModels.EmploymentContract.IndexViewModel>>();
             cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.EmploymentContract.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.EmploymentContract.IndexViewModel>>();
             cfg.CreateMap<PaginatedQuery<EmploymentContract>, PaginatedResult<Data.Models.ViewModels.EmploymentContract.IndexViewModel>>();
-
-
-            // Leave view models
-            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.IndexViewModel>();
-            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.DetailsViewModel>();
-            cfg.CreateMap<LeaveCreateDto, Data.Models.ViewModels.Leave.CreateViewModel>();
-            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.UpdateViewModel>();
-            cfg.CreateMap<LeaveUpdateDto, Data.Models.ViewModels.Leave.UpdateViewModel>();
-            cfg.CreateMap<LeaveDto, Data.Models.ViewModels.Leave.DeleteViewModel>();
-
-            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.IndexViewModel>();
-            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.DetailsViewModel>();
-            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.UpdateViewModel>();
-            cfg.CreateMap<Leave, Data.Models.ViewModels.Leave.DeleteViewModel>();
-
-            cfg.CreateMap<PaginatedResult<LeaveDto>, PagedRecordsViewModel<Data.Models.ViewModels.Leave.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Leave.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Leave.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<Leave>, PaginatedResult<Data.Models.ViewModels.Leave.IndexViewModel>>();
 
 
             // Salary view models
@@ -266,24 +240,6 @@ public static class MapperConfigurationFactory
             cfg.CreateMap<PaginatedResult<ExperienceDto>, PagedRecordsViewModel<Data.Models.ViewModels.Experience.IndexViewModel>>();
             cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.Experience.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.Experience.IndexViewModel>>();
             cfg.CreateMap<PaginatedQuery<Experience>, PaginatedResult<Data.Models.ViewModels.Experience.IndexViewModel>>();
-
-
-            // LeaveType view models
-            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.IndexViewModel>();
-            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.DetailsViewModel>();
-            cfg.CreateMap<LeaveTypeCreateDto, Data.Models.ViewModels.LeaveType.CreateViewModel>();
-            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.UpdateViewModel>();
-            cfg.CreateMap<LeaveTypeUpdateDto, Data.Models.ViewModels.LeaveType.UpdateViewModel>();
-            cfg.CreateMap<LeaveTypeDto, Data.Models.ViewModels.LeaveType.DeleteViewModel>();
-
-            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.IndexViewModel>();
-            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.DetailsViewModel>();
-            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.UpdateViewModel>();
-            cfg.CreateMap<LeaveType, Data.Models.ViewModels.LeaveType.DeleteViewModel>();
-
-            cfg.CreateMap<PaginatedResult<LeaveTypeDto>, PagedRecordsViewModel<Data.Models.ViewModels.LeaveType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedResult<Data.Models.ViewModels.LeaveType.IndexViewModel>, PagedRecordsViewModel<Data.Models.ViewModels.LeaveType.IndexViewModel>>();
-            cfg.CreateMap<PaginatedQuery<LeaveType>, PaginatedResult<Data.Models.ViewModels.LeaveType.IndexViewModel>>();
 
 
             // MaritalStatus view models
