@@ -9,7 +9,6 @@ Celem tego projektu jest praktyczne zastosowanie technologii ASP.NET Core 7 MVC 
 
 - Zarządzanie danymi pracowników  
 - Obsługa umów o pracę  
-- Planowanie i rejestracja urlopów  
 - Monitorowanie absencji pracowników  
 - Zarządzanie wynagrodzeniem  
 
