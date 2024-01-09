@@ -249,8 +249,8 @@ public static class RandomDataSeeder
         var employmentContract = new EmploymentContract
         {
             ContractNumber = "CNT" + Random.Next(1000, 10000),
-            StartDate = DateTime.Now.AddMonths(-Random.Next(1, 13)),
-            EndDate = needEndDate ? DateTime.Now.AddMonths(Random.Next(1, 13)) : null,
+            StartDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-Random.Next(1, 13))),
+            EndDate = needEndDate ? DateOnly.FromDateTime(DateTime.Now.AddMonths(Random.Next(1, 13))) : null,
             ContractTypeId = contractTypesIds[Random.Next(0, contractTypesIds.Count)],
             EmployeeId = employeesIds[Random.Next(0, employeesIds.Count)],
             HourlyRate = Math.Round(hourlyRate, 2),

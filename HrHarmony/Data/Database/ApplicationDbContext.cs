@@ -1,4 +1,5 @@
-﻿using HrHarmony.Data.Database.SeedData.StartDataSeeders;
+﻿using HrHarmony.Data.Database.Converters;
+using HrHarmony.Data.Database.SeedData.StartDataSeeders;
 using HrHarmony.Data.Models.Entities.Dictionary;
 using HrHarmony.Data.Models.Entities.Main;
 using HrHarmony.Data.Models.Entities.Management;
@@ -46,6 +47,23 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        var dateOnlyToDateTimeConverter = new DateOnlyToDateTimeConverter();
+
+        modelBuilder
+            .Entity<EmploymentContract>()
+            .Property(e => e.ContractSigningDate)
+            .HasConversion(dateOnlyToDateTimeConverter);
+
+        modelBuilder
+            .Entity<EmploymentContract>()
+            .Property(e => e.StartDate)
+            .HasConversion(dateOnlyToDateTimeConverter);
+
+        modelBuilder
+            .Entity<EmploymentContract>()
+            .Property(e => e.EndDate)
+            .HasConversion(dateOnlyToDateTimeConverter);
+
         if (!base.Database.GetAppliedMigrations().Any() && _seeders != null)
             foreach (var seeder in _seeders)
                 seeder.Seed(modelBuilder);

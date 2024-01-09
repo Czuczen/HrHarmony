@@ -13,8 +13,8 @@ public class EmploymentContractDataSeeder : ISeeder
         {
             Id = 1,
             ContractNumber = "CNT1",
-            StartDate = new DateTime(2022, 1, 1),
-            EndDate = new DateTime(2022, 12, 31),
+            StartDate = DateOnly.FromDateTime(new DateTime(2022, 1, 1)),
+            EndDate = DateOnly.FromDateTime(new DateTime(2022, 12, 31)),
             ContractTypeId = 1,
             EmployeeId = 1,
             HourlyRate = 50.0m,
@@ -25,7 +25,7 @@ public class EmploymentContractDataSeeder : ISeeder
         {
             Id = 2,
             ContractNumber = "CNT2",
-            StartDate = new DateTime(2023, 3, 15),
+            StartDate = DateOnly.FromDateTime(new DateTime(2023, 3, 15)),
             EndDate = null,
             ContractTypeId = 2,
             EmployeeId = 2,
@@ -37,8 +37,8 @@ public class EmploymentContractDataSeeder : ISeeder
         {
             Id = 3,
             ContractNumber = "CNT3",
-            StartDate = new DateTime(2022, 5, 10),
-            EndDate = new DateTime(2023, 5, 9),
+            StartDate = DateOnly.FromDateTime(new DateTime(2022, 5, 10)),
+            EndDate = DateOnly.FromDateTime(new DateTime(2023, 5, 9)),
             ContractTypeId = 3,
             EmployeeId = 3,
             HourlyRate = 55.0m,
@@ -49,7 +49,7 @@ public class EmploymentContractDataSeeder : ISeeder
         {
             Id = 4,
             ContractNumber = "CNT4",
-            StartDate = new DateTime(2023, 1, 1),
+            StartDate = DateOnly.FromDateTime(new DateTime(2023, 1, 1)),
             EndDate = null,
             ContractTypeId = 4,
             EmployeeId = 4,
@@ -61,7 +61,7 @@ public class EmploymentContractDataSeeder : ISeeder
         {
             Id = 5,
             ContractNumber = "CNT5",
-            StartDate = new DateTime(2023, 6, 20),
+            StartDate = DateOnly.FromDateTime(new DateTime(2023, 6, 20)),
             EndDate = null,
             ContractTypeId = 1,
             EmployeeId = 5,

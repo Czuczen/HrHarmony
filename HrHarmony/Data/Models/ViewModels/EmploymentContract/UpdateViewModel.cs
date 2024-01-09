@@ -6,11 +6,14 @@ namespace HrHarmony.Data.Models.ViewModels.EmploymentContract;
 
 public class UpdateViewModel : ILoadGroupedEmploymentContractOptions
 {
+    [Display(Name = "Data podpisania umowy")]
+    public DateOnly ContractSigningDate { get; set; }
+
     [Display(Name = "Data rozpoczęcia")]
-    public DateTime StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
     
     [Display(Name = "Data zakończenia")]
-    public DateTime? EndDate { get; set; }
+    public DateOnly? EndDate { get; set; }
 
     [Display(Name = "Rodzaj umowy")]
     public int ContractTypeId { get; set; }

@@ -7,9 +7,11 @@ public class EmploymentContract : Entity<int>
 {
     public string ContractNumber { get; set; }
 
-    public DateTime StartDate { get; set; }
+    public DateOnly ContractSigningDate { get; set; }
 
-    public DateTime? EndDate { get; set; }
+    public DateOnly StartDate { get; set; }
+
+    public DateOnly? EndDate { get; set; }
 
     public int ContractTypeId { get; set; }
 

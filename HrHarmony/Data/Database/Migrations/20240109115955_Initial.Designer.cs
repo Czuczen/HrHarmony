@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrHarmony.Data.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240104103645_Initial")]
+    [Migration("20240109115955_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -738,6 +738,9 @@ namespace HrHarmony.Data.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("ContractSigningDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("ContractTypeId")
                         .HasColumnType("int");
 
@@ -770,6 +773,7 @@ namespace HrHarmony.Data.Database.Migrations
                             Id = 1,
                             BasicSalary = 36000.0m,
                             ContractNumber = "CNT1",
+                            ContractSigningDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ContractTypeId = 1,
                             EmployeeId = 1,
                             EndDate = new DateTime(2022, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -782,6 +786,7 @@ namespace HrHarmony.Data.Database.Migrations
                             Id = 2,
                             BasicSalary = 33600.0m,
                             ContractNumber = "CNT2",
+                            ContractSigningDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ContractTypeId = 2,
                             EmployeeId = 2,
                             HourlyRate = 45.0m,
@@ -793,6 +798,7 @@ namespace HrHarmony.Data.Database.Migrations
                             Id = 3,
                             BasicSalary = 38400.0m,
                             ContractNumber = "CNT3",
+                            ContractSigningDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ContractTypeId = 3,
                             EmployeeId = 3,
                             EndDate = new DateTime(2023, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -805,6 +811,7 @@ namespace HrHarmony.Data.Database.Migrations
                             Id = 4,
                             BasicSalary = 42000.0m,
                             ContractNumber = "CNT4",
+                            ContractSigningDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ContractTypeId = 4,
                             EmployeeId = 4,
                             HourlyRate = 60.0m,
@@ -816,6 +823,7 @@ namespace HrHarmony.Data.Database.Migrations
                             Id = 5,
                             BasicSalary = 36000.0m,
                             ContractNumber = "CNT5",
+                            ContractSigningDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ContractTypeId = 1,
                             EmployeeId = 5,
                             HourlyRate = 50.0m,

@@ -189,6 +189,7 @@ namespace HrHarmony.Data.Database.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ContractNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContractSigningDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ContractTypeId = table.Column<int>(type: "int", nullable: false),
@@ -373,14 +374,14 @@ namespace HrHarmony.Data.Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "EmploymentContracts",
-                columns: new[] { "Id", "BasicSalary", "ContractNumber", "ContractTypeId", "EmployeeId", "EndDate", "HourlyRate", "MonthlyRate", "StartDate" },
+                columns: new[] { "Id", "BasicSalary", "ContractNumber", "ContractSigningDate", "ContractTypeId", "EmployeeId", "EndDate", "HourlyRate", "MonthlyRate", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, 36000.0m, "CNT1", 1, 1, new DateTime(2022, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), 50.0m, 3000.0m, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 33600.0m, "CNT2", 2, 2, null, 45.0m, 2800.0m, new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, 38400.0m, "CNT3", 3, 3, new DateTime(2023, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 55.0m, 3200.0m, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, 42000.0m, "CNT4", 4, 4, null, 60.0m, 3500.0m, new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, 36000.0m, "CNT5", 1, 5, null, 50.0m, 3000.0m, new DateTime(2023, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, 36000.0m, "CNT1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 1, new DateTime(2022, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), 50.0m, 3000.0m, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 33600.0m, "CNT2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, null, 45.0m, 2800.0m, new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 38400.0m, "CNT3", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 3, new DateTime(2023, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 55.0m, 3200.0m, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, 42000.0m, "CNT4", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 4, null, 60.0m, 3500.0m, new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, 36000.0m, "CNT5", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 5, null, 50.0m, 3000.0m, new DateTime(2023, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
