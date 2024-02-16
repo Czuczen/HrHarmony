@@ -35,10 +35,10 @@ public class VisitorsRecorderMiddleware
 
                 dbContext.Visitors.Add(visitorData);
                 await dbContext.SaveChangesAsync();
-
-                await _next(context);
             }
         }
+
+        await _next(context);
     }
 
     private static string GetVisitorId(HttpContext context)
