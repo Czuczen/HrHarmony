@@ -11,8 +11,6 @@
 
 @using (Html.BeginForm("Edit", "Absence", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-
     <div class="form-group">
         @Html.LabelFor(model => model.AbsenceTypeId)
         @Html.DropDownListFor(model => model.AbsenceTypeId, Model.AbsenceTypes, "Wybierz rodzaj absencji", new { @class = "form-control" })

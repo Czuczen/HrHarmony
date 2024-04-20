@@ -9,8 +9,6 @@
 
 @using (Html.BeginForm("Edit", "Address", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-
     <div class="form-group">
         @Html.LabelFor(model => model.Street)
         @Html.TextBoxFor(model => model.Street, new { @class = "form-control" })

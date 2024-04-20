@@ -11,8 +11,6 @@
 
 @using (Html.BeginForm("Edit", "EmploymentContract", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-
     <div class="form-group">
         @Html.LabelFor(model => model.ContractSigningDate)
         @Html.TextBoxFor(model => model.ContractSigningDate, Model.ContractSigningDate.ToString("yyyy-MM-dd"), new { @class = "form-control", @type = "date" })

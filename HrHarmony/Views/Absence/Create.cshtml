@@ -11,8 +11,6 @@
 
 @using (Html.BeginForm("Create", "Absence", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-
     <div class="form-group">
         @Html.LabelFor(model => model.StartDate)
         @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @type = "datetime-local" })
