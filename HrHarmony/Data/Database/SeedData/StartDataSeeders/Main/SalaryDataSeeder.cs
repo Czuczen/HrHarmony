@@ -12,7 +12,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 1,
-            PaymentDate = new DateTime(2023, 1, 1),
+            PaymentDate = new DateTime(2023, 1, 1, 12, 46, 12),
             EmployeeId = 1,
             BasicSalary = 4000.0m,
             AdditionalSalary = 500.0m,
@@ -24,7 +24,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 2,
-            PaymentDate = new DateTime(2023, 1, 1),
+            PaymentDate = new DateTime(2023, 1, 1, 12, 51, 22),
             EmployeeId = 2,
             BasicSalary = 4500.0m,
             AdditionalSalary = 600.0m,
@@ -36,7 +36,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 3,
-            PaymentDate = new DateTime(2023, 1, 1),
+            PaymentDate = new DateTime(2023, 1, 1, 12, 55, 52),
             EmployeeId = 3,
             BasicSalary = 4200.0m,
             AdditionalSalary = 550.0m,
@@ -48,7 +48,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 4,
-            PaymentDate = new DateTime(2023, 1, 1),
+            PaymentDate = new DateTime(2023, 1, 1, 13, 02, 12),
             EmployeeId = 4,
             BasicSalary = 4300.0m,
             AdditionalSalary = 575.0m,
@@ -60,7 +60,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 5,
-            PaymentDate = new DateTime(2023, 1, 1),
+            PaymentDate = new DateTime(2023, 1, 1, 13, 12, 34),
             EmployeeId = 5,
             BasicSalary = 4400.0m,
             AdditionalSalary = 600.0m,
@@ -72,7 +72,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 6,
-            PaymentDate = new DateTime(2023, 2, 1),
+            PaymentDate = new DateTime(2023, 2, 1, 08, 26, 21),
             EmployeeId = 1,
             BasicSalary = 4500.0m,
             AdditionalSalary = 625.0m,
@@ -84,7 +84,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 7,
-            PaymentDate = new DateTime(2023, 2, 1),
+            PaymentDate = new DateTime(2023, 2, 1, 08, 31, 21),
             EmployeeId = 2,
             BasicSalary = 4600.0m,
             AdditionalSalary = 625.0m,
@@ -96,7 +96,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 8,
-            PaymentDate = new DateTime(2023, 2, 1),
+            PaymentDate = new DateTime(2023, 2, 1, 08, 36, 56),
             EmployeeId = 3,
             BasicSalary = 4700.0m,
             AdditionalSalary = 650.0m,
@@ -108,7 +108,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 9,
-            PaymentDate = new DateTime(2023, 2, 1),
+            PaymentDate = new DateTime(2023, 2, 1, 08, 41, 11),
             EmployeeId = 4,
             BasicSalary = 4800.0m,
             AdditionalSalary = 675.0m,
@@ -120,7 +120,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 10,
-            PaymentDate = new DateTime(2023, 2, 1),
+            PaymentDate = new DateTime(2023, 2, 1, 08, 52, 31),
             EmployeeId = 5,
             BasicSalary = 4900.0m,
             AdditionalSalary = 700.0m,
@@ -132,7 +132,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 11,
-            PaymentDate = new DateTime(2023, 3, 1),
+            PaymentDate = new DateTime(2023, 3, 1, 08, 55, 21),
             EmployeeId = 1,
             BasicSalary = 5000.0m,
             AdditionalSalary = 725.0m,
@@ -144,7 +144,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 12,
-            PaymentDate = new DateTime(2023, 3, 1),
+            PaymentDate = new DateTime(2023, 3, 1, 09, 06, 44),
             EmployeeId = 2,
             BasicSalary = 5100.0m,
             AdditionalSalary = 750.0m,
@@ -156,7 +156,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 13,
-            PaymentDate = new DateTime(2023, 3, 1),
+            PaymentDate = new DateTime(2023, 3, 1, 09, 26, 21),
             EmployeeId = 3,
             BasicSalary = 5200.0m,
             AdditionalSalary = 775.0m,
@@ -168,7 +168,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 14,
-            PaymentDate = new DateTime(2023, 3, 1),
+            PaymentDate = new DateTime(2023, 3, 1, 09, 33, 33),
             EmployeeId = 4,
             BasicSalary = 5300.0m,
             AdditionalSalary = 800.0m,
@@ -180,7 +180,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 15,
-            PaymentDate = new DateTime(2023, 3, 1),
+            PaymentDate = new DateTime(2023, 3, 1, 09, 36, 51),
             EmployeeId = 5,
             BasicSalary = 5400.0m,
             AdditionalSalary = 825.0m,
@@ -192,7 +192,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 16,
-            PaymentDate = new DateTime(2023, 4, 1),
+            PaymentDate = new DateTime(2023, 4, 1, 13, 26, 21),
             EmployeeId = 1,
             BasicSalary = 5500.0m,
             AdditionalSalary = 850.0m,
@@ -204,7 +204,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 17,
-            PaymentDate = new DateTime(2023, 4, 1),
+            PaymentDate = new DateTime(2023, 4, 1, 13, 27, 21),
             EmployeeId = 2,
             BasicSalary = 5600.0m,
             AdditionalSalary = 875.0m,
@@ -216,7 +216,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 18,
-            PaymentDate = new DateTime(2023, 4, 1),
+            PaymentDate = new DateTime(2023, 4, 1, 13, 30, 27),
             EmployeeId = 3,
             BasicSalary = 5700.0m,
             AdditionalSalary = 900.0m,
@@ -228,7 +228,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 19,
-            PaymentDate = new DateTime(2023, 4, 1),
+            PaymentDate = new DateTime(2023, 4, 1, 13, 34, 31),
             EmployeeId = 4,
             BasicSalary = 5800.0m,
             AdditionalSalary = 925.0m,
@@ -240,7 +240,7 @@ public class SalaryDataSeeder : ISeeder
         new Salary
         {
             Id = 20,
-            PaymentDate = new DateTime(2023, 4, 1),
+            PaymentDate = new DateTime(2023, 4, 1, 13, 38, 48),
             EmployeeId = 5,
             BasicSalary = 5900.0m,
             AdditionalSalary = 950.0m,
