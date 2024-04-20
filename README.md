@@ -1,4 +1,4 @@
-# HrHarmony (w trakcie rozwijania)
+# HrHarmony  
 
 HrHarmony to projekt aplikacji do zarządzania zasobami ludzkimi (HR) stworzony w technologii ASP.NET Core 7 MVC i przy użyciu Entity Framework Core. 
 Celem tego projektu jest praktyczne zastosowanie technologii ASP.NET Core 7 MVC wraz z wzorcami projektowymi w kontekście zarządzania zasobami ludzkimi w przedsiębiorstwie.  
@@ -48,6 +48,3 @@ xUnit
 5. W konsoli menedżera pakietów wpisz komende "EntityFrameworkCore\Update-Database -Migration Initial -Project HrHarmony" i wciśnij Enter.  
 6. Uruchom aplikację (Ctrl+F5).  
   
-  
-  
-> Uwaga: Projekt obecnie jest rozwijany, nadal są wprowadzane zmiany i ulepszenia, niektóre funkcje mogą być dodawane lub zmieniane w kolejnych wersjach.
