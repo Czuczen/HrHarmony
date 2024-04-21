@@ -9,6 +9,5 @@ public class DateOnlyToDateTimeConverter : ValueConverter<DateOnly, DateTime>
         dateTime => DateOnly.FromDateTime(dateTime)
         )
     {
-
     }
 }
